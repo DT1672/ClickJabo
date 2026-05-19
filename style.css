@@ -66,7 +66,7 @@ input{
   padding:9px;
   border-radius:10px;
   border:1px solid #cbd5e1;
-  font-size:14px;
+  font-size:16px;
   background:white;
   box-sizing:border-box;
 }
@@ -147,7 +147,7 @@ button{
   min-height:44px;
   padding:6px;
   box-sizing:border-box;
-  font-size:14px;
+  font-size:16px;
 }
 
 .choices[data-type*=select-one]::after{
