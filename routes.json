@@ -1,0 +1,109 @@
+[
+  {
+    "district":"Dimapur",
+    "from":"Railway Station",
+    "to":"Purana Bazaar",
+    "hireDayFare":150,
+    "hireNightFare":200,
+    "sharedFare":40
+  },
+
+  {
+    "district":"Dimapur",
+    "from":"Purana Bazaar",
+    "to":"Railway Station",
+    "hireDayFare":170,
+    "hireNightFare":220,
+    "sharedFare":50
+  },
+
+  {
+    "district":"Dimapur",
+    "from":"Railway Station",
+    "to":"Super Market",
+    "hireDayFare":180,
+    "hireNightFare":240,
+    "sharedFare":60
+  },
+
+  {
+    "district":"Dimapur",
+    "from":"City Tower",
+    "to":"Super Market",
+    "hireDayFare":120,
+    "hireNightFare":170,
+    "sharedFare":30
+  },
+
+  {
+    "district":"Dimapur",
+    "from":"City Tower",
+    "to":"Nagaland University",
+    "hireDayFare":220,
+    "hireNightFare":300,
+    "sharedFare":70
+  },
+
+  {
+    "district":"Dimapur",
+    "from":"Naga Shopping Arcade",
+    "to":"Railway Station",
+    "hireDayFare":140,
+    "hireNightFare":190,
+    "sharedFare":35
+  },
+
+  {
+    "district":"Dimapur",
+    "from":"DC Court",
+    "to":"Super Market",
+    "hireDayFare":130,
+    "hireNightFare":180,
+    "sharedFare":40
+  },
+
+  {
+    "district":"Dimapur",
+    "from":"Airport",
+    "to":"City Tower",
+    "hireDayFare":250,
+    "hireNightFare":320,
+    "sharedFare":90
+  },
+
+  {
+    "district":"Dimapur",
+    "from":"Airport",
+    "to":"Railway Station",
+    "hireDayFare":300,
+    "hireNightFare":380,
+    "sharedFare":100
+  },
+
+  {
+    "district":"Dimapur",
+    "from":"Super Market",
+    "to":"Purana Bazaar",
+    "hireDayFare":110,
+    "hireNightFare":160,
+    "sharedFare":30
+  },
+
+  {
+    "district":"Kohima",
+    "from":"Kohima Taxi Stand",
+    "to":"High School Junction",
+    "hireDayFare":140,
+    "hireNightFare":190,
+    "sharedFare":40
+  },
+
+  {
+    "district":"Kohima",
+    "from":"Secretariat",
+    "to":"NST",
+    "hireDayFare":160,
+    "hireNightFare":220,
+    "sharedFare":50
+  }
+]

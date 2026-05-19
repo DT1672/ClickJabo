@@ -1,0 +1,334 @@
+let routes = [];
+
+const districtSelect =
+document.getElementById("district");
+
+const fromSelect =
+document.getElementById("from");
+
+const toSelect =
+document.getElementById("to");
+
+
+const savedDistrict =
+localStorage.getItem("selectedDistrict");
+
+if(savedDistrict){
+
+  districtSelect.value = savedDistrict;
+
+}
+
+
+districtSelect.addEventListener("change", () => {
+
+  localStorage.setItem(
+
+    "selectedDistrict",
+
+    districtSelect.value
+
+  );
+
+  loadLocations();
+
+});
+
+
+fetch("routes.json")
+
+.then(response => response.json())
+
+.then(data => {
+
+  routes = data;
+
+  loadLocations();
+
+});
+
+
+
+function loadLocations(){
+
+  fromSelect.innerHTML =
+
+  '<option value="">Select Pickup Location</option>';
+
+  toSelect.innerHTML =
+
+  '<option value="">Select Destination</option>';
+
+
+  let locations = [];
+
+  let selectedDistrict =
+
+  districtSelect.value;
+
+
+  routes.forEach(route => {
+
+    if(route.district === selectedDistrict){
+
+      if(!locations.includes(route.from)){
+
+        locations.push(route.from);
+
+      }
+
+      if(!locations.includes(route.to)){
+
+        locations.push(route.to);
+
+      }
+
+    }
+
+  });
+
+
+  locations.forEach(location => {
+
+    let option1 =
+    document.createElement("option");
+
+    option1.value = location;
+
+    option1.text = location;
+
+    fromSelect.appendChild(option1);
+
+
+    let option2 =
+    document.createElement("option");
+
+    option2.value = location;
+
+    option2.text = location;
+
+    toSelect.appendChild(option2);
+
+  });
+
+
+  const lastFrom =
+  localStorage.getItem("lastFrom");
+
+  const lastTo =
+  localStorage.getItem("lastTo");
+
+
+  if(lastFrom){
+
+    fromSelect.value = lastFrom;
+
+  }
+
+
+  if(lastTo){
+
+    toSelect.value = lastTo;
+
+  }
+
+}
+
+
+
+function checkFare(){
+
+  let from =
+  fromSelect.value;
+
+  let to =
+  toSelect.value;
+
+  let rideType =
+  document.getElementById("rideType").value;
+
+  let fareMode =
+  document.getElementById("fareMode").value;
+
+  let passengers =
+  parseInt(
+
+  document.getElementById("passengers").value
+
+  );
+
+
+  let result =
+  "No fare data available";
+
+
+  if(from === "" || to === ""){
+
+    document.getElementById("result").innerText =
+    "Select Route";
+
+    return;
+
+  }
+
+
+  if(from === to){
+
+    document.getElementById("result").innerText =
+    "Same Location";
+
+    return;
+
+  }
+
+
+  localStorage.setItem(
+    "lastFrom",
+    from
+  );
+
+  localStorage.setItem(
+    "lastTo",
+    to
+  );
+
+
+  routes.forEach(route => {
+
+    if(
+
+      route.district === districtSelect.value &&
+
+      route.from === from &&
+
+      route.to === to
+
+    ){
+
+      if(rideType === "shared"){
+
+        let totalSharedFare;
+
+
+        if(fareMode === "day"){
+
+          totalSharedFare =
+
+          route.sharedFare * passengers;
+
+        }
+
+        else{
+
+          totalSharedFare =
+
+          (route.sharedFare + 20)
+
+          * passengers;
+
+        }
+
+
+        result =
+
+        "₹" +
+
+        totalSharedFare;
+
+      }
+
+      else{
+
+        if(fareMode === "day"){
+
+          result =
+
+          "₹" +
+
+          route.hireDayFare;
+
+        }
+
+        else{
+
+          result =
+
+          "₹" +
+
+          route.hireNightFare;
+
+        }
+
+      }
+
+    }
+
+  });
+
+
+  document.getElementById("result").innerText =
+  result;
+  const card = document.querySelector(
+
+  ".result-glass"
+
+);
+
+card.classList.remove(
+
+  "result-animate"
+
+);
+
+void card.offsetWidth;
+
+card.classList.add(
+
+  "result-animate"
+
+);
+
+}
+
+
+
+function swapLocations(){
+
+  let temp =
+  fromSelect.value;
+
+  fromSelect.value =
+  toSelect.value;
+
+  toSelect.value =
+  temp;
+
+}
+
+
+
+window.addEventListener("load", () => {
+
+  setTimeout(() => {
+
+    const splash = document.getElementById(
+
+      "splash-screen"
+
+    );
+
+    splash.style.transition =
+
+    "opacity .6s ease";
+
+    splash.style.opacity = "0";
+
+    setTimeout(() => {
+
+      splash.style.display = "none";
+
+    }, 600);
+
+  }, 2800);
+
+});
