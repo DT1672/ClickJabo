@@ -1,0 +1,795 @@
+/* =========================
+   GLOBAL
+========================= */
+
+body{
+
+  margin:0;
+
+  font-family:Arial,sans-serif;
+
+  background:
+  radial-gradient(
+    circle at top,
+    #071120,
+    #020817
+  );
+
+  min-height:100vh;
+
+  color:white;
+
+  overflow-x:hidden;
+
+}
+
+
+
+.container{
+
+  width:100%;
+
+  max-width:430px;
+
+  margin:auto;
+
+  padding:12px;
+
+  box-sizing:border-box;
+
+}
+
+
+
+/* =========================
+   HEADER
+========================= */
+
+.header{
+
+  text-align:center;
+
+  margin-bottom:12px;
+
+}
+
+
+
+.header h1{
+
+  margin:0;
+
+  font-size:36px;
+
+  font-weight:700;
+
+  color:white;
+
+  letter-spacing:.3px;
+
+}
+
+
+
+.header p{
+
+  margin-top:4px;
+
+  color:#94a3b8;
+
+  font-size:10px;
+
+  letter-spacing:2px;
+
+}
+
+
+
+/* =========================
+   GLASS CARD
+========================= */
+
+.glass-card{
+
+  background:
+  rgba(255,255,255,0.05);
+
+  backdrop-filter:blur(16px);
+
+  border:
+  1px solid rgba(255,255,255,.08);
+
+  border-radius:22px;
+
+  padding:12px;
+
+  margin-top:10px;
+
+  box-shadow:
+  0 0 24px rgba(0,0,0,.28);
+
+}
+
+
+
+/* =========================
+   LABELS
+========================= */
+
+label{
+
+  display:block;
+
+  margin-top:6px;
+
+  margin-bottom:4px;
+
+  color:#cbd5e1;
+
+  font-size:12px;
+
+  font-weight:500;
+
+}
+
+
+
+/* =========================
+   INPUTS
+========================= */
+
+select,
+input{
+
+  width:100%;
+
+  padding:11px 12px;
+
+  border-radius:16px;
+
+  border:
+  1px solid rgba(255,255,255,.06);
+
+  background-color:#111827;
+
+  color:#f8fafc;
+
+  font-size:14px;
+
+  outline:none;
+
+  box-sizing:border-box;
+
+}
+
+
+
+/* =========================
+   BUTTONS
+========================= */
+
+button{
+
+  width:100%;
+
+  margin-top:12px;
+
+  padding:13px;
+
+  border:none;
+
+  border-radius:18px;
+
+  background:
+  rgba(255,255,255,.06);
+
+  color:white;
+
+  font-size:15px;
+
+  font-weight:600;
+
+  letter-spacing:.5px;
+
+  cursor:pointer;
+
+  border:
+  1px solid rgba(255,255,255,.08);
+
+  backdrop-filter:blur(12px);
+
+  box-shadow:
+  0 8px 20px rgba(0,0,0,.22);
+
+}
+
+
+
+.swap-btn{
+
+  margin-top:6px;
+
+  padding:10px;
+
+  font-size:13px;
+
+}
+
+
+
+/* =========================
+   LAYOUT
+========================= */
+
+.row{
+
+  display:flex;
+
+  gap:8px;
+
+}
+
+
+
+.half{
+
+  flex:1;
+
+}
+
+
+
+.top-space{
+
+  margin-top:6px;
+
+}
+
+
+
+/* =========================
+   CLEAN SEARCHABLE DROPDOWN
+========================= */
+
+.choices{
+
+  width:100%;
+
+  margin-bottom:0;
+
+}
+
+
+
+.choices__inner{
+
+  background:
+  rgba(255,255,255,.03)!important;
+
+  border:
+  1px solid rgba(255,255,255,.06)!important;
+
+  border-radius:16px!important;
+
+  min-height:44px;
+
+  padding:2px 10px!important;
+
+  display:flex;
+
+  align-items:center;
+
+  color:white!important;
+
+  font-size:14px;
+
+  box-shadow:none!important;
+
+  width:100%!important;
+
+  box-sizing:border-box!important;
+
+}
+
+
+
+.choices__list--single{
+
+  padding:2px 22px 2px 2px!important;
+
+  color:white!important;
+
+}
+
+
+
+.choices__placeholder{
+
+  color:#94a3b8!important;
+
+  opacity:1;
+
+}
+
+
+
+.choices__input{
+
+  background:transparent!important;
+
+  color:white!important;
+
+}
+
+
+
+.choices__list--dropdown{
+
+  background:#0b1220!important;
+
+  border-radius:16px;
+
+  border:
+  1px solid rgba(255,255,255,.06)!important;
+
+  overflow:hidden!important;
+
+  margin-top:4px;
+
+}
+
+
+
+.choices__list--dropdown .choices__list{
+
+  max-height:180px!important;
+
+  overflow-y:auto!important;
+
+  overflow-x:hidden!important;
+
+}
+
+
+
+.choices__item--choice{
+
+  color:white!important;
+
+  background:#0b1220!important;
+
+  padding:10px!important;
+
+  font-size:13px;
+
+}
+
+
+
+.choices__item--selectable.is-highlighted{
+
+  background:
+  rgba(255,255,255,.06)!important;
+
+}
+
+
+
+.choices[data-type*=select-one]::after{
+
+  border-color:#94a3b8 transparent transparent;
+
+  top:18px;
+
+  right:14px;
+
+}
+
+
+
+/* =========================
+   RESULT CARD
+========================= */
+
+.result-glass{
+
+  text-align:center;
+
+  background:
+  linear-gradient(
+    to bottom right,
+    rgba(255,255,255,.06),
+    rgba(255,255,255,.03)
+  );
+
+}
+
+
+
+.fare-label{
+
+  margin:0 0 4px 0;
+
+  color:#94a3b8;
+
+  font-size:10px;
+
+  letter-spacing:3px;
+
+}
+
+
+
+#result{
+
+  margin:0;
+
+  font-size:32px;
+
+  font-weight:700;
+
+  color:#a3e635;
+
+  text-align:center;
+
+  line-height:1;
+
+}
+
+
+
+.cheapest-tag{
+
+  margin-top:10px;
+
+  color:#22c55e;
+
+  font-size:12px;
+
+  font-weight:600;
+
+}
+
+
+
+.updated-date{
+
+  margin-top:10px;
+
+  text-align:center;
+
+  font-size:10px;
+
+  color:#64748b;
+
+  line-height:1.2;
+
+}
+
+/* =========================
+   PASSENGER INFORMATION
+========================= */
+
+.sponsor-card{
+
+  text-align:center;
+
+}
+
+
+
+.sponsor-title{
+
+  margin:0;
+
+  font-size:10px;
+
+  color:#64748b;
+
+  text-transform:uppercase;
+
+  letter-spacing:2px;
+
+}
+
+
+
+.sponsor-row-text{
+
+  margin-top:8px;
+
+}
+
+
+
+.sponsor-name{
+
+  margin:0;
+
+  font-size:14px;
+
+  font-weight:600;
+
+  color:#e2e8f0;
+
+  line-height:1.4;
+
+}
+
+
+/* =========================
+   COMPLAINT
+========================= */
+
+.complaint{
+
+  margin:0;
+
+  text-align:center;
+
+  font-size:11px;
+
+  color:#fbbf24;
+
+  line-height:1.4;
+
+}
+
+
+
+.helpline-link{
+
+  color:#f87171;
+
+  text-decoration:none;
+
+  font-weight:600;
+
+}
+
+
+
+/* =========================
+   FOOTER
+========================= */
+
+.footer-brand{
+
+  margin-top:12px;
+
+  text-align:center;
+
+  font-size:9px;
+
+  color:#64748b;
+
+  line-height:1.4;
+
+}
+
+
+
+/* =========================
+   SPLASH SCREEN
+========================= */
+
+#splash-screen{
+
+  position:fixed;
+
+  top:0;
+
+  left:0;
+
+  width:100%;
+
+  height:100vh;
+
+  background:#020817;
+
+  display:flex;
+
+  justify-content:center;
+
+  align-items:center;
+
+  z-index:99999;
+
+  overflow:hidden;
+
+  animation:splashFadeIn .8s ease;
+
+}
+
+
+
+.splash-image{
+
+  width:100%;
+
+  height:100vh;
+
+  object-fit:cover;
+
+  animation:logoPulse 2.5s ease-in-out infinite;
+
+}
+
+
+
+.travel-dot{
+
+  position:absolute;
+
+  bottom:15%;
+
+  left:10%;
+
+  width:18px;
+
+  height:18px;
+
+  border-radius:50%;
+
+  background:white;
+
+  box-shadow:
+  0 0 10px white,
+  0 0 20px white;
+
+  animation:moveDot 2.4s linear infinite;
+
+}
+
+
+
+/* =========================
+   ANIMATIONS
+========================= */
+
+.result-animate{
+
+  animation:fareReveal .45s ease;
+
+}
+
+
+
+@keyframes fareReveal{
+
+  0%{
+
+    opacity:0;
+
+    transform:
+    translateY(12px)
+    scale(.98);
+
+  }
+
+  100%{
+
+    opacity:1;
+
+    transform:
+    translateY(0)
+    scale(1);
+
+  }
+
+}
+
+
+
+@keyframes splashFadeIn{
+
+  from{
+
+    opacity:0;
+
+  }
+
+  to{
+
+    opacity:1;
+
+  }
+
+}
+
+
+
+@keyframes logoPulse{
+
+  0%{
+
+    filter:brightness(1);
+
+  }
+
+  50%{
+
+    filter:brightness(1.08);
+
+  }
+
+  100%{
+
+    filter:brightness(1);
+
+  }
+
+}
+
+
+
+@keyframes moveDot{
+
+  0%{
+
+    left:12%;
+
+    bottom:15%;
+
+    background:#ef4444;
+
+    box-shadow:
+    0 0 12px #ef4444,
+    0 0 24px #ef4444;
+
+  }
+
+  40%{
+
+    left:40%;
+
+    bottom:18%;
+
+    background:#facc15;
+
+    box-shadow:
+    0 0 12px #facc15,
+    0 0 24px #facc15;
+
+  }
+
+  100%{
+
+    left:78%;
+
+    bottom:13%;
+
+    background:#22c55e;
+
+    box-shadow:
+    0 0 12px #22c55e,
+    0 0 24px #22c55e;
+
+  }
+
+}
+.info-btn{
+
+  display:inline-block;
+
+  margin-top:10px;
+
+  padding:8px 14px;
+
+  border-radius:14px;
+
+  background:
+  rgba(255,255,255,.05);
+
+  border:
+  1px solid rgba(255,255,255,.08);
+
+  color:#cbd5e1;
+
+  font-size:12px;
+
+  font-weight:600;
+
+  text-decoration:none;
+
+}
