@@ -789,3 +789,20 @@ button{
   font-size:16px!important;
 
 }
+.choices__input--cloned{
+
+  font-size:16px!important;
+
+  background:
+  rgba(255,255,255,.06)!important;
+
+  border:
+  1px solid rgba(255,255,255,.08)!important;
+
+  border-radius:12px!important;
+
+  padding:10px!important;
+
+  color:white!important;
+
+}
