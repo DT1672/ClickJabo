@@ -806,3 +806,14 @@ button{
   color:white!important;
 
 }
+button:active{
+
+  transform:scale(.98);
+
+  background:
+  rgba(255,255,255,.10);
+
+  box-shadow:
+  0 4px 10px rgba(0,0,0,.18);
+
+}
