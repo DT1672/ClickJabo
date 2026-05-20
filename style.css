@@ -40,16 +40,17 @@ body{
 
 }
 
-
 .logo{
 
-  width:78px;
+  width:58px;
 
-  height:78px;
+  height:58px;
 
   object-fit:contain;
 
   margin:0;
+
+  flex-shrink:0;
 
 }
 
