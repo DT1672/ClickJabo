@@ -39,44 +39,11 @@ body{
   box-sizing:border-box;
 
 }
-
-
-
-
-/* HEADER */
-
 .header{
 
-  display:flex;
+  text-align:center;
 
-  align-items:center;
-
-  gap:14px;
-
-  margin-bottom:20px;
-
-}
-.logo{
-
-  width:58px;
-
-  height:58px;
-
-  object-fit:contain;
-
-  flex-shrink:0;
-
-  margin:0;
-
-}
-
-.header-text{
-
-  display:flex;
-
-  flex-direction:column;
-
-  justify-content:center;
+  margin-bottom:22px;
 
 }
 
@@ -86,15 +53,13 @@ body{
 
   margin:0;
 
-  font-size:40px;
+  font-size:44px;
 
   font-weight:700;
 
   color:white;
 
-  line-height:1;
-
-  text-align:left;
+  letter-spacing:.3px;
 
 }
 
@@ -102,19 +67,15 @@ body{
 
 .header p{
 
-  margin-top:6px;
+  margin-top:8px;
 
   color:#94a3b8;
 
   font-size:11px;
 
-  letter-spacing:2px;
-
-  text-align:left;
+  letter-spacing:3px;
 
 }
-
-
 
 .glass-card{
 
