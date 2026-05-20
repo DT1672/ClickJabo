@@ -773,17 +773,19 @@ button{
 
   display:inline-block;
 
-  margin-top:6px;
+  padding:10px 0 12px 0;
 
   font-size:11px;
 
-  color:#cbd5e1;
+  color:#94a3b8;
 
   text-decoration:none;
 
   font-weight:500;
 
 }
+
+
 .choices__input--cloned{
 
   font-size:16px!important;
@@ -815,5 +817,26 @@ button:active{
 
   box-shadow:
   0 4px 10px rgba(0,0,0,.18);
+
+}
+.install-card{
+
+  padding:0;
+
+  overflow:hidden;
+
+  text-align:center;
+
+}
+
+
+
+.install-banner{
+
+  width:100%;
+
+  display:block;
+
+  border-radius:22px 22px 0 0;
 
 }
