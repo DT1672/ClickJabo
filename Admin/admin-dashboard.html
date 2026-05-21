@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+  <meta name="viewport"
+  content="width=device-width, initial-scale=1.0">
+
+  <title>
+    Admin Dashboard
+  </title>
+
+  <link rel="stylesheet"
+  href="admin.css">
+
+ <script
+type="module"
+src="auth-check.js">
+
+</script>
+ 
+</head>
+
+<body>
+
+<!-- TOP BAR -->
+
+<div class="top-bar">
+
+  <button
+  class="menu-btn"
+  onclick="toggleMenu()">
+
+    ☰
+
+  </button>
+
+  <span class="top-title">
+
+    ClickJabo Admin
+
+  </span>
+
+</div>
+
+<!-- SIDE MENU -->
+
+<div
+id="sideMenu"
+class="side-menu">
+
+  <a href="admin-dashboard.html">
+
+    Dashboard
+
+  </a>
+
+  <a href="route-list.html">
+
+    Route List
+
+  </a>
+
+  <a href="fare-entry.html">
+
+    Fare Entry
+
+  </a>
+
+  <a href="settings.html">
+
+    Settings
+
+  </a>
+
+  <a href="admin-login.html">
+
+    Logout
+
+  </a>
+
+</div>
+
+  <div class="dashboard-container">
+
+    <div class="dashboard-header">
+
+      <h1>
+        ClickJabo
+      </h1>
+
+      <p>
+        DIMAPUR ADMIN PANEL
+      </p>
+
+      <div class="district-badge">
+
+        DISTRICT:
+        DIMAPUR
+
+      </div>
+
+    </div>
+
+    <div class="dashboard-card">
+
+      <div class="dashboard-item">
+
+        <h2>
+          Active Admin
+        </h2>
+
+        <span>
+          Online
+        </span>
+
+      </div>
+
+      <div class="dashboard-item">
+
+        <h2>
+          District Routes
+        </h2>
+
+        <span>
+          Dimapur
+        </span>
+
+      </div>
+
+      <div class="dashboard-item">
+
+        <h2>
+          Total Routes
+        </h2>
+
+        <span>
+          28
+        </span>
+
+      </div>
+
+      <div class="dashboard-item">
+
+        <h2>
+          Last Updated
+        </h2>
+
+        <span>
+          18 May 2026
+        </span>
+
+      </div>
+
+    </div>
+
+    <div class="dashboard-actions">
+
+      <a
+      href="fare-entry.html"
+      class="action-btn">
+
+        Update Fare
+
+      </a>
+
+      <a
+      href="route-list.html"
+      class="action-btn secondary">
+
+        Route List
+
+      </a>
+
+      <a
+      href="settings.html"
+      class="action-btn secondary">
+
+        Settings
+
+      </a>
+
+      <a
+      href="admin-login.html"
+      class="action-btn logout">
+
+        Logout
+
+      </a>
+
+    </div>
+
+  </div>
+
+<script>
+
+function toggleMenu(){
+
+  document.getElementById(
+    "sideMenu"
+  ).classList.toggle(
+    "active"
+  );
+
+}
+
+</script>
+
+</body>
+</html>

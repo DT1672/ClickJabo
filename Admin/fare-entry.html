@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+  <meta name="viewport"
+  content="width=device-width, initial-scale=1.0">
+
+  <title>
+    Fare Entry
+  </title>
+
+  <link rel="stylesheet"
+  href="admin.css">
+
+  <script
+  type="module"
+  src="auth-check.js">
+
+  </script>
+
+</head>
+
+<body>
+
+<!-- TOP BAR -->
+
+<div class="top-bar">
+
+  <button
+  class="menu-btn"
+  onclick="toggleMenu()">
+
+    ☰
+
+  </button>
+
+  <span class="top-title">
+
+    ClickJabo Admin
+
+  </span>
+
+</div>
+
+<!-- SIDE MENU -->
+
+<div
+id="sideMenu"
+class="side-menu">
+
+  <a href="admin-dashboard.html">
+
+    Dashboard
+
+  </a>
+
+  <a href="route-list.html">
+
+    Route List
+
+  </a>
+
+  <a href="fare-entry.html">
+
+    Fare Entry
+
+  </a>
+
+  <a href="settings.html">
+
+    Settings
+
+  </a>
+
+  <a href="admin-login.html">
+
+    Logout
+
+  </a>
+
+</div>
+
+<div class="dashboard-container">
+
+  <div class="dashboard-header">
+
+    <h1>
+      Fare Entry
+    </h1>
+
+    <p>
+      DIMAPUR ROUTE MANAGEMENT
+    </p>
+
+  </div>
+
+  <div class="dashboard-card">
+
+    <!-- SEARCH -->
+
+    <input
+    type="text"
+    id="routeSearch"
+    placeholder="Search route...">
+
+    <!-- ADD ROUTE -->
+
+    <button
+    class="add-route-btn"
+    onclick="clearForm()">
+
+      + Add New Route
+
+    </button>
+
+    <!-- DISTRICT -->
+
+    <label>
+      District
+    </label>
+
+    <select id="district">
+
+      <option value="Dimapur">
+        Dimapur
+      </option>
+
+      <option value="Kohima">
+        Kohima
+      </option>
+
+      <option value="Mokokchung">
+        Mokokchung
+      </option>
+
+    </select>
+
+    <!-- FORM -->
+
+    <label>
+      From
+    </label>
+
+    <input
+    type="text"
+    id="fromLocation"
+    placeholder="Enter pickup location">
+
+    <label>
+      To
+    </label>
+
+    <input
+    type="text"
+    id="toLocation"
+    placeholder="Enter destination">
+
+    <label>
+      Hire Day Fare
+    </label>
+
+    <input
+    type="number"
+    id="hireDay"
+    placeholder="₹ Enter hire day fare">
+
+    <label>
+      Hire Night Fare
+    </label>
+
+    <input
+    type="number"
+    id="hireNight"
+    placeholder="₹ Enter hire night fare">
+
+    <label>
+      Shared Day Fare
+    </label>
+
+    <input
+    type="number"
+    id="sharedDay"
+    placeholder="₹ Enter shared day fare">
+
+    <label>
+      Shared Night Fare
+    </label>
+
+    <input
+    type="number"
+    id="sharedNight"
+    placeholder="₹ Enter shared night fare">
+
+    <label>
+      Last Updated
+    </label>
+
+    <input
+    type="date">
+
+    <!-- SAVE -->
+
+    <button
+    onclick="saveFare()">
+
+      Save Fare
+
+    </button>
+
+    <!-- STATUS -->
+
+    <div
+    id="editStatus"
+    class="edit-status">
+
+      Creating New Route
+
+    </div>
+
+  </div>
+
+</div>
+
+<script type="module">
+
+import {
+  db
+}
+from "../firebase-config.js";
+
+import {
+  collection,
+  addDoc,
+  updateDoc,
+  doc
+}
+from "https://www.gstatic.com/firebasejs/12.3.0/firebase-firestore.js";
+
+let editingDocId = null;
+
+function toggleMenu(){
+
+  document.getElementById(
+    "sideMenu"
+  ).classList.toggle(
+    "active"
+  );
+
+}
+
+window.toggleMenu =
+toggleMenu;
+
+window.onload = function(){
+
+  const routeData =
+  JSON.parse(
+    localStorage.getItem(
+      "editRoute"
+    )
+  );
+
+  if(routeData){
+
+    editingDocId =
+    routeData.docId;
+
+    document.getElementById(
+      "district"
+    ).value =
+    routeData.district;
+
+    document.getElementById(
+      "fromLocation"
+    ).value =
+    routeData.from;
+
+    document.getElementById(
+      "toLocation"
+    ).value =
+    routeData.to;
+
+    document.getElementById(
+      "hireDay"
+    ).value =
+    routeData.hireDay;
+
+    document.getElementById(
+      "hireNight"
+    ).value =
+    routeData.hireNight;
+
+    document.getElementById(
+      "sharedDay"
+    ).value =
+    routeData.sharedDay;
+
+    document.getElementById(
+      "sharedNight"
+    ).value =
+    routeData.sharedNight;
+
+    document.getElementById(
+      "editStatus"
+    ).innerHTML =
+    "Editing Existing Route";
+
+  }
+
+}
+
+async function saveFare(){
+
+  const district =
+  document.getElementById(
+    "district"
+  ).value;
+
+  const from =
+  document.getElementById(
+    "fromLocation"
+  ).value;
+
+  const to =
+  document.getElementById(
+    "toLocation"
+  ).value;
+
+  const hireDay =
+  document.getElementById(
+    "hireDay"
+  ).value;
+
+  const hireNight =
+  document.getElementById(
+    "hireNight"
+  ).value;
+
+  const sharedDay =
+  document.getElementById(
+    "sharedDay"
+  ).value;
+
+  const sharedNight =
+  document.getElementById(
+    "sharedNight"
+  ).value;
+
+  try{
+
+    if(editingDocId){
+
+      await updateDoc(
+
+        doc(
+          db,
+          "routes",
+          editingDocId
+        ),
+
+        {
+
+          district,
+          from,
+          to,
+          hireDay,
+          hireNight,
+          sharedDay,
+          sharedNight
+
+        }
+
+      );
+
+      alert(
+        "Route updated successfully."
+      );
+
+    }
+
+    else{
+
+      await addDoc(
+
+        collection(
+          db,
+          "routes"
+        ),
+
+        {
+
+          district,
+          from,
+          to,
+          hireDay,
+          hireNight,
+          sharedDay,
+          sharedNight
+
+        }
+
+      );
+
+      alert(
+        "Route added successfully."
+      );
+
+    }
+
+  }
+
+  catch(error){
+
+    console.log(
+      error
+    );
+
+  }
+
+}
+
+window.saveFare =
+saveFare;
+
+function clearForm(){
+
+  editingDocId = null;
+
+  document.getElementById(
+    "district"
+  ).value =
+  "Dimapur";
+
+  document.getElementById(
+    "fromLocation"
+  ).value = "";
+
+  document.getElementById(
+    "toLocation"
+  ).value = "";
+
+  document.getElementById(
+    "hireDay"
+  ).value = "";
+
+  document.getElementById(
+    "hireNight"
+  ).value = "";
+
+  document.getElementById(
+    "sharedDay"
+  ).value = "";
+
+  document.getElementById(
+    "sharedNight"
+  ).value = "";
+
+  document.getElementById(
+    "editStatus"
+  ).innerHTML =
+  "Creating New Route";
+
+  localStorage.removeItem(
+    "editRoute"
+  );
+
+}
+
+window.clearForm =
+clearForm;
+
+function deleteRoute(){
+
+  alert(
+    "Route deleted successfully."
+  );
+
+}
+
+window.deleteRoute =
+deleteRoute;
+
+</script>
+
+</body>
+
+</html>

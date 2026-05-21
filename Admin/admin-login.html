@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+  <meta name="viewport"
+  content="width=device-width, initial-scale=1.0">
+
+  <title>
+    ClickJabo Admin
+  </title>
+
+  <link rel="stylesheet"
+  href="admin.css">
+
+</head>
+
+<body>
+
+<div class="login-container">
+
+  <div class="login-card">
+
+    <h1>
+      ClickJabo
+    </h1>
+
+    <p class="sub-text">
+      ADMIN ACCESS
+    </p>
+
+    <label>
+      Email
+    </label>
+
+    <input
+    type="email"
+    id="adminEmail"
+    placeholder="Enter admin email">
+
+    <label>
+      Password
+    </label>
+
+    <input
+    type="password"
+    id="adminPassword"
+    placeholder="Enter password">
+
+    <button
+    onclick="loginAdmin()">
+
+      Login
+
+    </button>
+
+  </div>
+
+</div>
+
+<script type="module">
+
+import {
+  auth
+}
+from "../firebase-config.js";
+
+import {
+  signInWithEmailAndPassword
+}
+from "https://www.gstatic.com/firebasejs/12.3.0/firebase-auth.js";
+
+async function loginAdmin(){
+
+  const email =
+  document.getElementById(
+    "adminEmail"
+  ).value;
+
+  const password =
+  document.getElementById(
+    "adminPassword"
+  ).value;
+
+  try{
+
+    await signInWithEmailAndPassword(
+
+      auth,
+      email,
+      password
+
+    );
+
+    alert(
+      "Login successful."
+    );
+
+    window.location.href =
+    "admin-dashboard.html";
+
+  }
+
+  catch(error){
+
+    alert(
+      "Invalid email or password."
+    );
+
+    console.log(
+      error
+    );
+
+  }
+
+}
+
+window.loginAdmin =
+loginAdmin;
+
+</script>
+
+</body>
+
+</html>

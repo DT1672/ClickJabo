@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+  <meta name="viewport"
+  content="width=device-width, initial-scale=1.0">
+
+  <title>
+    Admin Settings
+  </title>
+
+  <link rel="stylesheet"
+  href="admin.css">
+
+  <script
+  type="module"
+  src="auth-check.js">
+
+  </script>
+
+</head>
+
+<body>
+
+<!-- TOP BAR -->
+
+<div class="top-bar">
+
+  <button
+  class="menu-btn"
+  onclick="toggleMenu()">
+
+    ☰
+
+  </button>
+
+  <span class="top-title">
+
+    ClickJabo Admin
+
+  </span>
+
+</div>
+
+<!-- SIDE MENU -->
+
+<div
+id="sideMenu"
+class="side-menu">
+
+  <a href="admin-dashboard.html">
+
+    Dashboard
+
+  </a>
+
+  <a href="route-list.html">
+
+    Route List
+
+  </a>
+
+  <a href="fare-entry.html">
+
+    Fare Entry
+
+  </a>
+
+  <a href="settings.html">
+
+    Settings
+
+  </a>
+
+  <a href="#"
+  onclick="logoutAdmin()">
+
+    Logout
+
+  </a>
+
+</div>
+
+<div class="dashboard-container">
+
+  <div class="dashboard-header">
+
+    <h1>
+      Settings
+    </h1>
+
+    <p>
+      ADMIN ACCOUNT SETTINGS
+    </p>
+
+  </div>
+
+  <div class="dashboard-card">
+
+    <label>
+      Admin Username
+    </label>
+
+    <input
+    type="text"
+    value="dimapuradmin">
+
+    <label>
+      Current Password
+    </label>
+
+    <input
+    type="password"
+    placeholder="Enter current password">
+
+    <label>
+      New Password
+    </label>
+
+    <input
+    type="password"
+    placeholder="Enter new password">
+
+    <label>
+      Confirm New Password
+    </label>
+
+    <input
+    type="password"
+    placeholder="Confirm new password">
+
+    <button
+    onclick="saveSettings()">
+
+      Save Settings
+
+    </button>
+
+    <button
+    class="logout-btn"
+    onclick="logoutAdmin()">
+
+      Logout
+
+    </button>
+
+  </div>
+
+</div>
+
+<script type="module">
+
+import {
+  auth
+}
+from "../firebase-config.js";
+
+import {
+  signOut
+}
+from "https://www.gstatic.com/firebasejs/12.3.0/firebase-auth.js";
+
+function toggleMenu(){
+
+  document.getElementById(
+    "sideMenu"
+  ).classList.toggle(
+    "active"
+  );
+
+}
+
+window.toggleMenu =
+toggleMenu;
+
+function saveSettings(){
+
+  alert(
+    "Settings updated successfully."
+  );
+
+}
+
+window.saveSettings =
+saveSettings;
+
+async function logoutAdmin(){
+
+  try{
+
+    await signOut(
+      auth
+    );
+
+    window.location.href =
+    "admin-login.html";
+
+  }
+
+  catch(error){
+
+    console.log(
+      error
+    );
+
+  }
+
+}
+
+window.logoutAdmin =
+logoutAdmin;
+
+</script>
+
+</body>
+
+</html>

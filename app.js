@@ -1,3 +1,14 @@
+import {
+  db
+}
+from "./firebase-config.js";
+
+import {
+  collection,
+  getDocs
+}
+from "https://www.gstatic.com/firebasejs/12.3.0/firebase-firestore.js";
+
 let routes = [];
 
 let fromChoices;
@@ -5,53 +16,76 @@ let fromChoices;
 let toChoices;
 
 const districtSelect =
-document.getElementById("district");
+document.getElementById(
+  "district"
+);
 
 const fromSelect =
-document.getElementById("from");
+document.getElementById(
+  "from"
+);
 
 const toSelect =
-document.getElementById("to");
-
+document.getElementById(
+  "to"
+);
 
 const savedDistrict =
-localStorage.getItem("selectedDistrict");
+localStorage.getItem(
+  "selectedDistrict"
+);
 
 if(savedDistrict){
 
-  districtSelect.value = savedDistrict;
+  districtSelect.value =
+  savedDistrict;
 
 }
 
+districtSelect.addEventListener(
+  "change",
+  () => {
 
-districtSelect.addEventListener("change", () => {
+    localStorage.setItem(
 
-  localStorage.setItem(
+      "selectedDistrict",
 
-    "selectedDistrict",
+      districtSelect.value
 
-    districtSelect.value
+    );
+
+    loadLocations();
+
+  }
+);
+
+async function loadRoutesFromFirestore(){
+
+  const querySnapshot =
+  await getDocs(
+
+    collection(
+      db,
+      "routes"
+    )
 
   );
 
-  loadLocations();
+  routes = [];
 
-});
+  querySnapshot.forEach(doc => {
 
+    routes.push(
+      doc.data()
+    );
 
-fetch("routes.json")
-
-.then(response => response.json())
-
-.then(data => {
-
-  routes = data;
+  });
 
   loadLocations();
 
-});
+}
 
-
+loadRoutesFromFirestore();
 
 function loadLocations(){
 
@@ -63,27 +97,39 @@ function loadLocations(){
 
   '<option value="">Select Destination</option>';
 
-
   let locations = [];
 
   let selectedDistrict =
-
   districtSelect.value;
-
 
   routes.forEach(route => {
 
-    if(route.district === selectedDistrict){
+    if(
+      route.district ===
+      selectedDistrict
+    ){
 
-      if(!locations.includes(route.from)){
+      if(
+        !locations.includes(
+          route.from
+        )
+      ){
 
-        locations.push(route.from);
+        locations.push(
+          route.from
+        );
 
       }
 
-      if(!locations.includes(route.to)){
+      if(
+        !locations.includes(
+          route.to
+        )
+      ){
 
-        locations.push(route.to);
+        locations.push(
+          route.to
+        );
 
       }
 
@@ -91,51 +137,63 @@ function loadLocations(){
 
   });
 
-
   locations.forEach(location => {
 
     let option1 =
-    document.createElement("option");
+    document.createElement(
+      "option"
+    );
 
-    option1.value = location;
+    option1.value =
+    location;
 
-    option1.text = location;
+    option1.text =
+    location;
 
-    fromSelect.appendChild(option1);
-
+    fromSelect.appendChild(
+      option1
+    );
 
     let option2 =
-    document.createElement("option");
+    document.createElement(
+      "option"
+    );
 
-    option2.value = location;
+    option2.value =
+    location;
 
-    option2.text = location;
+    option2.text =
+    location;
 
-    toSelect.appendChild(option2);
+    toSelect.appendChild(
+      option2
+    );
 
   });
 
-
   const lastFrom =
-  localStorage.getItem("lastFrom");
+  localStorage.getItem(
+    "lastFrom"
+  );
 
   const lastTo =
-  localStorage.getItem("lastTo");
-
+  localStorage.getItem(
+    "lastTo"
+  );
 
   if(lastFrom){
 
-    fromSelect.value = lastFrom;
+    fromSelect.value =
+    lastFrom;
 
   }
-
 
   if(lastTo){
 
-    toSelect.value = lastTo;
+    toSelect.value =
+    lastTo;
 
   }
-
 
   if(fromChoices){
 
@@ -143,15 +201,14 @@ function loadLocations(){
 
   }
 
-
   if(toChoices){
 
     toChoices.destroy();
 
   }
 
-
-  fromChoices = new Choices("#from", {
+  fromChoices =
+  new Choices("#from", {
 
     searchEnabled:true,
 
@@ -161,8 +218,8 @@ function loadLocations(){
 
   });
 
-
-  toChoices = new Choices("#to", {
+  toChoices =
+  new Choices("#to", {
 
     searchEnabled:true,
 
@@ -174,53 +231,64 @@ function loadLocations(){
 
 }
 
-
-
 function checkFare(){
 
   let from =
-  fromChoices.getValue(true);
+  fromChoices.getValue(
+    true
+  );
 
   let to =
-  toChoices.getValue(true);
+  toChoices.getValue(
+    true
+  );
 
   let rideType =
-  document.getElementById("rideType").value;
+  document.getElementById(
+    "rideType"
+  ).value;
 
   let fareMode =
-  document.getElementById("fareMode").value;
+  document.getElementById(
+    "fareMode"
+  ).value;
 
   let passengers =
   parseInt(
 
-  document.getElementById("passengers").value
+    document.getElementById(
+      "passengers"
+    ).value
 
   );
-
 
   let result =
   "No fare data available";
 
+  if(
+    from === "" ||
+    to === ""
+  ){
 
-  if(from === "" || to === ""){
-
-    document.getElementById("result").innerText =
+    document.getElementById(
+      "result"
+    ).innerText =
     "Select Route";
 
     return;
 
   }
 
-
   if(from === to){
 
-    document.getElementById("result").innerText =
+    document.getElementById(
+      "result"
+    ).innerText =
     "Same Location";
 
     return;
 
   }
-
 
   localStorage.setItem(
     "lastFrom",
@@ -232,12 +300,12 @@ function checkFare(){
     to
   );
 
-
   routes.forEach(route => {
 
     if(
 
-      route.district === districtSelect.value &&
+      route.district ===
+      districtSelect.value &&
 
       route.from === from &&
 
@@ -245,16 +313,25 @@ function checkFare(){
 
     ){
 
-      if(rideType === "shared"){
+      if(
+        rideType ===
+        "shared"
+      ){
 
         let totalSharedFare;
 
-
-        if(fareMode === "day"){
+        if(
+          fareMode ===
+          "day"
+        ){
 
           totalSharedFare =
 
-          route.sharedFare * passengers;
+          Number(
+            route.sharedDay
+          )
+
+          * passengers;
 
         }
 
@@ -262,12 +339,13 @@ function checkFare(){
 
           totalSharedFare =
 
-          (route.sharedFare + 20)
+          Number(
+            route.sharedNight
+          )
 
           * passengers;
 
         }
-
 
         result =
 
@@ -279,13 +357,16 @@ function checkFare(){
 
       else{
 
-        if(fareMode === "day"){
+        if(
+          fareMode ===
+          "day"
+        ){
 
           result =
 
           "₹" +
 
-          route.hireDayFare;
+          route.hireDay;
 
         }
 
@@ -295,7 +376,7 @@ function checkFare(){
 
           "₹" +
 
-          route.hireNightFare;
+          route.hireNight;
 
         }
 
@@ -305,12 +386,13 @@ function checkFare(){
 
   });
 
-
-  document.getElementById("result").innerText =
+  document.getElementById(
+    "result"
+  ).innerText =
   result;
 
-
-  const card = document.querySelector(
+  const card =
+  document.querySelector(
 
     ".result-glass"
 
@@ -332,46 +414,62 @@ function checkFare(){
 
 }
 
-
+window.checkFare =
+checkFare;
 
 function swapLocations(){
 
   let fromValue =
-  fromChoices.getValue(true);
+  fromChoices.getValue(
+    true
+  );
 
   let toValue =
-  toChoices.getValue(true);
+  toChoices.getValue(
+    true
+  );
 
-  fromChoices.setChoiceByValue(toValue);
+  fromChoices.setChoiceByValue(
+    toValue
+  );
 
-  toChoices.setChoiceByValue(fromValue);
+  toChoices.setChoiceByValue(
+    fromValue
+  );
 
 }
 
+window.swapLocations =
+swapLocations;
 
-
-window.addEventListener("load", () => {
-
-  setTimeout(() => {
-
-    const splash = document.getElementById(
-
-      "splash-screen"
-
-    );
-
-    splash.style.transition =
-
-    "opacity .6s ease";
-
-    splash.style.opacity = "0";
+window.addEventListener(
+  "load",
+  () => {
 
     setTimeout(() => {
 
-      splash.style.display = "none";
+      const splash =
+      document.getElementById(
 
-    }, 600);
+        "splash-screen"
 
-  }, 2800);
+      );
 
-});
+      splash.style.transition =
+
+      "opacity .6s ease";
+
+      splash.style.opacity =
+      "0";
+
+      setTimeout(() => {
+
+        splash.style.display =
+        "none";
+
+      }, 600);
+
+    }, 2800);
+
+  }
+);

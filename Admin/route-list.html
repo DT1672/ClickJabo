@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+  <meta name="viewport"
+  content="width=device-width, initial-scale=1.0">
+
+  <title>
+    Route List
+  </title>
+
+  <link rel="stylesheet"
+  href="admin.css">
+
+  <script
+type="module"
+src="auth-check.js">
+
+</script>
+
+</head>
+
+<body>
+
+<!-- TOP BAR -->
+
+<div class="top-bar">
+
+  <button
+  class="menu-btn"
+  onclick="toggleMenu()">
+
+    ☰
+
+  </button>
+
+  <span class="top-title">
+
+    ClickJabo Admin
+
+  </span>
+
+</div>
+
+<!-- SIDE MENU -->
+
+<div
+id="sideMenu"
+class="side-menu">
+
+  <a href="admin-dashboard.html">
+
+    Dashboard
+
+  </a>
+
+  <a href="route-list.html">
+
+    Route List
+
+  </a>
+
+  <a href="fare-entry.html">
+
+    Fare Entry
+
+  </a>
+
+  <a href="settings.html">
+
+    Settings
+
+  </a>
+
+  <a href="admin-login.html">
+
+    Logout
+
+  </a>
+
+</div>
+
+<div class="dashboard-container">
+
+  <div class="dashboard-header">
+
+    <h1>
+      Route List
+    </h1>
+
+    <p>
+      SEARCH & MANAGE ROUTES
+    </p>
+
+  </div>
+
+  <!-- SEARCH -->
+
+  <input
+  type="text"
+  id="routeSearch"
+  placeholder="Search route...">
+
+  <!-- ROUTE LIST -->
+
+  <div
+  id="routeContainer"
+  class="route-list">
+
+  </div>
+
+</div>
+
+<script type="module">
+
+import {
+  db
+}
+from "../firebase-config.js";
+
+import {
+  collection,
+  getDocs,
+  deleteDoc,
+  doc
+}
+from "https://www.gstatic.com/firebasejs/12.3.0/firebase-firestore.js";
+
+function toggleMenu(){
+
+  document.getElementById(
+    "sideMenu"
+  ).classList.toggle(
+    "active"
+  );
+
+}
+
+window.toggleMenu =
+toggleMenu;
+
+async function loadRoutes(){
+
+  const querySnapshot =
+  await getDocs(
+
+    collection(
+      db,
+      "routes"
+    )
+
+  );
+
+  const container =
+  document.getElementById(
+    "routeContainer"
+  );
+
+  container.innerHTML = "";
+
+  querySnapshot.forEach(docSnap => {
+
+    const route =
+    docSnap.data();
+
+    const docId =
+    docSnap.id;
+
+    container.innerHTML += `
+
+    <div class="route-item">
+
+      <div>
+
+        <strong>
+          ${route.from}
+          →
+          ${route.to}
+        </strong>
+
+        <p>
+          Hire:
+          ₹${route.hireDay}
+          /
+          ₹${route.hireNight}
+        </p>
+
+        <p>
+          Shared:
+          ₹${route.sharedDay}
+          /
+          ₹${route.sharedNight}
+        </p>
+
+      </div>
+
+      <div class="route-actions">
+
+        <button
+        class="edit-btn"
+        onclick="
+        openEditRoute(
+          '${docId}',
+          '${route.from}',
+          '${route.to}',
+          '${route.hireDay}',
+          '${route.hireNight}',
+          '${route.sharedDay}',
+          '${route.sharedNight}'
+        )
+        ">
+
+          Edit
+
+        </button>
+
+        <button
+        class="delete-btn"
+        onclick="
+        deleteRoute(
+          '${docId}'
+        )
+        ">
+
+          Delete
+
+        </button>
+
+      </div>
+
+    </div>
+
+    `;
+
+  });
+
+}
+
+function openEditRoute(
+  docId,
+  from,
+  to,
+  hireDay,
+  hireNight,
+  sharedDay,
+  sharedNight
+){
+
+  localStorage.setItem(
+    "editRoute",
+    JSON.stringify({
+
+      docId,
+      from,
+      to,
+      hireDay,
+      hireNight,
+      sharedDay,
+      sharedNight
+
+    })
+  );
+
+  window.location.href =
+  "fare-entry.html";
+
+}
+
+window.openEditRoute =
+openEditRoute;
+
+async function deleteRoute(docId){
+
+  const confirmDelete =
+  confirm(
+    "Delete this route?"
+  );
+
+  if(!confirmDelete){
+
+    return;
+
+  }
+
+  try{
+
+    await deleteDoc(
+
+      doc(
+        db,
+        "routes",
+        docId
+      )
+
+    );
+
+    alert(
+      "Route deleted successfully."
+    );
+
+    loadRoutes();
+
+  }
+
+  catch(error){
+
+    console.log(
+      error
+    );
+
+  }
+
+}
+
+window.deleteRoute =
+deleteRoute;
+
+document.getElementById(
+  "routeSearch"
+).addEventListener(
+  "input",
+
+  function(){
+
+    const searchText =
+    this.value.toLowerCase();
+
+    const routeItems =
+    document.querySelectorAll(
+      ".route-item"
+    );
+
+    routeItems.forEach(item => {
+
+      const routeText =
+      item.innerText.toLowerCase();
+
+      if(
+        routeText.includes(
+          searchText
+        )
+      ){
+
+        item.style.display =
+        "flex";
+
+      }
+
+      else{
+
+        item.style.display =
+        "none";
+
+      }
+
+    });
+
+  }
+);
+
+loadRoutes();
+
+</script>
+
+</body>
+
+</html>
