@@ -345,7 +345,41 @@ async function saveFare(){
   const sharedNight =
   document.getElementById(
     "sharedNight"
-  ).value;
+  ).value;  
+
+  if(
+
+    from.trim() === "" ||
+
+    to.trim() === "" ||
+
+    hireDay === "" ||
+
+    hireNight === "" ||
+
+    sharedDay === "" ||
+
+    sharedNight === ""
+
+  ){
+
+    alert(
+      "Please fill all fields."
+    );
+
+    return;
+
+  }
+
+  if(from === to){
+
+    alert(
+      "Pickup and destination cannot be same."
+    );
+
+    return;
+
+  }
 
   try{
 
@@ -377,6 +411,8 @@ async function saveFare(){
         "Route updated successfully."
       );
 
+      clearForm();
+
     }
 
     else{
@@ -406,6 +442,8 @@ async function saveFare(){
         "Route added successfully."
       );
 
+      clearForm();
+
     }
 
   }
@@ -419,10 +457,6 @@ async function saveFare(){
   }
 
 }
-
-window.saveFare =
-saveFare;
-
 function clearForm(){
 
   editingDocId = null;
