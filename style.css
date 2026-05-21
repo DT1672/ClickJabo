@@ -31,9 +31,13 @@ body{
 
   margin:auto;
 
-  padding:8px;
+  padding:8px 8px 8px 8px;
 
   box-sizing:border-box;
+
+  position:relative;
+
+  top:-4px;
 
 }
 
@@ -369,9 +373,9 @@ button:active{
     rgba(255,255,255,.03)
   );
 
-  padding-top:6px;
+  padding-top:2px;
 
-  padding-bottom:6px;
+  padding-bottom:2px;
 
 }
 
@@ -379,7 +383,7 @@ button:active{
 
 .fare-label{
 
-  margin:0 0 4px 0;
+  margin:0 0 1px 0;
 
   color:#94a3b8;
 
@@ -407,7 +411,7 @@ button:active{
 
 .cheapest-tag{
 
-  margin-top:6px;
+  margin-top:2px;
 
   color:#22c55e;
 
@@ -419,7 +423,7 @@ button:active{
 
 .updated-date{
 
-  margin-top:6px;
+  margin-top:2px;
 
   text-align:center;
 
@@ -443,7 +447,7 @@ button:active{
 
   border-radius:22px;
 
-  height:220px;
+  height:210px;
 
   margin-top:8px;
 
