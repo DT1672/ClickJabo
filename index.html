@@ -19,8 +19,6 @@
 
 <body>
 
-
-
 <div id="splash-screen">
 
   <img
@@ -31,11 +29,7 @@
 
 </div>
 
-
-
 <div class="container">
-
-
 
   <div class="header">
 
@@ -46,8 +40,6 @@
     </p>
 
   </div>
-
-
 
   <div class="glass-card route-card">
 
@@ -75,8 +67,6 @@
 
       </div>
 
-
-
       <div class="half">
 
         <label>Ride Type</label>
@@ -97,8 +87,6 @@
 
     </div>
 
-
-
     <label class="top-space">
     Pickup Location
     </label>
@@ -110,8 +98,6 @@
       </option>
 
     </select>
-
-
 
     <label class="top-space">
     Destination
@@ -125,8 +111,6 @@
 
     </select>
 
-
-
     <button
     class="swap-btn"
     onclick="swapLocations()">
@@ -134,8 +118,6 @@
     ⇅ Swap Route
 
     </button>
-
-
 
     <div class="row top-space">
 
@@ -150,8 +132,6 @@
         min="1">
 
       </div>
-
-
 
       <div class="half">
 
@@ -173,8 +153,6 @@
 
     </div>
 
-
-
     <button onclick="checkFare()">
 
       Check Fare
@@ -183,7 +161,7 @@
 
   </div>
 
-
+  <!-- RESULT CARD -->
 
   <div class="glass-card result-glass">
 
@@ -214,56 +192,49 @@
 
   </div>
 
+  <!-- INSTALL BANNER -->
 
+<div class="glass-card install-card">
 
-<div class="glass-card sponsor-card">
+  <img
+    src="banner.png"
+    alt="Install ClickJabo"
+    class="install-banner">
 
-  <p class="sponsor-title">
+</div>
 
-    PASSENGER INFORMATION
+  <!-- MINI INFO -->
 
-  </p>
+  <a
+  href="https://yourwebsite.com"
+  target="_blank"
+  class="mini-info-btn">
 
-  <div class="sponsor-row-text">
+  About ClickKounter
 
-    <p class="sponsor-name">
+  </a>
 
-      Designed to support everyday travel
+  <!-- COMPLAINT -->
+
+  <div class="glass-card complaint-card">
+
+    <p class="complaint">
+
+      Overcharged?
+
+      <a
+      href="tel:1800000000"
+      class="helpline-link">
+
+      Call: 1800-000-000
+
+      </a>
 
     </p>
 
-    <a
-    href="https://yourwebsite.com"
-    target="_blank"
-    class="mini-info-btn">
-
-    About ClickKounter →
-
-    </a>
-
   </div>
 
-</div>
-
-<div class="glass-card complaint-card">
-
-  <p class="complaint">
-
-    Overcharged?
-
-    <a
-    href="tel:1800000000"
-    class="helpline-link">
-
-    Call: 1800-000-000
-
-    </a>
-
-  </p>
-
-</div>
-
-
+  <!-- FOOTER -->
 
   <div class="footer-brand">
 
@@ -289,33 +260,11 @@
 
   </div>
 
-
-
 </div>
-
-
 
 <script src="https://cdn.jsdelivr.net/npm/choices.js/public/assets/scripts/choices.min.js"></script>
 
 <script src="app.js"></script>
-
-
-
-<script>
-
-if("serviceWorker" in navigator){
-
-  navigator.serviceWorker.register(
-
-    "service-worker.js"
-
-  );
-
-}
-
-</script>
-
-
 
 </body>
 </html>

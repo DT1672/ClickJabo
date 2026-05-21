@@ -23,8 +23,6 @@ body{
 
 }
 
-
-
 .container{
 
   width:100%;
@@ -39,8 +37,6 @@ body{
 
 }
 
-
-
 /* =========================
    HEADER
 ========================= */
@@ -52,8 +48,6 @@ body{
   margin-bottom:4px;
 
 }
-
-
 
 .header h1{
 
@@ -69,8 +63,6 @@ body{
 
 }
 
-
-
 .header p{
 
   margin-top:4px;
@@ -82,8 +74,6 @@ body{
   letter-spacing:2px;
 
 }
-
-
 
 /* =========================
    GLASS CARD
@@ -110,8 +100,6 @@ body{
 
 }
 
-
-
 /* =========================
    LABELS
 ========================= */
@@ -131,8 +119,6 @@ label{
   font-weight:500;
 
 }
-
-
 
 /* =========================
    INPUTS
@@ -161,8 +147,6 @@ input{
   box-sizing:border-box;
 
 }
-
-
 
 /* =========================
    BUTTONS
@@ -203,7 +187,17 @@ button{
 
 }
 
+button:active{
 
+  transform:scale(.98);
+
+  background:
+  rgba(255,255,255,.10);
+
+  box-shadow:
+  0 4px 10px rgba(0,0,0,.18);
+
+}
 
 .swap-btn{
 
@@ -214,8 +208,6 @@ button{
   font-size:13px;
 
 }
-
-
 
 /* =========================
    LAYOUT
@@ -229,23 +221,17 @@ button{
 
 }
 
-
-
 .half{
 
   flex:1;
 
 }
 
-
-
 .top-space{
 
   margin-top:6px;
 
 }
-
-
 
 /* =========================
    CLEAN SEARCHABLE DROPDOWN
@@ -258,8 +244,6 @@ button{
   margin-bottom:0;
 
 }
-
-
 
 .choices__inner{
 
@@ -291,8 +275,6 @@ button{
 
 }
 
-
-
 .choices__list--single{
 
   padding:2px 22px 2px 2px!important;
@@ -300,8 +282,6 @@ button{
   color:white!important;
 
 }
-
-
 
 .choices__placeholder{
 
@@ -311,8 +291,6 @@ button{
 
 }
 
-
-
 .choices__input{
 
   background:transparent!important;
@@ -320,8 +298,6 @@ button{
   color:white!important;
 
 }
-
-
 
 .choices__list--dropdown{
 
@@ -338,8 +314,6 @@ button{
 
 }
 
-
-
 .choices__list--dropdown .choices__list{
 
   max-height:180px!important;
@@ -349,8 +323,6 @@ button{
   overflow-x:hidden!important;
 
 }
-
-
 
 .choices__item--choice{
 
@@ -364,16 +336,12 @@ button{
 
 }
 
-
-
 .choices__item--selectable.is-highlighted{
 
   background:
   rgba(255,255,255,.06)!important;
 
 }
-
-
 
 .choices[data-type*=select-one]::after{
 
@@ -384,8 +352,6 @@ button{
   right:14px;
 
 }
-
-
 
 /* =========================
    RESULT CARD
@@ -404,8 +370,6 @@ button{
 
 }
 
-
-
 .fare-label{
 
   margin:0 0 4px 0;
@@ -417,8 +381,6 @@ button{
   letter-spacing:3px;
 
 }
-
-
 
 #result{
 
@@ -436,8 +398,6 @@ button{
 
 }
 
-
-
 .cheapest-tag{
 
   margin-top:6px;
@@ -449,8 +409,6 @@ button{
   font-weight:600;
 
 }
-
-
 
 .updated-date{
 
@@ -467,55 +425,34 @@ button{
 }
 
 /* =========================
-   PASSENGER INFORMATION
+   INSTALL BANNER
 ========================= */
 
-.sponsor-card{
+.install-card{
 
-  text-align:center;
+  padding:0;
 
-}
+  overflow:hidden;
 
+  border-radius:22px;
 
-
-.sponsor-title{
-
-  margin:0;
-
-  font-size:10px;
-
-  color:#64748b;
-
-  text-transform:uppercase;
-
-  letter-spacing:2px;
-
-}
-
-
-
-.sponsor-row-text{
+  height:120px;
 
   margin-top:8px;
 
 }
 
+.install-banner{
 
+  width:100%;
 
-.sponsor-name{
+  height:100%;
 
-  margin:0;
+  object-fit:cover;
 
-  font-size:14px;
-
-  font-weight:600;
-
-  color:#e2e8f0;
-
-  line-height:1.4;
+  display:block;
 
 }
-
 
 /* =========================
    COMPLAINT
@@ -535,8 +472,6 @@ button{
 
 }
 
-
-
 .helpline-link{
 
   color:#f87171;
@@ -546,8 +481,6 @@ button{
   font-weight:600;
 
 }
-
-
 
 /* =========================
    FOOTER
@@ -566,8 +499,6 @@ button{
   line-height:1.4;
 
 }
-
-
 
 /* =========================
    SPLASH SCREEN
@@ -601,8 +532,6 @@ button{
 
 }
 
-
-
 .splash-image{
 
   width:100%;
@@ -614,8 +543,6 @@ button{
   animation:logoPulse 2.5s ease-in-out infinite;
 
 }
-
-
 
 .travel-dot{
 
@@ -641,8 +568,6 @@ button{
 
 }
 
-
-
 /* =========================
    ANIMATIONS
 ========================= */
@@ -652,8 +577,6 @@ button{
   animation:fareReveal .45s ease;
 
 }
-
-
 
 @keyframes fareReveal{
 
@@ -679,8 +602,6 @@ button{
 
 }
 
-
-
 @keyframes splashFadeIn{
 
   from{
@@ -696,8 +617,6 @@ button{
   }
 
 }
-
-
 
 @keyframes logoPulse{
 
@@ -720,8 +639,6 @@ button{
   }
 
 }
-
-
 
 @keyframes moveDot{
 
@@ -769,28 +686,6 @@ button{
 
 }
 
-.mini-info-btn{
-
-  display:inline-block;
-
-  padding:10px 0 12px 0;
-
-  font-size:11px;
-
-  color:#94a3b8;
-
-  text-decoration:none;
-
-  font-weight:500;
-
-}
-
-
-.choices__input--cloned{
-
-  font-size:16px!important;
-
-}
 .choices__input--cloned{
 
   font-size:16px!important;
@@ -808,35 +703,19 @@ button{
   color:white!important;
 
 }
-button:active{
 
-  transform:scale(.98);
+.mini-info-btn{
 
-  background:
-  rgba(255,255,255,.10);
+  display:inline-block;
 
-  box-shadow:
-  0 4px 10px rgba(0,0,0,.18);
+  padding:10px 0 12px 0;
 
-}
-.install-card{
+  font-size:11px;
 
-  padding:0;
+  color:#94a3b8;
 
-  overflow:hidden;
+  text-decoration:none;
 
-  text-align:center;
-
-}
-
-
-
-.install-banner{
-
-  width:100%;
-
-  display:block;
-
-  border-radius:22px 22px 0 0;
+  font-weight:500;
 
 }
