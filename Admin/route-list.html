@@ -1,22 +1,24 @@
+```html id="x4rz8p"
 <!DOCTYPE html>
 <html>
 
 <head>
 
-  <meta name="viewport"
-  content="width=device-width, initial-scale=1.0">
+<meta
+name="viewport"
+content="width=device-width, initial-scale=1.0">
 
-  <title>
-    Route List
-  </title>
+<title>
+Route List
+</title>
 
-  <link rel="stylesheet"
-  href="admin.css">
+<link
+rel="stylesheet"
+href="admin.css">
 
-  <script
+<script
 type="module"
 src="auth-check.js">
-
 </script>
 
 </head>
@@ -81,6 +83,8 @@ class="side-menu">
 
 </div>
 
+<!-- MAIN -->
+
 <div class="dashboard-container">
 
   <div class="dashboard-header">
@@ -112,6 +116,82 @@ class="side-menu">
 
 </div>
 
+<!-- FLOAT ADD BUTTON -->
+
+<button
+class="fab"
+onclick="openAddModal()">
+
+  +
+
+</button>
+
+<!-- ADD ROUTE MODAL -->
+
+<div
+id="routeModal"
+class="modal">
+
+  <div class="modal-card">
+
+    <h2>
+      Add Route
+    </h2>
+
+    <input
+    type="text"
+    id="fromInput"
+    placeholder="From Location">
+
+    <input
+    type="text"
+    id="toInput"
+    placeholder="To Location">
+
+    <input
+    type="number"
+    id="hireDayInput"
+    placeholder="Hire Day Fare">
+
+    <input
+    type="number"
+    id="hireNightInput"
+    placeholder="Hire Night Fare">
+
+    <input
+    type="number"
+    id="sharedDayInput"
+    placeholder="Shared Day Fare">
+
+    <input
+    type="number"
+    id="sharedNightInput"
+    placeholder="Shared Night Fare">
+
+    <div class="modal-actions">
+
+      <button
+      class="cancel-btn"
+      onclick="closeModal()">
+
+        Cancel
+
+      </button>
+
+      <button
+      class="save-btn"
+      onclick="saveRoute()">
+
+        Save Route
+
+      </button>
+
+    </div>
+
+  </div>
+
+</div>
+
 <script type="module">
 
 import {
@@ -123,7 +203,8 @@ import {
   collection,
   getDocs,
   deleteDoc,
-  doc
+  doc,
+  addDoc
 }
 from "https://www.gstatic.com/firebasejs/12.3.0/firebase-firestore.js";
 
@@ -139,6 +220,10 @@ function toggleMenu(){
 
 window.toggleMenu =
 toggleMenu;
+
+/* =========================
+   LOAD ROUTES
+========================= */
 
 async function loadRoutes(){
 
@@ -171,7 +256,7 @@ async function loadRoutes(){
 
     <div class="route-item">
 
-      <div>
+      <div class="route-info">
 
         <strong>
           ${route.from}
@@ -237,6 +322,10 @@ async function loadRoutes(){
 
 }
 
+/* =========================
+   EDIT ROUTE
+========================= */
+
 function openEditRoute(
   docId,
   from,
@@ -269,6 +358,10 @@ function openEditRoute(
 
 window.openEditRoute =
 openEditRoute;
+
+/* =========================
+   DELETE ROUTE
+========================= */
 
 async function deleteRoute(docId){
 
@@ -316,6 +409,10 @@ async function deleteRoute(docId){
 window.deleteRoute =
 deleteRoute;
 
+/* =========================
+   SEARCH
+========================= */
+
 document.getElementById(
   "routeSearch"
 ).addEventListener(
@@ -359,6 +456,152 @@ document.getElementById(
   }
 );
 
+/* =========================
+   OPEN MODAL
+========================= */
+
+function openAddModal(){
+
+  document
+    .getElementById(
+      "routeModal"
+    )
+    .classList
+    .add(
+      "active"
+    );
+
+}
+
+window.openAddModal =
+openAddModal;
+
+/* =========================
+   CLOSE MODAL
+========================= */
+
+function closeModal(){
+
+  document
+    .getElementById(
+      "routeModal"
+    )
+    .classList
+    .remove(
+      "active"
+    );
+
+}
+
+window.closeModal =
+closeModal;
+
+/* =========================
+   SAVE ROUTE
+========================= */
+
+async function saveRoute(){
+
+  const from =
+  document.getElementById(
+    "fromInput"
+  ).value;
+
+  const to =
+  document.getElementById(
+    "toInput"
+  ).value;
+
+  const hireDay =
+  document.getElementById(
+    "hireDayInput"
+  ).value;
+
+  const hireNight =
+  document.getElementById(
+    "hireNightInput"
+  ).value;
+
+  const sharedDay =
+  document.getElementById(
+    "sharedDayInput"
+  ).value;
+
+  const sharedNight =
+  document.getElementById(
+    "sharedNightInput"
+  ).value;
+
+  if(
+    !from ||
+    !to ||
+    !hireDay ||
+    !hireNight ||
+    !sharedDay ||
+    !sharedNight
+  ){
+
+    alert(
+      "Please fill all fields."
+    );
+
+    return;
+
+  }
+
+  try{
+
+    await addDoc(
+
+      collection(
+        db,
+        "routes"
+      ),
+
+      {
+
+        from,
+        to,
+        hireDay,
+        hireNight,
+        sharedDay,
+        sharedNight
+
+      }
+
+    );
+
+    alert(
+      "Route added successfully."
+    );
+
+    closeModal();
+
+    loadRoutes();
+
+  }
+
+  catch(error){
+
+    console.log(
+      error
+    );
+
+    alert(
+      "Unable to save route."
+    );
+
+  }
+
+}
+
+window.saveRoute =
+saveRoute;
+
+/* =========================
+   INITIAL LOAD
+========================= */
+
 loadRoutes();
 
 </script>
@@ -366,3 +609,4 @@ loadRoutes();
 </body>
 
 </html>
+```

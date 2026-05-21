@@ -1,6 +1,57 @@
-body{
+```html
+<!DOCTYPE html>
+<html>
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta
+  name="viewport"
+  content="width=device-width, initial-scale=1.0"
+/>
+
+<title>
+ClickJabo Admin
+</title>
+
+<style>
+
+:root{
+
+  --bg:#020817;
+
+  --glass:
+  rgba(255,255,255,.05);
+
+  --border:
+  rgba(255,255,255,.08);
+
+  --text:#ffffff;
+
+  --muted:#94a3b8;
+
+  --gold1:#8b6b2e;
+
+  --gold2:#c29b47;
+
+}
+
+/* =========================
+   GLOBAL
+========================= */
+
+*{
 
   margin:0;
+
+  padding:0;
+
+  box-sizing:border-box;
+
+}
+
+body{
 
   font-family:Arial,sans-serif;
 
@@ -13,599 +64,57 @@ body{
 
   min-height:100vh;
 
-  display:flex;
-
-  justify-content:center;
-
-  align-items:center;
-
   color:white;
 
-}
+  overflow:hidden;
 
-.login-container{
-
-  width:100%;
-
-  max-width:430px;
-
-  padding:16px;
-
-  box-sizing:border-box;
+  position:relative;
 
 }
 
-.login-card{
+body::before{
+
+  content:"";
+
+  position:fixed;
+
+  top:-120px;
+
+  right:-120px;
+
+  width:300px;
+
+  height:300px;
 
   background:
-  rgba(255,255,255,.05);
+  rgba(194,155,71,.08);
 
-  border:
-  1px solid rgba(255,255,255,.08);
+  filter:blur(100px);
 
-  border-radius:24px;
-
-  padding:24px;
-
-  backdrop-filter:blur(18px);
-
-  box-shadow:
-  0 0 30px rgba(0,0,0,.30);
+  z-index:-1;
 
 }
 
-h1{
-
-  margin:0;
-
-  text-align:center;
-
-  font-size:34px;
-
-  font-weight:700;
-
-}
-
-.sub-text{
-
-  text-align:center;
-
-  color:#94a3b8;
-
-  font-size:11px;
-
-  letter-spacing:3px;
-
-  margin-top:4px;
-
-  margin-bottom:24px;
-
-}
-
-label{
-
-  display:block;
-
-  margin-bottom:6px;
-
-  margin-top:14px;
-
-  color:#cbd5e1;
-
-  font-size:13px;
-
-  font-weight:500;
-
-}
-
-input{
-
-  width:100%;
-
-  padding:14px;
-
-  box-sizing:border-box;
-
-  border:none;
-
-  border-radius:16px;
-
-  background:#111827;
-
-  color:white;
-
-  font-size:16px;
-
-  outline:none;
-
-  border:
-  1px solid rgba(255,255,255,.08);
-
-}
-
-button{
-
-  width:100%;
-
-  margin-top:24px;
-
-  padding:14px;
-
-  border:none;
-
-  border-radius:18px;
-
-  background:
-  linear-gradient(
-    135deg,
-    #8b6b2e,
-    #c29b47
-  );
-
-  color:white;
-
-  font-size:16px;
-
-  font-weight:700;
-
-  cursor:pointer;
-
-  box-shadow:
-  0 8px 20px rgba(194,155,71,.18);
-
-}
-
-button:active{
-
-  transform:scale(.98);
-
-}
-/* =========================
-   DASHBOARD
-========================= */
-
-.dashboard-container{
-
-  width:100%;
-
-  max-width:430px;
-
-  margin:auto;
-
-  padding:16px;
-
-  box-sizing:border-box;
-
-}
-
-.dashboard-header{
-
-  text-align:center;
-
-  margin-bottom:18px;
-
-}
-
-.dashboard-header h1{
-
-  margin:0;
-
-  font-size:34px;
-
-}
-
-.dashboard-header p{
-
-  margin-top:4px;
-
-  color:#94a3b8;
-
-  font-size:11px;
-
-  letter-spacing:3px;
-
-}
-
-.dashboard-card{
-
-  background:
-  rgba(255,255,255,.05);
-
-  border:
-  1px solid rgba(255,255,255,.08);
-
-  border-radius:24px;
-
-  padding:18px;
-
-  backdrop-filter:blur(18px);
-
-  box-shadow:
-  0 0 30px rgba(0,0,0,.30);
-
-}
-
-.dashboard-item{
-
-  display:flex;
-
-  justify-content:space-between;
-
-  align-items:center;
-
-  padding:14px 0;
-
-  border-bottom:
-  1px solid rgba(255,255,255,.06);
-
-}
-
-.dashboard-item:last-child{
-
-  border-bottom:none;
-
-}
-
-.dashboard-item h2{
-
-  margin:0;
-
-  font-size:15px;
-
-  font-weight:600;
-
-}
-
-.dashboard-item span{
-
-  color:#facc15;
-
-  font-size:14px;
-
-  font-weight:700;
-
-}
-
-.dashboard-actions{
-
-  margin-top:18px;
-
-}
-
-.action-btn{
-
-  display:block;
-
-  width:100%;
-
-  box-sizing:border-box;
-
-  text-align:center;
-
-  text-decoration:none;
-
-  padding:14px;
-
-  margin-top:10px;
-
-  border-radius:18px;
-
-  background:
-  linear-gradient(
-    135deg,
-    #8b6b2e,
-    #c29b47
-  );
-
-  color:white;
-
-  font-size:15px;
-
-  font-weight:700;
-
-}
-
-.secondary{
-
-  background:
-  rgba(255,255,255,.06);
-
-}
-
-.logout{
-
-  background:
-  rgba(239,68,68,.14);
-
-  color:#f87171;
-
-}
-/* =========================
-   ROUTE LIST
-========================= */
-
-.route-list{
-
-  margin-top:24px;
-
-}
-
-.route-list h2{
-
-  font-size:16px;
-
-  margin-bottom:14px;
-
-}
-
-.route-item{
-
-  background:
-  rgba(255,255,255,.04);
-
-  border:
-  1px solid rgba(255,255,255,.06);
-
-  border-radius:18px;
-
-  padding:14px;
-
-  margin-bottom:12px;
-
-  display:flex;
-
-  justify-content:space-between;
-
-  align-items:center;
-
-  gap:10px;
-
-}
-
-.route-item strong{
-
-  display:block;
-
-  margin-bottom:6px;
-
-  font-size:14px;
-
-}
-
-.route-item p{
-
-  margin:2px 0;
-
-  font-size:12px;
-
-  color:#94a3b8;
-
-}
-
-.edit-btn{
-
-  width:auto;
-
-  padding:10px 16px;
-
-  margin-top:0;
-
-  border-radius:14px;
-
-  background:
-  rgba(255,255,255,.08);
-
-  font-size:13px;
-
-}
-/* =========================
-   ADD ROUTE BUTTON
-========================= */
-
-.add-route-btn{
-
-  margin-bottom:18px;
-
-  background:
-  rgba(255,255,255,.06);
-
-  border:
-  1px solid rgba(255,255,255,.08);
-
-}
-/* =========================
-   DISTRICT BADGE
-========================= */
-
-.district-badge{
-
-  display:inline-block;
-
-  margin-top:10px;
-
-  padding:8px 16px;
-
-  border-radius:999px;
-
-  background:
-  rgba(34,197,94,.12);
-
-  border:
-  1px solid rgba(34,197,94,.18);
-
-  color:#4ade80;
-
-  font-size:11px;
-
-  font-weight:700;
-
-  letter-spacing:1px;
-
-}
-/* online status */
-
-.dashboard-item span{
-
-  color:#facc15;
-
-}
-
-.dashboard-item:nth-child(3) span{
-
-  color:#4ade80;
-
-}
-/* =========================
-   EDIT STATUS
-========================= */
-
-.edit-status{
-
-  margin-top:12px;
-
-  padding:12px;
-
-  border-radius:16px;
-
-  background:
-  rgba(255,255,255,.04);
-
-  border:
-  1px solid rgba(255,255,255,.06);
-
-  color:#94a3b8;
-
-  font-size:13px;
-
-  text-align:center;
-
-  font-weight:600;
-
-}
-/* =========================
-   ROUTE ACTIONS
-========================= */
-
-.route-actions{
-
-  display:flex;
-
-  flex-direction:column;
-
-  gap:8px;
-
-}
-
-.delete-btn{
-
-  width:auto;
-
-  padding:10px 16px;
-
-  margin-top:0;
-
-  border-radius:14px;
-
-  background:
-  rgba(239,68,68,.14);
-
-  color:#f87171;
-
-  font-size:13px;
-
-}
-/* =========================
-   SEARCH PANEL
-========================= */
-
-#routeSearch{
-
-  width:100%;
-
-  padding:14px 16px;
-
-  margin-bottom:18px;
-
-  box-sizing:border-box;
-
-  border:none;
-
-  border-radius:18px;
-
-  background:
-  rgba(255,255,255,.06);
-
-  border:
-  1px solid rgba(255,255,255,.10);
-
-  color:white;
-
-  font-size:16px;
-
-  outline:none;
-
-  box-shadow:
-  0 0 18px rgba(0,0,0,.18);
-
-}
-
-#routeSearch::placeholder{
-
-  color:#94a3b8;
-
-}
-
-#routeSearch:focus{
-
-  border:
-  1px solid rgba(250,204,21,.35);
-
-  box-shadow:
-  0 0 14px rgba(250,204,21,.10);
-
-}
-/* =========================
-   SETTINGS
-========================= */
-
-.logout-btn{
-
-  margin-top:12px;
-
-  background:
-  rgba(239,68,68,.14);
-
-  color:#f87171;
-
-}
 /* =========================
    TOP BAR
 ========================= */
 
 .top-bar{
 
-  height:60px;
+  height:54px;
 
   display:flex;
 
   align-items:center;
 
-  gap:14px;
+  gap:12px;
 
-  padding:0 16px;
-
-  box-sizing:border-box;
-
-  position:sticky;
-
-  top:0;
-
-  z-index:999;
+  padding:0 14px;
 
   backdrop-filter:blur(18px);
 
   background:
-  rgba(2,8,23,.72);
+  rgba(2,8,23,.74);
 
   border-bottom:
   1px solid rgba(255,255,255,.06);
@@ -614,9 +123,9 @@ button:active{
 
 .menu-btn{
 
-  width:42px;
+  width:40px;
 
-  height:42px;
+  height:40px;
 
   border:none;
 
@@ -635,11 +144,9 @@ button:active{
 
 .top-title{
 
-  font-size:16px;
+  font-size:15px;
 
   font-weight:700;
-
-  color:white;
 
 }
 
@@ -659,10 +166,9 @@ button:active{
 
   height:100vh;
 
-  background:
-  #071120;
+  background:#071120;
 
-  padding-top:80px;
+  padding-top:70px;
 
   transition:.28s;
 
@@ -670,6 +176,9 @@ button:active{
 
   border-right:
   1px solid rgba(255,255,255,.06);
+
+  box-shadow:
+  20px 0 40px rgba(0,0,0,.45);
 
 }
 
@@ -689,7 +198,7 @@ button:active{
 
   text-decoration:none;
 
-  font-size:15px;
+  font-size:14px;
 
   border-bottom:
   1px solid rgba(255,255,255,.05);
@@ -702,3 +211,763 @@ button:active{
   rgba(255,255,255,.05);
 
 }
+
+/* =========================
+   CONTAINER
+========================= */
+
+.dashboard-container{
+
+  width:100%;
+
+  max-width:430px;
+
+  height:calc(100vh - 54px);
+
+  margin:auto;
+
+  padding:14px;
+
+  display:flex;
+
+  flex-direction:column;
+
+  gap:14px;
+
+}
+
+/* =========================
+   HEADER
+========================= */
+
+.dashboard-header{
+
+  text-align:center;
+
+}
+
+.dashboard-header h1{
+
+  font-size:28px;
+
+}
+
+.dashboard-header p{
+
+  margin-top:4px;
+
+  color:#94a3b8;
+
+  font-size:10px;
+
+  letter-spacing:3px;
+
+}
+
+.district-badge{
+
+  display:inline-block;
+
+  margin-top:10px;
+
+  padding:7px 14px;
+
+  border-radius:999px;
+
+  background:
+  rgba(34,197,94,.12);
+
+  border:
+  1px solid rgba(34,197,94,.18);
+
+  color:#4ade80;
+
+  font-size:10px;
+
+  font-weight:700;
+
+}
+
+/* =========================
+   STATS
+========================= */
+
+.stats-grid{
+
+  display:grid;
+
+  grid-template-columns:
+  repeat(3,1fr);
+
+  gap:10px;
+
+}
+
+.stat-card{
+
+  background:
+  rgba(255,255,255,.05);
+
+  border:
+  1px solid rgba(255,255,255,.08);
+
+  border-radius:18px;
+
+  padding:14px 10px;
+
+  text-align:center;
+
+}
+
+.stat-card h2{
+
+  font-size:20px;
+
+  color:#facc15;
+
+}
+
+.stat-card p{
+
+  margin-top:4px;
+
+  font-size:11px;
+
+  color:#94a3b8;
+
+}
+
+/* =========================
+   SEARCH
+========================= */
+
+#routeSearch{
+
+  width:100%;
+
+  padding:13px 16px;
+
+  border:none;
+
+  border-radius:18px;
+
+  background:
+  rgba(255,255,255,.06);
+
+  border:
+  1px solid rgba(255,255,255,.10);
+
+  color:white;
+
+  font-size:15px;
+
+  outline:none;
+
+}
+
+/* =========================
+   ROUTES
+========================= */
+
+.route-section{
+
+  flex:1;
+
+  overflow:hidden;
+
+  display:flex;
+
+  flex-direction:column;
+
+}
+
+.route-title{
+
+  font-size:15px;
+
+  margin-bottom:10px;
+
+  font-weight:700;
+
+}
+
+.route-list{
+
+  flex:1;
+
+  overflow-y:auto;
+
+}
+
+.route-item{
+
+  background:
+  rgba(255,255,255,.04);
+
+  border:
+  1px solid rgba(255,255,255,.06);
+
+  border-radius:18px;
+
+  padding:14px;
+
+  margin-bottom:10px;
+
+  display:flex;
+
+  justify-content:space-between;
+
+  align-items:center;
+
+  gap:10px;
+
+}
+
+.route-info{
+
+  flex:1;
+
+}
+
+.route-item strong{
+
+  display:block;
+
+  margin-bottom:6px;
+
+  font-size:14px;
+
+}
+
+.route-item p{
+
+  margin:2px 0;
+
+  font-size:11px;
+
+  color:#94a3b8;
+
+}
+
+/* =========================
+   ACTION BUTTONS
+========================= */
+
+.route-actions{
+
+  display:flex;
+
+  flex-direction:column;
+
+  gap:8px;
+
+}
+
+.edit-btn{
+
+  border:none;
+
+  padding:10px 14px;
+
+  border-radius:14px;
+
+  background:
+  rgba(255,255,255,.08);
+
+  color:white;
+
+  font-size:12px;
+
+  cursor:pointer;
+
+}
+
+.delete-btn{
+
+  border:none;
+
+  padding:10px 14px;
+
+  border-radius:14px;
+
+  background:
+  rgba(239,68,68,.14);
+
+  color:#f87171;
+
+  font-size:12px;
+
+  cursor:pointer;
+
+}
+
+/* =========================
+   FLOAT BUTTON
+========================= */
+
+.fab{
+
+  position:fixed;
+
+  right:18px;
+
+  bottom:18px;
+
+  width:58px;
+
+  height:58px;
+
+  border:none;
+
+  border-radius:50%;
+
+  font-size:28px;
+
+  color:white;
+
+  cursor:pointer;
+
+  background:
+  linear-gradient(
+    135deg,
+    #8b6b2e,
+    #c29b47
+  );
+
+  box-shadow:
+  0 10px 24px rgba(194,155,71,.24);
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+<!-- TOP BAR -->
+
+<div class="top-bar">
+
+  <button
+    class="menu-btn"
+    onclick="toggleMenu()"
+  >
+    ☰
+  </button>
+
+  <div class="top-title">
+
+    ClickJabo Admin
+
+  </div>
+
+</div>
+
+<!-- SIDE MENU -->
+
+<div
+  class="side-menu"
+  id="sideMenu"
+>
+
+  <a href="#">
+    Dashboard
+  </a>
+
+  <a href="#">
+    Routes
+  </a>
+
+  <a href="#">
+    Settings
+  </a>
+
+  <a href="#">
+    Logout
+  </a>
+
+</div>
+
+<!-- MAIN -->
+
+<div class="dashboard-container">
+
+  <!-- HEADER -->
+
+  <div class="dashboard-header">
+
+    <h1>
+      Dashboard
+    </h1>
+
+    <p>
+      DISTRICT CONTROL PANEL
+    </p>
+
+    <div class="district-badge">
+
+      AIZAWL DISTRICT
+
+    </div>
+
+  </div>
+
+  <!-- STATS -->
+
+  <div class="stats-grid">
+
+    <div class="stat-card">
+
+      <h2>
+        24
+      </h2>
+
+      <p>
+        Routes
+      </p>
+
+    </div>
+
+    <div class="stat-card">
+
+      <h2>
+        180
+      </h2>
+
+      <p>
+        Users
+      </p>
+
+    </div>
+
+    <div class="stat-card">
+
+      <h2>
+        Online
+      </h2>
+
+      <p>
+        Status
+      </p>
+
+    </div>
+
+  </div>
+
+  <!-- SEARCH -->
+
+  <input
+    type="text"
+    id="routeSearch"
+    placeholder="Search routes..."
+  >
+
+  <!-- ROUTES -->
+
+  <div class="route-section">
+
+    <div class="route-title">
+
+      Recent Routes
+
+    </div>
+
+    <div class="route-list">
+
+      <div class="route-item">
+
+        <div class="route-info">
+
+          <strong>
+            Aizawl → Lunglei
+          </strong>
+
+          <p>
+            Shared Taxi
+          </p>
+
+          <p>
+            ₹350
+          </p>
+
+        </div>
+
+        <div class="route-actions">
+
+          <button class="edit-btn">
+
+            Edit
+
+          </button>
+
+          <button class="delete-btn">
+
+            Delete
+
+          </button>
+
+        </div>
+
+      </div>
+
+      <div class="route-item">
+
+        <div class="route-info">
+
+          <strong>
+            Aizawl → Champhai
+          </strong>
+
+          <p>
+            Sumo Service
+          </p>
+
+          <p>
+            ₹450
+          </p>
+
+        </div>
+
+        <div class="route-actions">
+
+          <button class="edit-btn">
+
+            Edit
+
+          </button>
+
+          <button class="delete-btn">
+
+            Delete
+
+          </button>
+
+        </div>
+
+      </div>
+
+      <div class="route-item">
+
+        <div class="route-info">
+
+          <strong>
+            Aizawl → Kolasib
+          </strong>
+
+          <p>
+            Maxi Cab
+          </p>
+
+          <p>
+            ₹220
+          </p>
+
+        </div>
+
+        <div class="route-actions">
+
+          <button class="edit-btn">
+
+            Edit
+
+          </button>
+
+          <button class="delete-btn">
+
+            Delete
+
+          </button>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
+
+<!-- FLOAT BUTTON -->
+
+<button
+  class="fab"
+  onclick="openAddRoute()"
+>
+
+  +
+
+</button>
+
+<script>
+
+function toggleMenu(){
+
+  document
+    .getElementById(
+      "sideMenu"
+    )
+    .classList
+    .toggle("active");
+
+}
+
+function openAddRoute(){
+
+  alert(
+    "Open Add Route Page"
+  );
+
+}
+
+</script>
+
+</body>
+
+</html>
+```
+```css id="4j7l2v"
+/* =========================
+   MODAL
+========================= */
+
+.modal{
+
+  position:fixed;
+
+  inset:0;
+
+  background:
+  rgba(0,0,0,.6);
+
+  display:none;
+
+  align-items:center;
+
+  justify-content:center;
+
+  padding:18px;
+
+  z-index:3000;
+
+}
+
+.modal.active{
+
+  display:flex;
+
+}
+
+.modal-card{
+
+  width:100%;
+
+  max-width:380px;
+
+  background:
+  rgba(10,15,30,.96);
+
+  border:
+  1px solid rgba(255,255,255,.08);
+
+  border-radius:24px;
+
+  padding:20px;
+
+  backdrop-filter:blur(20px);
+
+}
+
+.modal-card h2{
+
+  margin-bottom:18px;
+
+  text-align:center;
+
+  font-size:20px;
+
+}
+
+.modal-card input{
+
+  width:100%;
+
+  margin-bottom:12px;
+
+  padding:14px;
+
+  border:none;
+
+  border-radius:16px;
+
+  background:
+  rgba(255,255,255,.06);
+
+  border:
+  1px solid rgba(255,255,255,.08);
+
+  color:white;
+
+  font-size:14px;
+
+  outline:none;
+
+}
+
+.modal-actions{
+
+  display:flex;
+
+  gap:10px;
+
+  margin-top:8px;
+
+}
+
+.cancel-btn{
+
+  flex:1;
+
+  border:none;
+
+  padding:14px;
+
+  border-radius:16px;
+
+  background:
+  rgba(255,255,255,.08);
+
+  color:white;
+
+  font-weight:700;
+
+  cursor:pointer;
+
+}
+
+.save-btn{
+
+  flex:1;
+
+  border:none;
+
+  padding:14px;
+
+  border-radius:16px;
+
+  background:
+  linear-gradient(
+    135deg,
+    #8b6b2e,
+    #c29b47
+  );
+
+  color:white;
+
+  font-weight:700;
+
+  cursor:pointer;
+
+}
+
