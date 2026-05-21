@@ -199,13 +199,15 @@ button:active{
 
 }
 
+/* aggressive swap button pull-up */
+
 .swap-btn{
 
-  margin-top:6px;
+  position:relative;
 
-  padding:10px;
+  top:-28px;
 
-  font-size:13px;
+  margin-bottom:-22px!important;
 
 }
 
@@ -368,7 +370,13 @@ button:active{
     rgba(255,255,255,.03)
   );
 
+  padding-top:6px;
+
+  padding-bottom:6px;
+
 }
+
+
 
 .fare-label{
 
@@ -436,7 +444,7 @@ button:active{
 
   border-radius:22px;
 
-  height:120px;
+  height:220px;
 
   margin-top:8px;
 
@@ -454,49 +462,18 @@ button:active{
 
 }
 
-/* =========================
-   COMPLAINT
-========================= */
-
-.complaint{
-
-  margin:0;
-
-  text-align:center;
-
-  font-size:11px;
-
-  color:#fbbf24;
-
-  line-height:1.4;
-
-}
-
-.helpline-link{
-
-  color:#f87171;
-
-  text-decoration:none;
-
-  font-weight:600;
-
-}
-
-/* =========================
-   FOOTER
-========================= */
 
 .footer-brand{
 
-  margin-top:4px;
+  margin-top:2px;
 
   text-align:center;
 
-  font-size:9px;
+  font-size:8px;
 
   color:#64748b;
 
-  line-height:1.4;
+  line-height:1.15;
 
 }
 
@@ -704,18 +681,134 @@ button:active{
 
 }
 
-.mini-info-btn{
 
-  display:inline-block;
+/* push destination section upward */
 
-  padding:10px 0 12px 0;
+label.top-space{
 
-  font-size:11px;
+  margin-top:-10px!important;
 
-  color:#94a3b8;
+  margin-bottom:0!important;
+
+}
+
+#to{
+
+  margin-top:-10px!important;
+
+}
+
+#to + .choices{
+
+  position:relative;
+
+  top:-10px;
+
+  margin-bottom:-10px!important;
+
+}
+label[for="from"],
+label:first-of-type{
+
+  margin-top:8px!important;
+
+}
+
+#from + .choices{
+
+  position:relative;
+
+  top:8px;
+
+}
+/* pull passenger + fare mode section upward */
+
+.row.top-space{
+
+  position:relative;
+
+  top:-26px;
+
+  margin-bottom:-22px;
+
+}
+/* pull check fare button upward */
+
+button:not(.swap-btn){
+
+  position:relative;
+
+  top:-14px;
+
+  margin-bottom:-10px;
+
+}
+/* =========================
+   BOTTOM ACTION BAR
+========================= */
+
+.bottom-bar{
+
+  display:flex;
+
+  gap:8px;
+
+  margin-top:6px;
+
+}
+
+.mini-about{
+
+  width:35%;
+
+  text-align:center;
+
+  padding:10px 8px;
+
+  border-radius:999px;
+
+  background:
+  rgba(255,255,255,.05);
+
+  border:
+  1px solid rgba(255,255,255,.08);
+
+  color:#cbd5e1;
 
   text-decoration:none;
 
-  font-weight:500;
+  font-size:11px;
+
+  font-weight:600;
+
+  box-sizing:border-box;
+
+}
+
+.mini-complaint{
+
+  width:65%;
+
+  text-align:center;
+
+  padding:10px 8px;
+
+  border-radius:999px;
+
+  background:
+  rgba(255,255,255,.05);
+
+  border:
+  1px solid rgba(255,255,255,.08);
+
+  color:#fbbf24;
+
+  text-decoration:none;
+
+  font-size:11px;
+
+  font-weight:600;
+
+  box-sizing:border-box;
 
 }
