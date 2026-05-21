@@ -154,7 +154,6 @@ input{
 /* =========================
    BUTTONS
 ========================= */
-
 button{
 
   width:100%;
@@ -168,13 +167,17 @@ button{
   border-radius:18px;
 
   background:
-  rgba(255,255,255,.06);
+  linear-gradient(
+    135deg,
+    #8b6b2e,
+    #c29b47
+  );
 
   color:white;
 
   font-size:15px;
 
-  font-weight:600;
+  font-weight:700;
 
   letter-spacing:.5px;
 
@@ -183,10 +186,8 @@ button{
   border:
   1px solid rgba(255,255,255,.08);
 
-  backdrop-filter:blur(12px);
-
   box-shadow:
-  0 8px 20px rgba(0,0,0,.22);
+  0 8px 20px rgba(194,155,71,.18);
 
 }
 
@@ -194,11 +195,7 @@ button:active{
 
   transform:scale(.98);
 
-  background:
-  rgba(255,255,255,.10);
-
-  box-shadow:
-  0 4px 10px rgba(0,0,0,.18);
+  filter:brightness(.92);
 
 }
 
@@ -211,6 +208,12 @@ button:active{
   top:-28px;
 
   margin-bottom:-22px!important;
+
+  background:
+  rgba(255,255,255,.06)!important;
+
+  box-shadow:
+  0 8px 20px rgba(0,0,0,.22)!important;
 
 }
 
@@ -474,7 +477,7 @@ button:active{
 
   font-size:8px;
 
-  color:#64748b;
+  color:#94a3b8;
 
   line-height:1.15;
 
@@ -671,16 +674,19 @@ button:active{
   font-size:16px!important;
 
   background:
-  rgba(255,255,255,.06)!important;
+  rgba(255,255,255,.12)!important;
 
   border:
-  1px solid rgba(255,255,255,.08)!important;
+  1px solid rgba(255,255,255,.20)!important;
 
-  border-radius:12px!important;
+  border-radius:14px!important;
 
-  padding:10px!important;
+  padding:10px 12px!important;
 
   color:white!important;
+
+  box-shadow:
+  0 0 12px rgba(255,255,255,.05);
 
 }
 
@@ -766,7 +772,7 @@ button:not(.swap-btn){
 
   text-align:center;
 
-  padding:10px 8px;
+  padding:7px 8px;
 
   border-radius:999px;
 
@@ -787,14 +793,13 @@ button:not(.swap-btn){
   box-sizing:border-box;
 
 }
-
 .mini-complaint{
 
   width:65%;
 
   text-align:center;
 
-  padding:10px 8px;
+  padding:7px 8px;
 
   border-radius:999px;
 
@@ -813,5 +818,36 @@ button:not(.swap-btn){
   font-weight:600;
 
   box-sizing:border-box;
+
+}
+/* =========================
+   LOCATION & FARE ICONS
+========================= */
+
+.pickup-label::before{
+
+  content:"📍 ";
+
+  color:#22c55e;
+
+}
+
+.destination-label::before{
+
+  content:"📍 ";
+
+  color:#ef4444;
+
+}
+
+.day-option::before{
+
+  content:"☀️ ";
+
+}
+
+.night-option::before{
+
+  content:"🌙 ";
 
 }
