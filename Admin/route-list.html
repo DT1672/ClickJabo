@@ -1,4 +1,4 @@
-```html id="x4rz8p"
+
 <!DOCTYPE html>
 <html>
 
@@ -27,65 +27,27 @@ src="auth-check.js">
 
 <!-- TOP BAR -->
 
+
+<!-- TOP BAR -->
+
 <div class="top-bar">
 
   <button
-  class="menu-btn"
-  onclick="toggleMenu()">
+  class="back-btn"
+  onclick="window.location.href='admin-dashboard.html'">
 
-    ☰
+    ←
 
   </button>
 
-  <span class="top-title">
-
-    ClickJabo Admin
-
-  </span>
-
 </div>
 
-<!-- SIDE MENU -->
-
-<div
-id="sideMenu"
-class="side-menu">
-
-  <a href="admin-dashboard.html">
-
-    Dashboard
-
-  </a>
-
-  <a href="route-list.html">
-
-    Route List
-
-  </a>
-
-  <a href="fare-entry.html">
-
-    Fare Entry
-
-  </a>
-
-  <a href="settings.html">
-
-    Settings
-
-  </a>
-
-  <a href="admin-login.html">
-
-    Logout
-
-  </a>
-
-</div>
 
 <!-- MAIN -->
 
 <div class="dashboard-container">
+
+  <!-- HEADER -->
 
   <div class="dashboard-header">
 
@@ -97,6 +59,12 @@ class="side-menu">
       SEARCH & MANAGE ROUTES
     </p>
 
+    <div class="district-badge">
+
+      DIMAPUR DISTRICT
+
+    </div>
+
   </div>
 
   <!-- SEARCH -->
@@ -106,17 +74,27 @@ class="side-menu">
   id="routeSearch"
   placeholder="Search route...">
 
-  <!-- ROUTE LIST -->
+  <!-- ROUTE SECTION -->
 
-  <div
-  id="routeContainer"
-  class="route-list">
+  <div class="route-section">
+
+    <div class="route-title">
+
+      Available Routes
+
+    </div>
+
+    <div
+    id="routeContainer"
+    class="route-list">
+
+    </div>
 
   </div>
 
 </div>
 
-<!-- FLOAT ADD BUTTON -->
+<!-- FLOAT BUTTON -->
 
 <button
 class="fab"
@@ -126,7 +104,7 @@ onclick="openAddModal()">
 
 </button>
 
-<!-- ADD ROUTE MODAL -->
+<!-- MODAL -->
 
 <div
 id="routeModal"
@@ -208,19 +186,6 @@ import {
 }
 from "https://www.gstatic.com/firebasejs/12.3.0/firebase-firestore.js";
 
-function toggleMenu(){
-
-  document.getElementById(
-    "sideMenu"
-  ).classList.toggle(
-    "active"
-  );
-
-}
-
-window.toggleMenu =
-toggleMenu;
-
 /* =========================
    LOAD ROUTES
 ========================= */
@@ -242,7 +207,34 @@ async function loadRoutes(){
     "routeContainer"
   );
 
-  container.innerHTML = "";
+  container.innerHTML =
+  "";
+
+  if(querySnapshot.empty){
+
+    container.innerHTML = `
+
+    <div class="route-item">
+
+      <div class="route-info">
+
+        <strong>
+          No Routes Found
+        </strong>
+
+        <p>
+          Tap + button to add routes
+        </p>
+
+      </div>
+
+    </div>
+
+    `;
+
+    return;
+
+  }
 
   querySnapshot.forEach(docSnap => {
 
@@ -287,6 +279,7 @@ async function loadRoutes(){
         onclick="
         openEditRoute(
           '${docId}',
+          '${route.district || "Dimapur"}',
           '${route.from}',
           '${route.to}',
           '${route.hireDay}',
@@ -323,11 +316,12 @@ async function loadRoutes(){
 }
 
 /* =========================
-   EDIT ROUTE
+   EDIT
 ========================= */
 
 function openEditRoute(
   docId,
+  district,
   from,
   to,
   hireDay,
@@ -337,10 +331,13 @@ function openEditRoute(
 ){
 
   localStorage.setItem(
+
     "editRoute",
+
     JSON.stringify({
 
       docId,
+      district,
       from,
       to,
       hireDay,
@@ -349,6 +346,7 @@ function openEditRoute(
       sharedNight
 
     })
+
   );
 
   window.location.href =
@@ -360,7 +358,7 @@ window.openEditRoute =
 openEditRoute;
 
 /* =========================
-   DELETE ROUTE
+   DELETE
 ========================= */
 
 async function deleteRoute(docId){
@@ -388,10 +386,6 @@ async function deleteRoute(docId){
 
     );
 
-    alert(
-      "Route deleted successfully."
-    );
-
     loadRoutes();
 
   }
@@ -400,6 +394,10 @@ async function deleteRoute(docId){
 
     console.log(
       error
+    );
+
+    alert(
+      "Unable to delete route."
     );
 
   }
@@ -413,15 +411,19 @@ deleteRoute;
    SEARCH
 ========================= */
 
-document.getElementById(
+document
+.getElementById(
   "routeSearch"
-).addEventListener(
+)
+.addEventListener(
+
   "input",
 
   function(){
 
     const searchText =
-    this.value.toLowerCase();
+    this.value
+    .toLowerCase();
 
     const routeItems =
     document.querySelectorAll(
@@ -431,7 +433,8 @@ document.getElementById(
     routeItems.forEach(item => {
 
       const routeText =
-      item.innerText.toLowerCase();
+      item.innerText
+      .toLowerCase();
 
       if(
         routeText.includes(
@@ -454,13 +457,16 @@ document.getElementById(
     });
 
   }
+
 );
 
 /* =========================
-   OPEN MODAL
+   MODAL
 ========================= */
 
 function openAddModal(){
+
+  clearModal();
 
   document
     .getElementById(
@@ -475,10 +481,6 @@ function openAddModal(){
 
 window.openAddModal =
 openAddModal;
-
-/* =========================
-   CLOSE MODAL
-========================= */
 
 function closeModal(){
 
@@ -497,52 +499,110 @@ window.closeModal =
 closeModal;
 
 /* =========================
+   CLEAR MODAL
+========================= */
+
+function clearModal(){
+
+  document.getElementById(
+    "fromInput"
+  ).value = "";
+
+  document.getElementById(
+    "toInput"
+  ).value = "";
+
+  document.getElementById(
+    "hireDayInput"
+  ).value = "";
+
+  document.getElementById(
+    "hireNightInput"
+  ).value = "";
+
+  document.getElementById(
+    "sharedDayInput"
+  ).value = "";
+
+  document.getElementById(
+    "sharedNightInput"
+  ).value = "";
+
+}
+
+/* =========================
    SAVE ROUTE
 ========================= */
 
 async function saveRoute(){
 
   const from =
-  document.getElementById(
-    "fromInput"
-  ).value;
+  document
+    .getElementById(
+      "fromInput"
+    )
+    .value
+    .trim();
 
   const to =
-  document.getElementById(
-    "toInput"
-  ).value;
+  document
+    .getElementById(
+      "toInput"
+    )
+    .value
+    .trim();
 
   const hireDay =
-  document.getElementById(
-    "hireDayInput"
-  ).value;
+  document
+    .getElementById(
+      "hireDayInput"
+    )
+    .value;
 
   const hireNight =
-  document.getElementById(
-    "hireNightInput"
-  ).value;
+  document
+    .getElementById(
+      "hireNightInput"
+    )
+    .value;
 
   const sharedDay =
-  document.getElementById(
-    "sharedDayInput"
-  ).value;
+  document
+    .getElementById(
+      "sharedDayInput"
+    )
+    .value;
 
   const sharedNight =
-  document.getElementById(
-    "sharedNightInput"
-  ).value;
+  document
+    .getElementById(
+      "sharedNightInput"
+    )
+    .value;
 
   if(
-    !from ||
-    !to ||
-    !hireDay ||
-    !hireNight ||
-    !sharedDay ||
-    !sharedNight
+
+    from === "" ||
+    to === "" ||
+    hireDay === "" ||
+    hireNight === "" ||
+    sharedDay === "" ||
+    sharedNight === ""
+
   ){
 
     alert(
       "Please fill all fields."
+    );
+
+    return;
+
+  }
+
+  if(from === to){
+
+    alert(
+      "Pickup and destination cannot be same."
     );
 
     return;
@@ -560,6 +620,9 @@ async function saveRoute(){
 
       {
 
+        district:
+        "Dimapur",
+
         from,
         to,
         hireDay,
@@ -569,10 +632,6 @@ async function saveRoute(){
 
       }
 
-    );
-
-    alert(
-      "Route added successfully."
     );
 
     closeModal();
@@ -609,4 +668,4 @@ loadRoutes();
 </body>
 
 </html>
-```
+

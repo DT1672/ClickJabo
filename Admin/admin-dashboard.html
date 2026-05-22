@@ -3,208 +3,262 @@
 
 <head>
 
-  <meta name="viewport"
-  content="width=device-width, initial-scale=1.0">
+<meta
+name="viewport"
+content="width=device-width, initial-scale=1.0">
 
-  <title>
-    Admin Dashboard
-  </title>
+<title>
+Admin Dashboard
+</title>
 
-  <link rel="stylesheet"
-  href="admin.css">
+<link
+rel="stylesheet"
+href="admin.css">
 
- <script
+<script
 type="module"
 src="auth-check.js">
-
 </script>
- 
+
 </head>
 
 <body>
-
 <!-- TOP BAR -->
-
 <div class="top-bar">
-
-  <button
-  class="menu-btn"
-  onclick="toggleMenu()">
-
-    ☰
-
-  </button>
 
   <span class="top-title">
 
-    ClickJabo Admin
+    Dashboard
 
   </span>
 
-</div>
+  <div class="top-user">
 
-<!-- SIDE MENU -->
+    dimapur_admin
 
-<div
-id="sideMenu"
-class="side-menu">
-
-  <a href="admin-dashboard.html">
-
-    Dashboard
-
-  </a>
-
-  <a href="route-list.html">
-
-    Route List
-
-  </a>
-
-  <a href="fare-entry.html">
-
-    Fare Entry
-
-  </a>
-
-  <a href="settings.html">
-
-    Settings
-
-  </a>
-
-  <a href="admin-login.html">
-
-    Logout
-
-  </a>
+  </div>
 
 </div>
 
-  <div class="dashboard-container">
+<!-- MAIN -->
 
-    <div class="dashboard-header">
+<div class="dashboard-container">
 
-      <h1>
-        ClickJabo
-      </h1>
+  <!-- HEADER -->
+
+  <div class="dashboard-header">
+
+    <h1>
+      ClickJabo
+    </h1>
+
+    <p>
+      DISTRICT CONTROL PANEL
+    </p>
+
+    <div class="district-badge">
+
+      DISTRICT:
+      DIMAPUR
+
+    </div>
+
+
+  </div>
+
+  <!-- STATS -->
+
+  <div class="stats-grid">
+
+    <div class="stat-card">
+
+      <h2>
+        28
+      </h2>
 
       <p>
-        DIMAPUR ADMIN PANEL
+        Routes
       </p>
 
-      <div class="district-badge">
+    </div>
 
-        DISTRICT:
-        DIMAPUR
+    <div class="stat-card">
 
-      </div>
+      <h2>
+        Online
+      </h2>
+
+      <p>
+        Status
+      </p>
 
     </div>
 
-    <div class="dashboard-card">
+    <div class="stat-card">
 
-      <div class="dashboard-item">
+      <h2>
+        18 May
+      </h2>
 
-        <h2>
-          Active Admin
-        </h2>
-
-        <span>
-          Online
-        </span>
-
-      </div>
-
-      <div class="dashboard-item">
-
-        <h2>
-          District Routes
-        </h2>
-
-        <span>
-          Dimapur
-        </span>
-
-      </div>
-
-      <div class="dashboard-item">
-
-        <h2>
-          Total Routes
-        </h2>
-
-        <span>
-          28
-        </span>
-
-      </div>
-
-      <div class="dashboard-item">
-
-        <h2>
-          Last Updated
-        </h2>
-
-        <span>
-          18 May 2026
-        </span>
-
-      </div>
-
-    </div>
-
-    <div class="dashboard-actions">
-
-      <a
-      href="fare-entry.html"
-      class="action-btn">
-
-        Update Fare
-
-      </a>
-
-      <a
-      href="route-list.html"
-      class="action-btn secondary">
-
-        Route List
-
-      </a>
-
-      <a
-      href="settings.html"
-      class="action-btn secondary">
-
-        Settings
-
-      </a>
-
-      <a
-      href="admin-login.html"
-      class="action-btn logout">
-
-        Logout
-
-      </a>
+      <p>
+        Updated
+      </p>
 
     </div>
 
   </div>
 
-<script>
+  <!-- QUICK ACTIONS -->
 
-function toggleMenu(){
+  <div class="route-section">
 
-  document.getElementById(
-    "sideMenu"
-  ).classList.toggle(
-    "active"
-  );
+    <div class="route-title">
 
-}
+      Quick Actions
 
-</script>
+    </div>
+
+    <div class="route-list">
+
+      <!-- FARE ENTRY -->
+
+      <div class="route-item">
+
+        <div class="route-info">
+
+          <strong>
+            Fare Entry
+          </strong>
+
+          <p>
+            Update district fares
+          </p>
+
+        </div>
+
+        <div class="route-actions">
+
+          <a
+          href="fare-entry.html"
+          class="edit-btn"
+          style="
+          text-decoration:none;
+          text-align:center;">
+
+            Open
+
+          </a>
+
+        </div>
+
+      </div>
+
+      <!-- ROUTE LIST -->
+
+      <div class="route-item">
+
+        <div class="route-info">
+
+          <strong>
+            Route List
+          </strong>
+
+          <p>
+            Search and manage routes
+          </p>
+
+        </div>
+
+        <div class="route-actions">
+
+          <a
+          href="route-list.html"
+          class="edit-btn"
+          style="
+          text-decoration:none;
+          text-align:center;">
+
+            Open
+
+          </a>
+
+        </div>
+
+      </div>
+
+      <!-- SETTINGS -->
+
+      <div class="route-item">
+
+        <div class="route-info">
+
+          <strong>
+            Settings
+          </strong>
+
+          <p>
+            Configure admin panel
+          </p>
+
+        </div>
+
+        <div class="route-actions">
+
+          <a
+          href="settings.html"
+          class="edit-btn"
+          style="
+          text-decoration:none;
+          text-align:center;">
+
+            Open
+
+          </a>
+
+        </div>
+
+      </div>
+
+      <!-- LOGOUT -->
+
+      <div class="route-item">
+
+        <div class="route-info">
+
+          <strong>
+            Logout
+          </strong>
+
+          <p>
+            Exit admin session
+          </p>
+
+        </div>
+
+        <div class="route-actions">
+
+          <a
+          href="admin-login.html"
+          class="delete-btn"
+          style="
+          text-decoration:none;
+          text-align:center;">
+
+            Exit
+
+          </a>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
 
 </body>
+
 </html>
+

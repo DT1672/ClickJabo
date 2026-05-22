@@ -3,218 +3,441 @@
 
 <head>
 
-  <meta name="viewport"
-  content="width=device-width, initial-scale=1.0">
+<meta
+name="viewport"
+content="width=device-width, initial-scale=1.0">
 
-  <title>
-    Fare Entry
-  </title>
+<title>
+Fare Entry
+</title>
 
-  <link rel="stylesheet"
-  href="admin.css">
+<link
+rel="stylesheet"
+href="admin.css">
 
-  <script
-  type="module"
-  src="auth-check.js">
+<style>
 
-  </script>
+.form-input{
+
+  padding:11px 12px !important;
+
+  font-size:12px !important;
+
+  border-radius:14px !important;
+
+}
+
+</style>
+
+<script
+type="module"
+src="auth-check.js">
+</script>
 
 </head>
 
-<body>
-
+<body
+style="
+overflow-y:auto;
+overflow-x:hidden;
+">
 <!-- TOP BAR -->
 
-<div class="top-bar">
+<div
+class="top-bar"
+style="
+display:flex;
+align-items:center;
+justify-content:flex-start;
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:64px;
+padding:0 16px;
+z-index:2000;
+background:rgba(10,15,25,.75);
+backdrop-filter:blur(18px);
+box-sizing:border-box;
+">
 
-  <button
-  class="menu-btn"
-  onclick="toggleMenu()">
+ <button
+class="back-btn"
+onclick="window.location.href='admin-dashboard.html'"
+style="
+display:flex;
+align-items:center;
+justify-content:center;
+position:absolute;
+left:16px;
+width:38px;
+height:38px;
+border:none;
+border-radius:14px;
+background:rgba(255,255,255,.06);
+border:1px solid rgba(255,255,255,.08);
+color:white;
+font-size:18px;
+backdrop-filter:blur(12px);
+cursor:pointer;
+">
 
-    ☰
+  ←
 
-  </button>
-
-  <span class="top-title">
-
-    ClickJabo Admin
-
-  </span>
+</button>
 
 </div>
 
-<!-- SIDE MENU -->
+<!-- MAIN -->
 
-<div
-id="sideMenu"
-class="side-menu">
+<div class="dashboard-container"
+style="
+overflow-y:auto;
+overflow-x:hidden;
+padding:88px 12px 100px 12px;
+">
 
-  <a href="admin-dashboard.html">
+<!-- HEADER -->
 
-    Dashboard
+<div class="dashboard-header"
+style="
+margin-top:8px;
+text-align:center;
+">
 
-  </a>
-
-  <a href="route-list.html">
-
-    Route List
-
-  </a>
-
-  <a href="fare-entry.html">
+  <h1
+  style="
+  font-size:22px;
+  margin-top:10px;
+  margin-bottom:6px;
+  ">
 
     Fare Entry
 
-  </a>
+  </h1>
 
-  <a href="settings.html">
+  <p
+  style="
+  font-size:9px;
+  letter-spacing:2px;
+  margin-top:18px;
+  ">
 
-    Settings
+    DISTRICT ROUTE MANAGEMENT
 
-  </a>
+  </p>
 
-  <a href="admin-login.html">
+  <div
+  class="district-badge"
+  style="
+  margin-top:4px;
+  padding:5px 12px;
+  font-size:9px;
+  ">
 
-    Logout
-
-  </a>
-
-</div>
-
-<div class="dashboard-container">
-
-  <div class="dashboard-header">
-
-    <h1>
-      Fare Entry
-    </h1>
-
-    <p>
-      DIMAPUR ROUTE MANAGEMENT
-    </p>
+    DIMAPUR DISTRICT
 
   </div>
 
-  <div class="dashboard-card">
+</div>
 
-    <!-- SEARCH -->
+  <!-- FORM SECTION -->
 
-    <input
-    type="text"
-    id="routeSearch"
-    placeholder="Search route...">
+  <div class="route-section"
+  style="
+  overflow:visible;
+  flex:none;
+  ">
 
-    <!-- ADD ROUTE -->
+    <div class="route-list">
 
-    <button
-    class="add-route-btn"
-    onclick="clearForm()">
+      <div class="route-item"
+      style="
+      flex-direction:column;
+      align-items:stretch;
+      gap:10px;
+      ">
 
-      + Add New Route
+        <!-- SEARCH -->
 
-    </button>
+        <input
+        type="text"
+        id="routeSearch"
+        placeholder="Search route..."
+        class="form-input">
 
-    <!-- DISTRICT -->
+        <div
+        id="searchResults"
+        class="search-results">
 
-    <label>
-      District
-    </label>
+        </div>
 
-    <select id="district">
+        <!-- ADD NEW -->
 
-      <option value="Dimapur">
-        Dimapur
-      </option>
+        <button
+        class="edit-btn"
+        style="
+        width:100%;
+        padding:9px 12px;
+        font-size:12px;
+        margin-top:-22px;
+        opacity:.88;
+        "
+        onclick="clearForm()">
 
-      <option value="Kohima">
-        Kohima
-      </option>
+          + Add New Route
 
-      <option value="Mokokchung">
-        Mokokchung
-      </option>
+        </button>
 
-    </select>
+        <!-- ROUTE DETAILS -->
 
-    <!-- FORM -->
+        <div>
 
-    <label>
-      From
-    </label>
+          <div class="route-title"
+          style="
+          margin-bottom:12px;
+          ">
 
-    <input
-    type="text"
-    id="fromLocation"
-    placeholder="Enter pickup location">
+            Route Details
 
-    <label>
-      To
-    </label>
+          </div>
 
-    <input
-    type="text"
-    id="toLocation"
-    placeholder="Enter destination">
+          <!-- DISTRICT -->
 
-    <label>
-      Hire Day Fare
-    </label>
+          <label
+          style="
+          font-size:11px;
+          color:#cbd5e1;
+          margin-bottom:4px;
+          display:block;
+          ">
 
-    <input
-    type="number"
-    id="hireDay"
-    placeholder="₹ Enter hire day fare">
+            District
 
-    <label>
-      Hire Night Fare
-    </label>
+          </label>
 
-    <input
-    type="number"
-    id="hireNight"
-    placeholder="₹ Enter hire night fare">
+          <select
+          id="district"
+          style="
+          width:100%;
+          height:32px;
+          padding:0 10px;
+          font-size:11px;
+          border:none;
+          border-radius:12px;
+          background:rgba(255,255,255,.06);
+          border:1px solid rgba(255,255,255,.08);
+          color:white;
+          margin-top:4px;
+          margin-bottom:8px;
+          outline:none;
+          appearance:none;
+          -webkit-appearance:none;
+          -moz-appearance:none;
+          ">
 
-    <label>
-      Shared Day Fare
-    </label>
+            <option value="Dimapur">
+              Dimapur
+            </option>
 
-    <input
-    type="number"
-    id="sharedDay"
-    placeholder="₹ Enter shared day fare">
+            <option value="Kohima">
+              Kohima
+            </option>
 
-    <label>
-      Shared Night Fare
-    </label>
+            <option value="Mokokchung">
+              Mokokchung
+            </option>
 
-    <input
-    type="number"
-    id="sharedNight"
-    placeholder="₹ Enter shared night fare">
+          </select>
 
-    <label>
-      Last Updated
-    </label>
+          <!-- FROM -->
 
-    <input
-    type="date">
+          <label
+          style="
+          font-size:11px;
+          color:#cbd5e1;
+          margin-bottom:4px;
+          display:block;
+          ">
 
-    <!-- SAVE -->
+            From
 
-    <button
-    onclick="saveFare()">
+          </label>
 
-      Save Fare
+          <input
+          type="text"
+          id="fromLocation"
+          placeholder="Enter pickup location"
+          class="form-input">
 
-    </button>
+          <!-- TO -->
 
-    <!-- STATUS -->
+          <label
+          style="
+          font-size:11px;
+          color:#cbd5e1;
+          margin-bottom:4px;
+          display:block;
+          ">
 
-    <div
-    id="editStatus"
-    class="edit-status">
+            To
 
-      Creating New Route
+          </label>
+
+          <input
+          type="text"
+          id="toLocation"
+          placeholder="Enter destination"
+          class="form-input">
+
+        </div>
+
+        <!-- FARE DETAILS -->
+
+        <div>
+
+          <div class="route-title"
+          style="
+          margin-bottom:12px;
+          ">
+
+            Fare Details
+
+          </div>
+
+          <!-- HIRE GRID -->
+
+          <div class="fare-grid">
+
+            <div>
+
+              <label
+              style="
+              font-size:11px;
+              color:#cbd5e1;
+              margin-bottom:4px;
+              display:block;
+              ">
+
+                Hire Day
+
+              </label>
+
+              <input
+              type="number"
+              id="hireDay"
+              placeholder="₹ Day"
+              class="form-input">
+
+            </div>
+
+            <div>
+
+              <label
+              style="
+              font-size:11px;
+              color:#cbd5e1;
+              margin-bottom:4px;
+              display:block;
+              ">
+
+                Hire Night
+
+              </label>
+
+              <input
+              type="number"
+              id="hireNight"
+              placeholder="₹ Night"
+              class="form-input">
+
+            </div>
+
+          </div>
+
+          <!-- SHARED GRID -->
+
+          <div class="fare-grid">
+
+            <div>
+
+              <label
+              style="
+              font-size:11px;
+              color:#cbd5e1;
+              margin-bottom:4px;
+              display:block;
+              ">
+
+                Shared Day
+
+              </label>
+
+              <input
+              type="number"
+              id="sharedDay"
+              placeholder="₹ Day"
+              class="form-input">
+
+            </div>
+
+            <div>
+
+              <label
+              style="
+              font-size:11px;
+              color:#cbd5e1;
+              margin-bottom:4px;
+              display:block;
+              ">
+
+                Shared Night
+
+              </label>
+
+              <input
+              type="number"
+              id="sharedNight"
+              placeholder="₹ Night"
+              class="form-input">
+
+            </div>
+
+          </div>
+
+        </div>
+
+        <!-- SAVE -->
+
+        <button
+        id="saveBtn"
+        class="save-btn"
+        style="
+        width:100%;
+        padding:12px;
+        font-size:14px;
+        "
+        onclick="saveFare()">
+
+          Save Fare
+
+        </button>
+
+        <!-- STATUS -->
+
+        <div
+        id="editStatus"
+        style="
+        text-align:center;
+        color:#94a3b8;
+        font-size:11px;
+        ">
+
+          Creating New Route
+
+        </div>
+
+      </div>
 
     </div>
 
@@ -233,32 +456,28 @@ import {
   collection,
   addDoc,
   updateDoc,
-  doc
+  doc,
+  getDocs
 }
 from "https://www.gstatic.com/firebasejs/12.3.0/firebase-firestore.js";
 
-let editingDocId = null;
+let editingDocId =
+null;
 
-function toggleMenu(){
+/* =========================
+   LOAD EDIT DATA
+========================= */
 
-  document.getElementById(
-    "sideMenu"
-  ).classList.toggle(
-    "active"
-  );
-
-}
-
-window.toggleMenu =
-toggleMenu;
-
-window.onload = function(){
+window.onload =
+function(){
 
   const routeData =
   JSON.parse(
+
     localStorage.getItem(
       "editRoute"
     )
+
   );
 
   if(routeData){
@@ -269,7 +488,8 @@ window.onload = function(){
     document.getElementById(
       "district"
     ).value =
-    routeData.district;
+    routeData.district ||
+    "Dimapur";
 
     document.getElementById(
       "fromLocation"
@@ -306,9 +526,18 @@ window.onload = function(){
     ).innerHTML =
     "Editing Existing Route";
 
+    document.getElementById(
+      "saveBtn"
+    ).innerHTML =
+    "Update Fare";
+
   }
 
-}
+};
+
+/* =========================
+   SAVE
+========================= */
 
 async function saveFare(){
 
@@ -320,12 +549,12 @@ async function saveFare(){
   const from =
   document.getElementById(
     "fromLocation"
-  ).value;
+  ).value.trim();
 
   const to =
   document.getElementById(
     "toLocation"
-  ).value;
+  ).value.trim();
 
   const hireDay =
   document.getElementById(
@@ -345,20 +574,15 @@ async function saveFare(){
   const sharedNight =
   document.getElementById(
     "sharedNight"
-  ).value;  
+  ).value;
 
   if(
 
-    from.trim() === "" ||
-
-    to.trim() === "" ||
-
+    from === "" ||
+    to === "" ||
     hireDay === "" ||
-
     hireNight === "" ||
-
     sharedDay === "" ||
-
     sharedNight === ""
 
   ){
@@ -380,6 +604,17 @@ async function saveFare(){
     return;
 
   }
+
+  const saveBtn =
+  document.getElementById(
+    "saveBtn"
+  );
+
+  saveBtn.innerHTML =
+  "Please wait...";
+
+  saveBtn.disabled =
+  true;
 
   try{
 
@@ -411,8 +646,6 @@ async function saveFare(){
         "Route updated successfully."
       );
 
-      clearForm();
-
     }
 
     else{
@@ -442,9 +675,9 @@ async function saveFare(){
         "Route added successfully."
       );
 
-      clearForm();
-
     }
+
+    clearForm();
 
   }
 
@@ -454,12 +687,31 @@ async function saveFare(){
       error
     );
 
+    alert(
+      "Unable to save route."
+    );
+
   }
 
+  saveBtn.innerHTML =
+  "Save Fare";
+
+  saveBtn.disabled =
+  false;
+
 }
+
+window.saveFare =
+saveFare;
+
+/* =========================
+   CLEAR FORM
+========================= */
+
 function clearForm(){
 
-  editingDocId = null;
+  editingDocId =
+  null;
 
   document.getElementById(
     "district"
@@ -468,32 +720,43 @@ function clearForm(){
 
   document.getElementById(
     "fromLocation"
-  ).value = "";
+  ).value =
+  "";
 
   document.getElementById(
     "toLocation"
-  ).value = "";
+  ).value =
+  "";
 
   document.getElementById(
     "hireDay"
-  ).value = "";
+  ).value =
+  "";
 
   document.getElementById(
     "hireNight"
-  ).value = "";
+  ).value =
+  "";
 
   document.getElementById(
     "sharedDay"
-  ).value = "";
+  ).value =
+  "";
 
   document.getElementById(
     "sharedNight"
-  ).value = "";
+  ).value =
+  "";
 
   document.getElementById(
     "editStatus"
   ).innerHTML =
-  "Creating New Route";
+    "Creating New Route";
+
+  document.getElementById(
+    "saveBtn"
+  ).innerHTML =
+    "Save Fare";
 
   localStorage.removeItem(
     "editRoute"
@@ -504,16 +767,165 @@ function clearForm(){
 window.clearForm =
 clearForm;
 
-function deleteRoute(){
+/* =========================
+   LIVE ROUTE SEARCH
+========================= */
 
-  alert(
-    "Route deleted successfully."
-  );
+window.addEventListener(
 
-}
+  "DOMContentLoaded",
 
-window.deleteRoute =
-deleteRoute;
+  function(){
+
+    const routeSearch =
+    document.getElementById(
+      "routeSearch"
+    );
+
+    routeSearch.addEventListener(
+
+      "input",
+
+      async function(){
+
+        const searchText =
+        this.value
+        .trim()
+        .toLowerCase();
+
+        const resultsBox =
+        document.getElementById(
+          "searchResults"
+        );
+
+        resultsBox.innerHTML =
+        "";
+
+        if(searchText === ""){
+
+          return;
+
+        }
+
+        const querySnapshot =
+        await getDocs(
+
+          collection(
+            db,
+            "routes"
+          )
+
+        );
+
+        querySnapshot.forEach(docSnap => {
+
+          const route =
+          docSnap.data();
+
+          const docId =
+          docSnap.id;
+
+          const routeText =
+
+          `${route.from} ${route.to}`
+          .toLowerCase();
+
+          if(
+            routeText.includes(
+              searchText
+            )
+          ){
+
+            const result =
+            document.createElement(
+              "div"
+            );
+
+            result.className =
+            "search-result-item";
+
+            result.innerHTML = `
+
+              <strong>
+                ${route.from}
+                →
+                ${route.to}
+              </strong>
+
+            `;
+
+            result.onclick =
+            function(){
+
+              editingDocId =
+              docId;
+
+              document.getElementById(
+                "district"
+              ).value =
+              route.district ||
+              "Dimapur";
+
+              document.getElementById(
+                "fromLocation"
+              ).value =
+              route.from;
+
+              document.getElementById(
+                "toLocation"
+              ).value =
+              route.to;
+
+              document.getElementById(
+                "hireDay"
+              ).value =
+              route.hireDay;
+
+              document.getElementById(
+                "hireNight"
+              ).value =
+              route.hireNight;
+
+              document.getElementById(
+                "sharedDay"
+              ).value =
+              route.sharedDay;
+
+              document.getElementById(
+                "sharedNight"
+              ).value =
+              route.sharedNight;
+
+              document.getElementById(
+                "editStatus"
+              ).innerHTML =
+              "Editing Existing Route";
+
+              document.getElementById(
+                "saveBtn"
+              ).innerHTML =
+              "Update Fare";
+
+              resultsBox.innerHTML =
+              "";
+
+            };
+
+            resultsBox.appendChild(
+              result
+            );
+
+          }
+
+        });
+
+      }
+
+    );
+
+  }
+
+);
 
 </script>
 

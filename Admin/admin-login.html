@@ -3,56 +3,97 @@
 
 <head>
 
-  <meta name="viewport"
-  content="width=device-width, initial-scale=1.0">
+<meta
+name="viewport"
+content="width=device-width, initial-scale=1.0">
 
-  <title>
-    ClickJabo Admin
-  </title>
+<title>
+ClickJabo Admin
+</title>
 
-  <link rel="stylesheet"
-  href="admin.css">
+<link
+rel="stylesheet"
+href="admin.css">
 
 </head>
 
 <body>
 
+<!-- LOGIN CONTAINER -->
+
 <div class="login-container">
 
+  <!-- LOGIN CARD -->
+
   <div class="login-card">
+
+    <!-- LOGO -->
+
+
+<div class="login-logo">
+
+  <img
+  src="icon.png"
+  alt="ClickJabo Logo">
+
+</div>
+
+
+
+    <!-- TITLE -->
 
     <h1>
       ClickJabo
     </h1>
 
     <p class="sub-text">
-      ADMIN ACCESS
+
+      DISTRICT ADMIN ACCESS
+
     </p>
 
-    <label>
-      Email
-    </label>
+    <!-- FORM -->
 
-    <input
-    type="email"
-    id="adminEmail"
-    placeholder="Enter admin email">
+    <div class="login-form">
 
-    <label>
-      Password
-    </label>
+      
+<label>
+  User ID
+</label>
 
-    <input
-    type="password"
-    id="adminPassword"
-    placeholder="Enter password">
+<input
+type="text"
+id="adminEmail"
+placeholder="Enter user ID"
+autocomplete="off">
 
-    <button
-    onclick="loginAdmin()">
+      <label>
+        Password
+      </label>
 
-      Login
+      <input
+      type="password"
+      id="adminPassword"
+      placeholder="Enter password"
+      autocomplete="off">
 
-    </button>
+      <button
+      id="loginBtn"
+      onclick="loginAdmin()">
+
+        Login
+
+      </button>
+
+    </div>
+
+    <!-- FOOTER -->
+
+    <div class="login-footer">
+
+      Secure District Control Panel
+
+    </div>
 
   </div>
 
@@ -75,12 +116,36 @@ async function loginAdmin(){
   const email =
   document.getElementById(
     "adminEmail"
-  ).value;
+  ).value.trim();
 
   const password =
   document.getElementById(
     "adminPassword"
-  ).value;
+  ).value.trim();
+
+  const loginBtn =
+  document.getElementById(
+    "loginBtn"
+  );
+
+  if(
+    email === "" ||
+    password === ""
+  ){
+
+    alert(
+      "Please enter email and password."
+    );
+
+    return;
+
+  }
+
+  loginBtn.innerText =
+  "Please wait...";
+
+  loginBtn.disabled =
+  true;
 
   try{
 
@@ -90,10 +155,6 @@ async function loginAdmin(){
       email,
       password
 
-    );
-
-    alert(
-      "Login successful."
     );
 
     window.location.href =
@@ -111,6 +172,12 @@ async function loginAdmin(){
       error
     );
 
+    loginBtn.innerText =
+    "Login";
+
+    loginBtn.disabled =
+    false;
+
   }
 
 }
@@ -123,3 +190,4 @@ loginAdmin;
 </body>
 
 </html>
+

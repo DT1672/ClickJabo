@@ -3,21 +3,22 @@
 
 <head>
 
-  <meta name="viewport"
-  content="width=device-width, initial-scale=1.0">
+<meta
+name="viewport"
+content="width=device-width, initial-scale=1.0">
 
-  <title>
-    Admin Settings
-  </title>
+<title>
+Admin Settings
+</title>
 
-  <link rel="stylesheet"
-  href="admin.css">
+<link
+rel="stylesheet"
+href="admin.css">
 
-  <script
-  type="module"
-  src="auth-check.js">
-
-  </script>
+<script
+type="module"
+src="auth-check.js">
+</script>
 
 </head>
 
@@ -28,61 +29,20 @@
 <div class="top-bar">
 
   <button
-  class="menu-btn"
-  onclick="toggleMenu()">
+  class="back-btn"
+  onclick="window.location.href='admin-dashboard.html'">
 
-    ☰
+    ←
 
   </button>
 
-  <span class="top-title">
-
-    ClickJabo Admin
-
-  </span>
-
 </div>
 
-<!-- SIDE MENU -->
-
-<div
-id="sideMenu"
-class="side-menu">
-
-  <a href="admin-dashboard.html">
-
-    Dashboard
-
-  </a>
-
-  <a href="route-list.html">
-
-    Route List
-
-  </a>
-
-  <a href="fare-entry.html">
-
-    Fare Entry
-
-  </a>
-
-  <a href="settings.html">
-
-    Settings
-
-  </a>
-
-  <a href="#"
-  onclick="logoutAdmin()">
-
-    Logout
-
-  </a>
-
-</div>
+<!-- MAIN -->
 
 <div class="dashboard-container">
+
+  <!-- HEADER -->
 
   <div class="dashboard-header">
 
@@ -94,56 +54,136 @@ class="side-menu">
       ADMIN ACCOUNT SETTINGS
     </p>
 
+    <div class="district-badge">
+
+      SECURE ACCESS PANEL
+
+    </div>
+
   </div>
 
-  <div class="dashboard-card">
+  <!-- SETTINGS SECTION -->
 
-    <label>
-      Admin Username
-    </label>
+  <div class="route-section">
 
-    <input
-    type="text"
-    value="dimapuradmin">
+    <div class="route-title">
 
-    <label>
-      Current Password
-    </label>
+      Account Configuration
 
-    <input
-    type="password"
-    placeholder="Enter current password">
+    </div>
 
-    <label>
-      New Password
-    </label>
+    <div class="route-list">
 
-    <input
-    type="password"
-    placeholder="Enter new password">
+      <div class="route-item">
 
-    <label>
-      Confirm New Password
-    </label>
+        <div class="route-info">
 
-    <input
-    type="password"
-    placeholder="Confirm new password">
+          <strong>
+            Admin Username
+          </strong>
 
-    <button
-    onclick="saveSettings()">
+          <p>
+            District administrator account
+          </p>
 
-      Save Settings
+        </div>
 
-    </button>
+      </div>
 
-    <button
-    class="logout-btn"
-    onclick="logoutAdmin()">
+      <input
+      type="text"
+      id="adminUsername"
+      value="dimapuradmin"
+      autocomplete="off">
 
-      Logout
+      <div class="route-item">
 
-    </button>
+        <div class="route-info">
+
+          <strong>
+            Current Password
+          </strong>
+
+          <p>
+            Verify current account password
+          </p>
+
+        </div>
+
+      </div>
+
+      <input
+      type="password"
+      id="currentPassword"
+      placeholder="Enter current password"
+      autocomplete="off">
+
+      <div class="route-item">
+
+        <div class="route-info">
+
+          <strong>
+            New Password
+          </strong>
+
+          <p>
+            Create a secure new password
+          </p>
+
+        </div>
+
+      </div>
+
+      <input
+      type="password"
+      id="newPassword"
+      placeholder="Enter new password"
+      autocomplete="off">
+
+      <div class="route-item">
+
+        <div class="route-info">
+
+          <strong>
+            Confirm Password
+          </strong>
+
+          <p>
+            Re-enter new password
+          </p>
+
+        </div>
+
+      </div>
+
+      <input
+      type="password"
+      id="confirmPassword"
+      placeholder="Confirm new password"
+      autocomplete="off">
+
+      <!-- SAVE BUTTON -->
+
+      <button
+      id="saveBtn"
+      class="save-settings-btn"
+      onclick="saveSettings()">
+
+        Save Settings
+
+      </button>
+
+      <!-- LOGOUT BUTTON -->
+
+      <button
+      class="logout-btn"
+      onclick="logoutAdmin()">
+
+        Logout
+
+      </button>
+
+    </div>
 
   </div>
 
@@ -161,31 +201,114 @@ import {
 }
 from "https://www.gstatic.com/firebasejs/12.3.0/firebase-auth.js";
 
-function toggleMenu(){
-
-  document.getElementById(
-    "sideMenu"
-  ).classList.toggle(
-    "active"
-  );
-
-}
-
-window.toggleMenu =
-toggleMenu;
+/* =========================
+   SAVE SETTINGS
+========================= */
 
 function saveSettings(){
 
-  alert(
-    "Settings updated successfully."
+  const currentPassword =
+  document.getElementById(
+    "currentPassword"
+  ).value.trim();
+
+  const newPassword =
+  document.getElementById(
+    "newPassword"
+  ).value.trim();
+
+  const confirmPassword =
+  document.getElementById(
+    "confirmPassword"
+  ).value.trim();
+
+  if(
+
+    currentPassword === "" ||
+    newPassword === "" ||
+    confirmPassword === ""
+
+  ){
+
+    alert(
+      "Please fill all fields."
+    );
+
+    return;
+
+  }
+
+  if(
+    newPassword !==
+    confirmPassword
+  ){
+
+    alert(
+      "New passwords do not match."
+    );
+
+    return;
+
+  }
+
+  const saveBtn =
+  document.getElementById(
+    "saveBtn"
   );
+
+  saveBtn.innerHTML =
+  "Please wait...";
+
+  saveBtn.disabled =
+  true;
+
+  setTimeout(() => {
+
+    alert(
+      "Settings updated successfully."
+    );
+
+    document.getElementById(
+      "currentPassword"
+    ).value = "";
+
+    document.getElementById(
+      "newPassword"
+    ).value = "";
+
+    document.getElementById(
+      "confirmPassword"
+    ).value = "";
+
+    saveBtn.innerHTML =
+    "Save Settings";
+
+    saveBtn.disabled =
+    false;
+
+  },1000);
 
 }
 
 window.saveSettings =
 saveSettings;
 
+/* =========================
+   LOGOUT
+========================= */
+
 async function logoutAdmin(){
+
+  const confirmLogout =
+  confirm(
+    "Logout from admin panel?"
+  );
+
+  if(!confirmLogout){
+
+    return;
+
+  }
 
   try{
 
@@ -204,6 +327,10 @@ async function logoutAdmin(){
       error
     );
 
+    alert(
+      "Unable to logout."
+    );
+
   }
 
 }
@@ -216,3 +343,4 @@ logoutAdmin;
 </body>
 
 </html>
+
