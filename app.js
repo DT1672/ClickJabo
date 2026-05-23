@@ -5,7 +5,9 @@ from "./firebase-config.js";
 
 import {
   collection,
-  getDocs
+  getDocs,
+  doc,
+  getDoc
 }
 from "https://www.gstatic.com/firebasejs/12.3.0/firebase-firestore.js";
 
@@ -134,6 +136,48 @@ async function loadRoutesFromFirestore(){
 }
 
 loadRoutesFromFirestore();
+loadHelpline();
+
+async function loadHelpline(){
+
+  try{
+
+    const settingsDoc =
+    await getDoc(
+
+      doc(
+        db,
+        "settings",
+        "Dimapur"
+      )
+
+    );
+
+    if(settingsDoc.exists()){
+
+      const settings =
+      settingsDoc.data();
+
+      const helplineBtn =
+      document.getElementById(
+        "helplineBtn"
+      );
+
+      helplineBtn.href =
+
+      `tel:${settings.helpline}`;
+
+    }
+
+  }
+
+  catch(error){
+
+    console.log(error);
+
+  }
+
+}
 
 function loadLocations(){
 
