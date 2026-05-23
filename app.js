@@ -73,13 +73,61 @@ async function loadRoutesFromFirestore(){
 
   routes = [];
 
+  let latestDate =
+  null;
+
   querySnapshot.forEach(doc => {
 
     routes.push(
       doc.data()
     );
 
+    const route =
+    doc.data();
+
+    if(route.updatedAt){
+
+      const routeDate =
+      route.updatedAt.toDate();
+
+      if(
+
+        !latestDate ||
+
+        routeDate > latestDate
+
+      ){
+
+        latestDate =
+        routeDate;
+
+      }
+
+    }
+
   });
+
+  if(latestDate){
+
+    document.getElementById(
+      "lastUpdated"
+    ).innerHTML =
+
+    latestDate.toLocaleDateString(
+
+      "en-GB",
+
+      {
+
+        day:"2-digit",
+        month:"short",
+        year:"numeric"
+
+      }
+
+    );
+
+  }
 
   loadLocations();
 
