@@ -16,6 +16,10 @@ Route List
 rel="stylesheet"
 href="admin.css">
 
+<link
+rel="manifest"
+href="admin-manifest.json">
+
 <style>
 
 .modal-card input{
@@ -316,7 +320,7 @@ onclick="saveRoute()">
 import {
   db
 }
-from "../firebase-config.js";
+from "./firebase-config.js";
 
 import {
   collection,

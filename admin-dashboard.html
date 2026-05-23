@@ -15,6 +15,10 @@ Admin Dashboard
 rel="stylesheet"
 href="admin.css">
 
+<link
+rel="manifest"
+href="admin-manifest.json">
+
 <script
 type="module"
 src="auth-check.js">
@@ -268,7 +272,7 @@ src="auth-check.js">
 import {
   db
 }
-from "../firebase-config.js";
+from "./firebase-config.js";
 
 import {
   collection,

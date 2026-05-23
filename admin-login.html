@@ -15,6 +15,10 @@ ClickJabo Admin
 rel="stylesheet"
 href="admin.css">
 
+<link
+rel="manifest"
+href="admin-manifest.json">
+
 </head>
 
 <body>
@@ -33,7 +37,7 @@ href="admin.css">
 <div class="login-logo">
 
   <img
-  src="icon.png"
+  src="admin-icon.png"
   alt="ClickJabo Logo">
 
 </div>
@@ -104,7 +108,7 @@ autocomplete="off">
 import {
   auth
 }
-from "../firebase-config.js";
+from "./firebase-config.js";
 
 import {
   signInWithEmailAndPassword
