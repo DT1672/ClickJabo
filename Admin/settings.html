@@ -26,11 +26,42 @@ src="auth-check.js">
 
 <!-- TOP BAR -->
 
-<div class="top-bar">
+<div
+class="top-bar"
+style="
+display:flex;
+align-items:center;
+justify-content:flex-start;
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:64px;
+padding:0 16px;
+z-index:2000;
+background:rgba(10,15,25,.75);
+backdrop-filter:blur(18px);
+box-sizing:border-box;
+">
 
   <button
   class="back-btn"
-  onclick="window.location.href='admin-dashboard.html'">
+  onclick="window.location.href='admin-dashboard.html'"
+  style="
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  width:38px;
+  height:38px;
+  border:none;
+  border-radius:14px;
+  background:rgba(255,255,255,.06);
+  border:1px solid rgba(255,255,255,.08);
+  color:white;
+  font-size:18px;
+  backdrop-filter:blur(12px);
+  cursor:pointer;
+  ">
 
     ←
 
@@ -40,23 +71,53 @@ src="auth-check.js">
 
 <!-- MAIN -->
 
-<div class="dashboard-container">
+<div
+class="dashboard-container"
+style="
+padding:88px 12px 100px 12px;
+overflow-y:auto;
+overflow-x:hidden;
+box-sizing:border-box;
+">
 
   <!-- HEADER -->
 
-  <div class="dashboard-header">
+  <div
+  class="dashboard-header"
+  style="
+  text-align:center;
+  ">
 
-    <h1>
+    <h1
+    style="
+    font-size:22px;
+    margin-bottom:6px;
+    ">
+
       Settings
+
     </h1>
 
-    <p>
-      ADMIN ACCOUNT SETTINGS
+    <p
+    style="
+    font-size:9px;
+    letter-spacing:2px;
+    margin-top:4px;
+    ">
+
+      DISTRICT CONTROL SETTINGS
+
     </p>
 
-    <div class="district-badge">
+    <div
+    class="district-badge"
+    style="
+    margin-top:16px;
+    padding:5px 12px;
+    font-size:9px;
+    ">
 
-      SECURE ACCESS PANEL
+      DIMAPUR DISTRICT
 
     </div>
 
@@ -64,124 +125,92 @@ src="auth-check.js">
 
   <!-- SETTINGS SECTION -->
 
-  <div class="route-section">
+  <div
+  class="route-section"
+  style="
+  margin-top:16px;
+  ">
 
     <div class="route-title">
 
-      Account Configuration
+      District Configuration
 
     </div>
 
     <div class="route-list">
 
-      <div class="route-item">
+      <div
+      class="route-item"
+      style="
+      flex-direction:column;
+      align-items:stretch;
+      gap:10px;
+      ">
 
         <div class="route-info">
 
           <strong>
-            Admin Username
+            District Helpline
           </strong>
 
           <p>
-            District administrator account
+            Public complaint and support number
           </p>
 
         </div>
 
-      </div>
+        <input
+        type="text"
+        id="helplineNumber"
+        placeholder="Enter helpline number"
+        autocomplete="off"
+        style="
+        width:100%;
+        padding:11px 12px;
+        border:none;
+        border-radius:14px;
+        background:rgba(255,255,255,.06);
+        border:1px solid rgba(255,255,255,.08);
+        color:white;
+        font-size:12px;
+        outline:none;
+        box-sizing:border-box;
+        ">
 
-      <input
-      type="text"
-      id="adminUsername"
-      value="dimapuradmin"
-      autocomplete="off">
+        <!-- SAVE BUTTON -->
 
-      <div class="route-item">
+        <button
+        id="saveBtn"
+        class="save-settings-btn"
+        style="
+        width:100%;
+        padding:12px;
+        border-radius:14px;
+        font-size:13px;
+        "
+        onclick="saveSettings()">
 
-        <div class="route-info">
+          Save Settings
 
-          <strong>
-            Current Password
-          </strong>
+        </button>
 
-          <p>
-            Verify current account password
-          </p>
+        <!-- LOGOUT BUTTON -->
 
-        </div>
+        <button
+        class="logout-btn"
+        style="
+        width:100%;
+        padding:12px;
+        border-radius:14px;
+        font-size:13px;
+        "
+        onclick="logoutAdmin()">
 
-      </div>
+          Logout
 
-      <input
-      type="password"
-      id="currentPassword"
-      placeholder="Enter current password"
-      autocomplete="off">
-
-      <div class="route-item">
-
-        <div class="route-info">
-
-          <strong>
-            New Password
-          </strong>
-
-          <p>
-            Create a secure new password
-          </p>
-
-        </div>
-
-      </div>
-
-      <input
-      type="password"
-      id="newPassword"
-      placeholder="Enter new password"
-      autocomplete="off">
-
-      <div class="route-item">
-
-        <div class="route-info">
-
-          <strong>
-            Confirm Password
-          </strong>
-
-          <p>
-            Re-enter new password
-          </p>
-
-        </div>
+        </button>
 
       </div>
-
-      <input
-      type="password"
-      id="confirmPassword"
-      placeholder="Confirm new password"
-      autocomplete="off">
-
-      <!-- SAVE BUTTON -->
-
-      <button
-      id="saveBtn"
-      class="save-settings-btn"
-      onclick="saveSettings()">
-
-        Save Settings
-
-      </button>
-
-      <!-- LOGOUT BUTTON -->
-
-      <button
-      class="logout-btn"
-      onclick="logoutAdmin()">
-
-        Logout
-
-      </button>
 
     </div>
 
@@ -192,7 +221,8 @@ src="auth-check.js">
 <script type="module">
 
 import {
-  auth
+  auth,
+  db
 }
 from "../firebase-config.js";
 
@@ -201,50 +231,72 @@ import {
 }
 from "https://www.gstatic.com/firebasejs/12.3.0/firebase-auth.js";
 
+import {
+  doc,
+  getDoc,
+  setDoc
+}
+from "https://www.gstatic.com/firebasejs/12.3.0/firebase-firestore.js";
+
+/* =========================
+   LOAD SETTINGS
+========================= */
+
+async function loadSettings(){
+
+  try{
+
+    const settingsDoc =
+    await getDoc(
+
+      doc(
+        db,
+        "settings",
+        "Dimapur"
+      )
+
+    );
+
+    if(settingsDoc.exists()){
+
+      const settings =
+      settingsDoc.data();
+
+      document.getElementById(
+        "helplineNumber"
+      ).value =
+
+      settings.helpline || "";
+
+    }
+
+  }
+
+  catch(error){
+
+    console.log(error);
+
+  }
+
+}
+
+loadSettings();
+
 /* =========================
    SAVE SETTINGS
 ========================= */
 
-function saveSettings(){
+async function saveSettings(){
 
-  const currentPassword =
+  const helpline =
   document.getElementById(
-    "currentPassword"
+    "helplineNumber"
   ).value.trim();
 
-  const newPassword =
-  document.getElementById(
-    "newPassword"
-  ).value.trim();
-
-  const confirmPassword =
-  document.getElementById(
-    "confirmPassword"
-  ).value.trim();
-
-  if(
-
-    currentPassword === "" ||
-    newPassword === "" ||
-    confirmPassword === ""
-
-  ){
+  if(helpline === ""){
 
     alert(
-      "Please fill all fields."
-    );
-
-    return;
-
-  }
-
-  if(
-    newPassword !==
-    confirmPassword
-  ){
-
-    alert(
-      "New passwords do not match."
+      "Please enter helpline number."
     );
 
     return;
@@ -262,31 +314,52 @@ function saveSettings(){
   saveBtn.disabled =
   true;
 
-  setTimeout(() => {
+  try{
+
+    await setDoc(
+
+      doc(
+        db,
+        "settings",
+        "Dimapur"
+      ),
+
+      {
+
+        helpline:
+        helpline
+
+      },
+
+      {
+
+        merge:true
+
+      }
+
+    );
 
     alert(
       "Settings updated successfully."
     );
 
-    document.getElementById(
-      "currentPassword"
-    ).value = "";
+  }
 
-    document.getElementById(
-      "newPassword"
-    ).value = "";
+  catch(error){
 
-    document.getElementById(
-      "confirmPassword"
-    ).value = "";
+    console.log(error);
 
-    saveBtn.innerHTML =
-    "Save Settings";
+    alert(
+      "Unable to save settings."
+    );
 
-    saveBtn.disabled =
-    false;
+  }
 
-  },1000);
+  saveBtn.innerHTML =
+  "Save Settings";
+
+  saveBtn.disabled =
+  false;
 
 }
 
@@ -343,4 +416,3 @@ logoutAdmin;
 </body>
 
 </html>
-
