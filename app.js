@@ -178,33 +178,51 @@ async function loadRoutesFromFirestore(){
 
 }
 
-if(isOffline){
+const offlineRoutes =
 
-  const offlineRoutes =
+localStorage.getItem(
+  "offlineRoutes"
+);
 
-  localStorage.getItem(
-    "offlineRoutes"
-  );
+window.addEventListener(
 
-  if(offlineRoutes){
+  "load",
 
-    routes =
+  () => {
 
-    JSON.parse(
+    if(
+
+      isOffline &&
+
       offlineRoutes
-    );
 
-    loadLocations();
+    ){
+
+      routes =
+
+      JSON.parse(
+        offlineRoutes
+      );
+
+      setTimeout(() => {
+
+        loadLocations();
+
+      }, 500);
+
+    }
+
+    else{
+
+      loadRoutesFromFirestore();
+
+    }
 
   }
 
-}
+);
 
-else{
 
-  loadRoutesFromFirestore();
-
-}
 loadHelpline();
 
 async function loadHelpline(){
