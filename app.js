@@ -10,9 +10,12 @@ import {
   collection,
   getDocs,
   doc,
-  getDoc
+  getDoc,
+  query,
+  where
 }
 from "https://www.gstatic.com/firebasejs/12.3.0/firebase-firestore.js";
+
 
 let routes = [];
 
@@ -63,6 +66,68 @@ districtSelect.addEventListener(
 
   }
 );
+
+async function loadDistricts(){
+
+  try{
+
+    const districtSnapshot =
+    await getDocs(
+
+      collection(
+        db,
+        "districts"
+      )
+
+    );
+
+    districtSelect.innerHTML =
+    "";
+
+    districtSnapshot.forEach(docSnap => {
+
+      const district =
+      docSnap.data();
+
+      if(district.isActive){
+
+        districtSelect.innerHTML += `
+
+<option value="${district.name}">
+  ${district.name}
+</option>
+
+        `;
+
+      }
+
+    });
+
+    const savedDistrict =
+    localStorage.getItem(
+      "selectedDistrict"
+    );
+
+    if(savedDistrict){
+
+      districtSelect.value =
+      savedDistrict;
+
+    }
+
+  }
+
+  catch(error){
+
+    console.log(
+      "Unable to load districts",
+      error
+    );
+
+  }
+
+}
+
 async function loadRoutesFromFirestore(){
 
   try{
@@ -79,37 +144,11 @@ async function loadRoutesFromFirestore(){
 
     routes = [];
 
-    let latestDate =
-    null;
-
     querySnapshot.forEach(doc => {
 
       routes.push(
         doc.data()
       );
-
-      const route =
-      doc.data();
-
-      if(route.updatedAt){
-
-        const routeDate =
-        route.updatedAt.toDate();
-
-        if(
-
-          !latestDate ||
-
-          routeDate > latestDate
-
-        ){
-
-          latestDate =
-          routeDate;
-
-        }
-
-      }
 
     });
 
@@ -122,28 +161,6 @@ async function loadRoutesFromFirestore(){
       JSON.stringify(routes)
 
     );
-
-    if(latestDate){
-
-      document.getElementById(
-        "lastUpdated"
-      ).innerHTML =
-
-      latestDate.toLocaleDateString(
-
-        "en-GB",
-
-        {
-
-          day:"2-digit",
-          month:"short",
-          year:"numeric"
-
-        }
-
-      );
-
-    }
 
     loadLocations();
 
@@ -177,50 +194,6 @@ async function loadRoutesFromFirestore(){
   }
 
 }
-
-const offlineRoutes =
-
-localStorage.getItem(
-  "offlineRoutes"
-);
-
-window.addEventListener(
-
-  "load",
-
-  () => {
-
-    if(
-
-      isOffline &&
-
-      offlineRoutes
-
-    ){
-
-      routes =
-
-      JSON.parse(
-        offlineRoutes
-      );
-
-      setTimeout(() => {
-
-        loadLocations();
-
-      }, 500);
-
-    }
-
-    else{
-
-      loadRoutesFromFirestore();
-
-    }
-
-  }
-
-);
 
 
 loadHelpline();
@@ -467,7 +440,6 @@ new Choices("#to", {
 });
 
 }
-
 function checkFare(){
 
   let from =
@@ -549,6 +521,20 @@ function checkFare(){
       route.to === to
 
     ){
+
+      /* LAST UPDATED */
+
+      if(route.updatedAt){
+
+        document.getElementById(
+          "lastUpdated"
+        ).innerText =
+
+        route.updatedAt
+        .toDate()
+        .toLocaleString();
+
+      }
 
       if(
         rideType ===
@@ -695,9 +681,6 @@ function checkFare(){
 
 }
 
-window.checkFare =
-checkFare;
-
 function swapLocations(){
 
   let fromValue =
@@ -722,6 +705,53 @@ function swapLocations(){
 
 window.swapLocations =
 swapLocations;
+
+const offlineRoutes =
+
+localStorage.getItem(
+  "offlineRoutes"
+);
+
+window.addEventListener(
+
+  "load",
+
+  async () => {
+
+    if(
+
+      isOffline &&
+
+      offlineRoutes
+
+    ){
+
+      routes =
+
+      JSON.parse(
+        offlineRoutes
+      );
+
+      setTimeout(() => {
+
+        loadLocations();
+
+      }, 500);
+
+    }
+
+    else{
+
+      await loadDistricts();
+
+      loadRoutesFromFirestore();
+
+    }
+
+  }
+
+);
+
 
 window.addEventListener(
   "load",

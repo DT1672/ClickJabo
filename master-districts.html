@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+<meta
+name="viewport"
+content="width=device-width, initial-scale=1.0">
+
+<meta
+name="theme-color"
+content="#020817">
+
+<title>
+Master Districts
+</title>
+
+<link
+rel="stylesheet"
+href="admin.css">
+
+<style>
+
+body{
+
+  margin:0;
+  background:#020817;
+  color:white;
+  font-family:sans-serif;
+
+}
+
+.district-grid{
+
+  display:grid;
+
+  grid-template-columns:
+  repeat(
+    auto-fit,
+    minmax(320px,1fr)
+  );
+
+  gap:18px;
+
+}
+
+.district-card{
+
+  background:
+  rgba(255,255,255,.04);
+
+  border:
+  1px solid rgba(255,255,255,.06);
+
+  border-radius:24px;
+
+  padding:20px;
+
+  backdrop-filter:blur(16px);
+
+  min-height:180px;
+
+  display:flex;
+  flex-direction:column;
+  justify-content:space-between;
+
+  box-sizing:border-box;
+
+}
+
+.open-btn{
+
+  height:40px;
+  padding:0 18px;
+  border:none;
+  border-radius:14px;
+
+  background:
+  linear-gradient(
+    135deg,
+    #8b6b2e,
+    #c29b47
+  );
+
+  color:white;
+
+  font-size:12px;
+  font-weight:600;
+
+  cursor:pointer;
+
+}
+
+.add-btn{
+
+  height:44px;
+  padding:0 22px;
+  border:none;
+  border-radius:14px;
+
+  background:
+  linear-gradient(
+    135deg,
+    #8b6b2e,
+    #c29b47
+  );
+
+  color:white;
+
+  font-size:12px;
+  font-weight:600;
+
+  cursor:pointer;
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+<!-- TOP BAR -->
+
+<div
+style="
+display:flex;
+align-items:center;
+justify-content:space-between;
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:70px;
+padding:0 24px;
+box-sizing:border-box;
+z-index:2000;
+background:rgba(10,15,25,.78);
+backdrop-filter:blur(18px);
+border-bottom:1px solid rgba(255,255,255,.05);
+">
+
+<div
+style="
+display:flex;
+align-items:center;
+gap:14px;
+">
+
+<button
+onclick="
+window.location.href=
+'master-dashboard.html'
+"
+style="
+width:40px;
+height:40px;
+border:none;
+border-radius:14px;
+background:rgba(255,255,255,.06);
+border:1px solid rgba(255,255,255,.08);
+color:white;
+font-size:18px;
+cursor:pointer;
+">
+
+←
+
+</button>
+
+<div>
+
+<div
+style="
+font-size:18px;
+font-weight:700;
+">
+
+District Management
+
+</div>
+
+<div
+style="
+font-size:11px;
+color:#94a3b8;
+margin-top:2px;
+letter-spacing:1px;
+">
+
+MASTER CONTROL PANEL
+
+</div>
+
+</div>
+
+</div>
+
+<button
+class="add-btn">
+
+Add District
+
+</button>
+
+</div>
+
+<!-- MAIN -->
+
+<div
+style="
+width:100%;
+max-width:1450px;
+margin:auto;
+padding:100px 24px 60px 24px;
+box-sizing:border-box;
+">
+
+<!-- STATS -->
+
+<div
+style="
+display:grid;
+grid-template-columns:
+repeat(
+auto-fit,
+minmax(220px,1fr)
+);
+gap:16px;
+margin-bottom:24px;
+">
+
+<div
+class="district-card"
+style="
+min-height:110px;
+">
+
+<div
+style="
+font-size:12px;
+color:#94a3b8;
+">
+
+Total Districts
+
+</div>
+
+<div
+style="
+font-size:32px;
+font-weight:700;
+margin-top:12px;
+">
+
+1
+
+</div>
+
+</div>
+
+<div
+class="district-card"
+style="
+min-height:110px;
+">
+
+<div
+style="
+font-size:12px;
+color:#94a3b8;
+">
+
+Active Districts
+
+</div>
+
+<div
+style="
+font-size:32px;
+font-weight:700;
+margin-top:12px;
+">
+
+1
+
+</div>
+
+</div>
+
+<div
+class="district-card"
+style="
+min-height:110px;
+">
+
+<div
+style="
+font-size:12px;
+color:#94a3b8;
+">
+
+Temporary Surges
+
+</div>
+
+<div
+style="
+font-size:32px;
+font-weight:700;
+margin-top:12px;
+">
+
+0
+
+</div>
+
+</div>
+
+</div>
+
+<!-- DISTRICT GRID -->
+
+<div
+id="districtGrid"
+class="district-grid">
+
+</div>
+
+</div>
+
+<script type="module">
+
+import {
+  db
+}
+from "./firebase-config.js";
+
+import {
+  collection,
+  getDocs
+}
+from "https://www.gstatic.com/firebasejs/12.3.0/firebase-firestore.js";
+
+/* =========================
+   LOAD DISTRICTS
+========================= */
+
+async function loadDistricts(){
+
+  const container =
+  document.getElementById(
+    "districtGrid"
+  );
+
+  container.innerHTML =
+  "";
+
+  const querySnapshot =
+  await getDocs(
+
+    collection(
+      db,
+      "districts"
+    )
+
+  );
+
+  querySnapshot.forEach(docSnap => {
+
+    const district =
+    docSnap.data();
+
+    container.innerHTML += `
+
+<div
+class="district-card">
+
+<div>
+
+<div
+style="
+display:flex;
+justify-content:space-between;
+align-items:flex-start;
+margin-bottom:14px;
+">
+
+<div>
+
+<div
+style="
+font-size:20px;
+font-weight:700;
+">
+
+${district.name}
+
+</div>
+
+<div
+style="
+font-size:11px;
+color:#94a3b8;
+margin-top:4px;
+">
+
+District Administration
+
+</div>
+
+</div>
+
+<div
+style="
+padding:6px 10px;
+border-radius:999px;
+background:rgba(34,197,94,.12);
+border:1px solid rgba(34,197,94,.24);
+font-size:10px;
+color:#86efac;
+">
+
+${district.status || "Active"}
+
+</div>
+
+</div>
+
+<div
+style="
+display:grid;
+grid-template-columns:
+1fr 1fr;
+gap:12px;
+margin-top:20px;
+">
+
+<div
+style="
+background:rgba(255,255,255,.03);
+padding:12px;
+border-radius:16px;
+">
+
+<div
+style="
+font-size:10px;
+color:#94a3b8;
+margin-bottom:6px;
+">
+
+Routes
+
+</div>
+
+<div
+style="
+font-size:20px;
+font-weight:700;
+">
+
+0
+
+</div>
+
+</div>
+
+<div
+style="
+background:rgba(255,255,255,.03);
+padding:12px;
+border-radius:16px;
+">
+
+<div
+style="
+font-size:10px;
+color:#94a3b8;
+margin-bottom:6px;
+">
+
+Admins
+
+</div>
+
+<div
+style="
+font-size:20px;
+font-weight:700;
+">
+
+1
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+<div
+style="
+display:flex;
+justify-content:flex-end;
+margin-top:24px;
+">
+
+<button
+class="open-btn">
+
+Open District
+
+</button>
+
+</div>
+
+</div>
+
+    `;
+
+  });
+
+}
+
+loadDistricts();
+
+</script>
+
+</body>
+
+</html>

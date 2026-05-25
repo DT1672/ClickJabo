@@ -42,11 +42,12 @@ type="module"
 src="auth-check.js">
 </script>
 
+
+
 </head>
 
 <body
 
-<body
 style="
 overflow-y:auto;
 overflow-x:hidden;
@@ -69,7 +70,6 @@ class="loader-overlay">
   </div>
 
 </div>
-
 
 <!-- TOP BAR -->
 
@@ -120,7 +120,8 @@ cursor:pointer;
 
 <!-- MAIN -->
 
-<div class="dashboard-container"
+<div
+class="dashboard-container"
 style="
 overflow-y:auto;
 overflow-x:hidden;
@@ -128,6 +129,7 @@ padding:88px 12px 100px 12px;
 ">
 
 <!-- HEADER -->
+
 
 <div class="dashboard-header"
 style="
@@ -488,7 +490,8 @@ import {
   addDoc,
   updateDoc,
   doc,
-  getDocs
+  getDocs,
+  serverTimestamp
 }
 from "https://www.gstatic.com/firebasejs/12.3.0/firebase-firestore.js";
 
@@ -674,8 +677,8 @@ async function saveFare(){
           sharedDay,
           sharedNight,
 
-          updatedAt:
-          new Date()
+        updatedAt:
+serverTimestamp()
 
         }
 
@@ -686,38 +689,53 @@ async function saveFare(){
       );
 
     }
+else{
 
-    else{
+  await addDoc(
 
-      await addDoc(
+    collection(
+      db,
+      "routes"
+    ),
 
-        collection(
-          db,
-          "routes"
-        ),
+    {
 
-        {
+      district,
+      from,
+      to,
 
-          district,
-          from,
-          to,
-          hireDay,
-          hireNight,
-          sharedDay,
-          sharedNight,
+      hireDay:
+      Number(hireDay),
 
-          updatedAt:
-          new Date()
+      hireNight:
+      Number(hireNight),
 
-        }
+      sharedDay:
+      Number(sharedDay),
 
-      );
+      sharedNight:
+      Number(sharedNight),
 
-      alert(
-        "Route added successfully."
-      );
+      tempHireDay:0,
+      tempHireNight:0,
+      tempSharedDay:0,
+      tempSharedNight:0,
+
+      createdAt:
+      serverTimestamp(),
+
+      updatedAt:
+      serverTimestamp()
 
     }
+
+  );
+
+  alert(
+    "Route added successfully."
+  );
+
+}
 
     clearForm();
 
@@ -970,6 +988,7 @@ window.addEventListener(
   }
 
 );
+
 
 </script>
 

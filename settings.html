@@ -276,6 +276,60 @@ box-sizing:border-box;
         box-sizing:border-box;
         ">
 
+<!-- PASSWORD -->
+
+<div class="route-info"
+style="
+margin-top:4px;
+">
+
+  <strong>
+    Change Password
+  </strong>
+
+  <p>
+    Update administrator password
+  </p>
+
+</div>
+
+<input
+type="password"
+id="newPassword"
+placeholder="Enter new password"
+autocomplete="off"
+style="
+width:100%;
+padding:11px 12px;
+border:none;
+border-radius:14px;
+background:rgba(255,255,255,.06);
+border:1px solid rgba(255,255,255,.08);
+color:white;
+font-size:12px;
+outline:none;
+box-sizing:border-box;
+">
+
+<input
+type="password"
+id="confirmPassword"
+placeholder="Confirm new password"
+autocomplete="off"
+style="
+width:100%;
+padding:11px 12px;
+margin-top:10px;
+border:none;
+border-radius:14px;
+background:rgba(255,255,255,.06);
+border:1px solid rgba(255,255,255,.08);
+color:white;
+font-size:12px;
+outline:none;
+box-sizing:border-box;
+">
+
         <!-- SAVE BUTTON -->
 
         <button
@@ -332,6 +386,16 @@ import {
   setDoc
 }
 from "https://www.gstatic.com/firebasejs/12.3.0/firebase-firestore.js";
+
+import {
+  auth
+}
+from "./firebase-config.js";
+
+import {
+  updatePassword
+}
+from "https://www.gstatic.com/firebasejs/12.3.0/firebase-auth.js";
 
 /* =========================
    LOAD SETTINGS
@@ -394,12 +458,56 @@ async function saveSettings(){
     "helplineNumber"
   ).value.trim();
 
+  const newPassword =
+document.getElementById(
+  "newPassword"
+).value.trim();
+
+const confirmPassword =
+document.getElementById(
+  "confirmPassword"
+).value.trim();
+
 if(helpline === ""){
 
   hideLoader();
 
   alert(
     "Please enter helpline number."
+  );
+
+  return;
+
+}
+if(
+
+  newPassword !== "" &&
+
+  newPassword.length < 6
+
+){
+
+  hideLoader();
+
+  alert(
+    "Password must be at least 6 characters."
+  );
+
+  return;
+
+}
+
+if(
+
+  newPassword !==
+  confirmPassword
+
+){
+
+  hideLoader();
+
+  alert(
+    "Passwords do not match."
   );
 
   return;
@@ -419,32 +527,53 @@ if(helpline === ""){
 
   try{
 
-    await setDoc(
+await setDoc(
 
-      doc(
-        db,
-        "settings",
-        "Dimapur"
-      ),
+  doc(
+    db,
+    "settings",
+    "Dimapur"
+  ),
 
-      {
+  {
 
-        helpline:
-        helpline
+    districtName:
+    "Dimapur",
 
-      },
+    helpline:
+    helpline,
 
-      {
+    isActive:
+    true,
 
-        merge:true
+    updatedAt:
+    new Date()
 
-      }
+  },
 
-    );
+  {
 
-    alert(
-      "Settings updated successfully."
-    );
+    merge:true
+
+  }
+
+);
+
+if(newPassword !== ""){
+
+  await updatePassword(
+
+    auth.currentUser,
+
+    newPassword
+
+  );
+
+}
+
+alert(
+  "Settings updated successfully."
+);
 
   }
 

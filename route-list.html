@@ -367,7 +367,8 @@ import {
   getDocs,
   deleteDoc,
   doc,
-  addDoc
+  addDoc,
+  serverTimestamp
 }
 from "https://www.gstatic.com/firebasejs/12.3.0/firebase-firestore.js";
 
@@ -855,18 +856,36 @@ async function saveRoute(){
 
       {
 
-        district:
-        "Dimapur",
+  district:
+  "Dimapur",
 
-        from,
-        to,
-        hireDay,
-        hireNight,
-        sharedDay,
-        sharedNight
+  from,
+  to,
 
-      }
+  hireDay:
+  Number(hireDay),
 
+  hireNight:
+  Number(hireNight),
+
+  sharedDay:
+  Number(sharedDay),
+
+  sharedNight:
+  Number(sharedNight),
+
+  tempHireDay:0,
+  tempHireNight:0,
+  tempSharedDay:0,
+  tempSharedNight:0,
+
+  createdAt:
+  serverTimestamp(),
+
+  updatedAt:
+  serverTimestamp()
+
+}
     );
 
     closeModal();

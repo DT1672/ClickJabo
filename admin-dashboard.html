@@ -28,14 +28,10 @@ type="module"
 src="auth-check.js">
 </script>
 
-
-
 </head>
-
 
 <body>
 
-  
 <div
 id="loadingOverlay"
 class="loader-overlay">
@@ -223,36 +219,36 @@ class="loader-overlay">
 
       <!-- BULK UPDATE -->
 
-<div class="route-item">
+      <div class="route-item">
 
-  <div class="route-info">
+        <div class="route-info">
 
-    <strong>
-      Bulk Update
-    </strong>
+          <strong>
+            Bulk Update
+          </strong>
 
-    <p>
-      Apply district-wide fare adjustments
-    </p>
+          <p>
+            Apply district-wide fare adjustments
+          </p>
 
-  </div>
+        </div>
 
-  <div class="route-actions">
+        <div class="route-actions">
 
-    <a
-    href="admin-bulk-update.html"
-    class="edit-btn"
-    style="
-    text-decoration:none;
-    text-align:center;">
+          <a
+          href="admin-bulk-update.html"
+          class="edit-btn"
+          style="
+          text-decoration:none;
+          text-align:center;">
 
-      Open
+            Open
 
-    </a>
+          </a>
 
-  </div>
+        </div>
 
-</div>
+      </div>
 
       <!-- SETTINGS -->
 
@@ -327,7 +323,8 @@ class="loader-overlay">
 </div>
 
 <script type="module">
-  function showLoader(){
+
+function showLoader(){
 
   document.getElementById(
     "loadingOverlay"
@@ -361,6 +358,7 @@ from "https://www.gstatic.com/firebasejs/12.3.0/firebase-firestore.js";
 ========================= */
 
 async function loadDashboardStats(){
+
   showLoader();
 
   const querySnapshot =

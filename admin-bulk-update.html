@@ -516,9 +516,33 @@ import {
   collection,
   getDocs,
   updateDoc,
-  doc
+  doc,
+  addDoc,
+  serverTimestamp
 }
 from "https://www.gstatic.com/firebasejs/12.3.0/firebase-firestore.js";
+
+async function addActivityLog(text){
+
+  await addDoc(
+
+    collection(
+      db,
+      "activityLogs"
+    ),
+
+    {
+
+      action:text,
+
+      createdAt:
+      serverTimestamp()
+
+    }
+
+  );
+
+}
 
 /* =========================
    SHOW LOADER
@@ -957,7 +981,12 @@ async function applyBulkUpdate(){
         docId
       );
 
-      let updateData = {};
+     let updateData = {
+
+  updatedAt:
+  serverTimestamp()
+
+};
 
       if(updateMode === "temporary"){
 
@@ -1064,6 +1093,13 @@ async function applyBulkUpdate(){
 
     hideLoader();
 
+    addActivityLog(
+
+  selectedRoutes.length +
+  " routes updated"
+
+);
+
     alert(
       "Bulk update applied successfully."
     );
@@ -1088,10 +1124,6 @@ async function applyBulkUpdate(){
 
 window.applyBulkUpdate =
 applyBulkUpdate;
-
-/* =========================
-   REMOVE TEMPORARY
-========================= */
 
 /* =========================
    REMOVE TEMPORARY
@@ -1146,20 +1178,31 @@ async function removeTemporaryAdjustments(){
 
         docRef,
 
-        {
+        
+{
 
-          tempHireDay:0,
-          tempHireNight:0,
-          tempSharedDay:0,
-          tempSharedNight:0
+  tempHireDay:0,
+  tempHireNight:0,
+  tempSharedDay:0,
+  tempSharedNight:0,
 
-        }
+  updatedAt:
+  serverTimestamp()
+
+}
 
       );
 
     }
 
     hideLoader();
+
+    addActivityLog(
+
+  selectedRoutes.length +
+  " temporary adjustments removed"
+
+);
 
     alert(
       "Selected temporary adjustments removed."

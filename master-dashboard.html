@@ -1,0 +1,650 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+<meta
+name="viewport"
+content="width=device-width, initial-scale=1.0">
+
+<meta
+name="theme-color"
+content="#020817">
+
+<title>
+Master Dashboard
+</title>
+
+<link
+rel="stylesheet"
+href="admin.css">
+
+<style>
+
+body{
+
+  margin:0;
+  background:#020817;
+  color:white;
+  font-family:sans-serif;
+  overflow:hidden;
+
+}
+
+.master-layout{
+
+  display:flex;
+  width:100%;
+  height:100vh;
+
+}
+
+/* SIDEBAR */
+
+.sidebar{
+
+  width:260px;
+  background:#0f172a;
+  border-right:1px solid rgba(255,255,255,.06);
+  display:flex;
+  flex-direction:column;
+  padding:24px 18px;
+  box-sizing:border-box;
+
+}
+
+.logo{
+
+  font-size:24px;
+  font-weight:700;
+  margin-bottom:40px;
+
+}
+
+.sidebar button{
+
+  width:100%;
+  height:48px;
+  border:none;
+  border-radius:14px;
+  margin-bottom:12px;
+  background:rgba(255,255,255,.05);
+  color:white;
+  font-size:14px;
+  text-align:left;
+  padding:0 16px;
+  cursor:pointer;
+
+}
+
+.sidebar button:hover{
+
+  background:rgba(255,255,255,.10);
+
+}
+
+/* MAIN */
+
+.main-panel{
+
+  flex:1;
+  overflow-y:auto;
+  padding:28px;
+  box-sizing:border-box;
+
+}
+
+.top-header{
+
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:24px;
+
+}
+
+.page-title{
+
+  font-size:28px;
+  font-weight:700;
+
+}
+
+.status-box{
+
+  padding:10px 16px;
+  border-radius:14px;
+  background:rgba(34,197,94,.15);
+  color:#4ade80;
+  font-size:13px;
+
+}
+
+/* CARDS */
+
+.card-grid{
+
+  display:grid;
+  grid-template-columns:
+  repeat(auto-fit,minmax(240px,1fr));
+  gap:18px;
+
+}
+
+.dashboard-card{
+
+  background:#0f172a;
+  border:1px solid rgba(255,255,255,.06);
+  border-radius:22px;
+  padding:22px;
+
+}
+
+.dashboard-card h3{
+
+  margin:0;
+  font-size:14px;
+  color:#94a3b8;
+
+}
+
+.dashboard-card h1{
+
+  margin-top:12px;
+  margin-bottom:0;
+  font-size:34px;
+
+}
+
+</style>
+
+</head>
+
+
+<body>
+
+<div class="master-layout">
+
+  <!-- SIDEBAR -->
+
+  <div class="sidebar">
+
+    <div class="logo">
+
+      ClickJabo
+
+    </div>
+
+    <button>
+
+      Dashboard
+
+    </button>
+
+    <button>
+
+      Districts
+
+    </button>
+
+    <button>
+
+      Admin Accounts
+
+    </button>
+
+    <button>
+
+      Fare Analytics
+
+    </button>
+
+    <button>
+
+      Reports
+
+    </button>
+
+    <button>
+
+      Logout
+
+    </button>
+
+  </div>
+
+  <!-- MAIN -->
+
+  <div class="main-panel">
+
+    <div class="top-header">
+
+      <div class="page-title">
+
+        Master Dashboard
+
+      </div>
+
+      <div class="status-box">
+
+        System Active
+
+      </div>
+
+    </div>
+
+    <div class="card-grid">
+
+      <!-- DISTRICTS -->
+
+      <div class="dashboard-card">
+
+        <h3>
+          Total Districts
+        </h3>
+
+        <h1 id="districtCount">
+          0
+        </h1>
+
+      </div>
+
+      <!-- ROUTES -->
+
+      <div class="dashboard-card">
+
+        <h3>
+          Total Routes
+        </h3>
+
+        <h1 id="routeCount">
+          0
+        </h1>
+
+      </div>
+
+      <!-- ADMINS -->
+
+      <div class="dashboard-card">
+
+        <h3>
+          Active Admins
+        </h3>
+
+        <h1 id="adminCount">
+          0
+        </h1>
+
+      </div>
+
+      <!-- SYSTEM -->
+
+      <div class="dashboard-card">
+
+        <h3>
+          System Status
+        </h3>
+
+        <h1>
+          LIVE
+        </h1>
+
+      </div>
+
+      <!-- TEMPORARY -->
+
+      <div class="dashboard-card">
+
+        <h3>
+          Temporary Adjustments
+        </h3>
+
+        <h1 id="temporaryCount">
+          0
+        </h1>
+
+      </div>
+
+      <!-- SPONSORS -->
+
+      <div class="dashboard-card">
+
+        <h3>
+          Sponsors
+        </h3>
+
+        <h1 id="sponsorCount">
+          0
+        </h1>
+
+      </div>
+
+      <!-- NOTICES -->
+
+      <div class="dashboard-card">
+
+        <h3>
+          Notices
+        </h3>
+
+        <h1 id="noticeCount">
+          0
+        </h1>
+
+      </div>
+
+      <!-- LAST SYNC -->
+
+      <div class="dashboard-card">
+
+        <h3>
+          Last Sync
+        </h3>
+
+        <h1 id="lastSync">
+          --
+        </h1>
+
+      </div>
+
+      <div class="dashboard-card">
+
+  <h3>
+    Recent Activities
+  </h3>
+
+  <div
+    id="activityList"
+    style="
+      margin-top:18px;
+      display:flex;
+      flex-direction:column;
+      gap:12px;
+    "
+  >
+
+    <div
+      style="
+        color:#94a3b8;
+        font-size:14px;
+      "
+    >
+
+      No recent activity
+
+    </div>
+
+  </div>
+
+</div>
+    </div>
+
+  </div>
+
+</div>
+
+<script type="module">
+
+import {
+  db
+}
+from "./firebase-config.js";
+
+import {
+  collection,
+  onSnapshot,
+  query,
+  orderBy,
+  limit,
+  addDoc,
+  serverTimestamp
+}
+from "https://www.gstatic.com/firebasejs/12.3.0/firebase-firestore.js";
+
+async function addActivityLog(text){
+
+  await addDoc(
+
+    collection(
+      db,
+      "activityLogs"
+    ),
+
+    {
+
+      action:text,
+
+      createdAt:
+      serverTimestamp()
+
+    }
+
+  );
+
+}
+
+/* =========================
+   LOAD DASHBOARD COUNTS
+========================= */
+
+async function loadDashboardCounts(){
+
+  try{
+
+    /* DISTRICTS */
+
+    document.getElementById(
+      "districtCount"
+    ).innerText = 1;
+
+
+/* ROUTES */
+
+onSnapshot(
+
+  collection(
+    db,
+    "routes"
+  ),
+
+  (snapshot)=>{
+
+    document.getElementById(
+      "routeCount"
+    ).innerText =
+
+    snapshot.size;
+
+  }
+
+);
+
+
+ /* ADMINS */
+
+onSnapshot(
+
+  collection(
+    db,
+    "districtAdmins"
+  ),
+
+  (snapshot)=>{
+
+    document.getElementById(
+      "adminCount"
+    ).innerText =
+
+    snapshot.size;
+
+  }
+
+);
+
+/* TEMPORARY ADJUSTMENTS */
+
+onSnapshot(
+
+  collection(
+    db,
+    "temporaryAdjustments"
+  ),
+
+  (snapshot)=>{
+
+    document.getElementById(
+      "temporaryCount"
+    ).innerText =
+
+    snapshot.size;
+
+  }
+
+);
+
+  /* SPONSORS */
+
+onSnapshot(
+
+  collection(
+    db,
+    "sponsors"
+  ),
+
+  (snapshot)=>{
+
+    document.getElementById(
+      "sponsorCount"
+    ).innerText =
+
+    snapshot.size;
+
+  }
+
+);  
+
+   /* NOTICES */
+
+onSnapshot(
+
+  collection(
+    db,
+    "notices"
+  ),
+
+  (snapshot)=>{
+
+    document.getElementById(
+      "noticeCount"
+    ).innerText =
+
+    snapshot.size;
+
+  }
+
+);
+
+/* RECENT ACTIVITIES */
+
+const activityQuery = query(
+
+  collection(
+    db,
+    "activityLogs"
+  ),
+
+  orderBy(
+    "createdAt",
+    "desc"
+  ),
+
+  limit(5)
+
+);
+
+onSnapshot(
+
+  activityQuery,
+
+  (snapshot)=>{
+
+    const activityList =
+    document.getElementById(
+      "activityList"
+    );
+
+    activityList.innerHTML = "";
+
+
+
+    if(snapshot.empty){
+
+      activityList.innerHTML =
+
+      `
+      <div
+      style="
+        color:#94a3b8;
+        font-size:14px;
+      ">
+        No recent activity
+      </div>
+      `;
+
+      return;
+
+    }
+
+
+
+    snapshot.forEach((doc)=>{
+
+      const data = doc.data();
+
+      activityList.innerHTML +=
+
+      `
+      <div
+      style="
+        background:rgba(255,255,255,.04);
+        padding:12px;
+        border-radius:12px;
+        font-size:14px;
+      ">
+
+        ${data.action || "Activity"}
+
+      </div>
+      `;
+
+    });
+
+  }
+
+);
+
+    /* LAST SYNC */
+
+    document.getElementById(
+      "lastSync"
+    ).innerText =
+
+    new Date().toLocaleTimeString();
+
+  }
+
+  catch(error){
+
+    console.log(error);
+
+  }
+
+}
+
+loadDashboardCounts();
+
+</script>
+
+</body>
+
+</html>
