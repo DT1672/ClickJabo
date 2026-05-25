@@ -77,6 +77,8 @@ overflow-y:auto;
 overflow-x:hidden;
 ">
 
+<!-- LOADER -->
+
 <div
 id="loadingOverlay"
 class="loader-overlay">
@@ -91,11 +93,58 @@ class="loader-overlay">
 
 </div>
 
+<!-- TOP BAR -->
+
+<div
+class="top-bar"
+style="
+display:flex;
+align-items:center;
+justify-content:flex-start;
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:64px;
+padding:0 16px;
+z-index:2000;
+background:rgba(10,15,25,.75);
+backdrop-filter:blur(18px);
+box-sizing:border-box;
+">
+
+  <button
+  class="back-btn"
+  onclick="window.location.href='admin-dashboard.html'"
+  style="
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  width:38px;
+  height:38px;
+  border:none;
+  border-radius:14px;
+  background:rgba(255,255,255,.06);
+  border:1px solid rgba(255,255,255,.08);
+  color:white;
+  font-size:18px;
+  backdrop-filter:blur(12px);
+  cursor:pointer;
+  ">
+
+    ←
+
+  </button>
+
+</div>
+
+<!-- MAIN -->
+
 <div
 class="dashboard-container"
 style="
 min-height:100dvh;
-padding:30px 12px 140px 12px;
+padding:88px 12px 140px 12px;
 overflow-y:auto;
 overflow-x:hidden;
 box-sizing:border-box;
@@ -427,30 +476,34 @@ updateSelectedCount;
 
 async function loadBulkRoutes(){
 
-  const querySnapshot =
-  await getDocs(
+  showLoader();
 
-    collection(
-      db,
-      "routes"
-    )
+  try{
 
-  );
+    const querySnapshot =
+    await getDocs(
 
-  const container =
-  document.getElementById(
-    "bulkRouteList"
-  );
+      collection(
+        db,
+        "routes"
+      )
 
-  container.innerHTML =
-  "";
+    );
 
-  querySnapshot.forEach(docSnap => {
+    const container =
+    document.getElementById(
+      "bulkRouteList"
+    );
 
-    const route =
-    docSnap.data();
+    container.innerHTML =
+    "";
 
-    container.innerHTML += `
+    querySnapshot.forEach(docSnap => {
+
+      const route =
+      docSnap.data();
+
+      container.innerHTML += `
 
 <label
 class="route-checkbox-item">
@@ -467,9 +520,23 @@ ${route.to}
 
 </label>
 
-    `;
+      `;
 
-  });
+    });
+
+  }
+
+  catch(error){
+
+    console.log(error);
+
+    alert(
+      "Unable to load routes."
+    );
+
+  }
+
+  hideLoader();
 
 }
 
