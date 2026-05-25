@@ -23,6 +23,45 @@ href="admin.css">
 rel="manifest"
 href="admin-manifest.json">
 
+<style>
+
+.form-input{
+
+  width:100%;
+  padding:11px 12px;
+  border:none;
+  border-radius:16px;
+  background:rgba(255,255,255,.06);
+  border:1px solid rgba(255,255,255,.08);
+  color:white;
+  font-size:12px;
+  outline:none;
+  box-sizing:border-box;
+
+}
+
+.form-input option{
+
+  background:#0f172a;
+  color:white;
+
+}
+
+.route-checkbox-item{
+
+  display:flex;
+  align-items:center;
+  gap:10px;
+  padding:10px;
+  border-radius:14px;
+  margin-bottom:8px;
+  background:rgba(255,255,255,.04);
+  font-size:12px;
+
+}
+
+</style>
+
 <script
 type="module"
 src="auth-check.js">
@@ -30,7 +69,13 @@ src="auth-check.js">
 
 </head>
 
-<body>
+<body
+
+style="
+min-height:100dvh;
+overflow-y:auto;
+overflow-x:hidden;
+">
 
 <div
 id="loadingOverlay"
@@ -49,7 +94,11 @@ class="loader-overlay">
 <div
 class="dashboard-container"
 style="
-padding:30px 12px 100px 12px;
+min-height:100dvh;
+padding:30px 12px 140px 12px;
+overflow-y:auto;
+overflow-x:hidden;
+box-sizing:border-box;
 ">
 
 <h1
@@ -73,6 +122,9 @@ margin-bottom:24px;
 DISTRICT FARE CONTROL
 
 </p>
+
+<!-- UPDATE MODE -->
+
 <p
 style="
 font-size:12px;
@@ -100,6 +152,9 @@ class="form-input">
 </option>
 
 </select>
+
+<!-- ACTION -->
+
 <p
 style="
 font-size:12px;
@@ -128,6 +183,9 @@ class="form-input">
 </option>
 
 </select>
+
+<!-- AMOUNT -->
+
 <p
 style="
 font-size:12px;
@@ -144,6 +202,9 @@ type="number"
 id="adjustmentAmount"
 placeholder="Enter amount"
 class="form-input">
+
+<!-- APPLY TO -->
+
 <div
 style="
 margin-top:18px;
@@ -206,25 +267,99 @@ Shared Night
 </label>
 
 </div>
+
+<!-- SEARCH -->
+
+<input
+type="text"
+id="routeSearch"
+placeholder="Search route..."
+class="form-input"
+style="
+margin-top:24px;
+margin-bottom:14px;
+">
+
+<!-- SELECT ALL -->
+
+<div
+style="
+display:flex;
+align-items:center;
+justify-content:space-between;
+margin-bottom:16px;
+font-size:12px;
+">
+
+<label
+style="
+display:flex;
+align-items:center;
+gap:10px;
+">
+
+<input
+type="checkbox"
+id="selectAllRoutes">
+
+Select All Routes
+
+</label>
+
+<div
+id="selectedCount"
+style="
+color:#94a3b8;
+font-size:11px;
+">
+
+0 Selected
+
+</div>
+
+</div>
+
+<!-- ROUTE LIST -->
+
+<div
+id="bulkRouteList"
+style="
+margin-top:10px;
+max-height:260px;
+overflow-y:auto;
+padding:4px;
+border-radius:18px;
+background:rgba(255,255,255,.03);
+border:1px solid rgba(255,255,255,.06);
+">
+
+</div>
+
+<!-- BUTTONS -->
+
 <button
 onclick="applyBulkUpdate()"
 style="
 margin-top:24px;
+width:100%;
 ">
 
 Apply Bulk Update
 
 </button>
+
 <button
 onclick="removeTemporaryAdjustments()"
 style="
 margin-top:12px;
+width:100%;
 background:#7f1d1d;
 ">
 
 Remove Temporary Adjustments
 
 </button>
+
 </div>
 
 <script type="module">
@@ -241,6 +376,7 @@ import {
   doc
 }
 from "https://www.gstatic.com/firebasejs/12.3.0/firebase-firestore.js";
+
 /* =========================
    SHOW LOADER
 ========================= */
@@ -262,6 +398,160 @@ function hideLoader(){
   "none";
 
 }
+
+/* =========================
+   UPDATE SELECT COUNT
+========================= */
+
+function updateSelectedCount(){
+
+  const selected =
+  document.querySelectorAll(
+    ".routeCheckbox:checked"
+  ).length;
+
+  document.getElementById(
+    "selectedCount"
+  ).innerText =
+
+  selected + " Selected";
+
+}
+
+window.updateSelectedCount =
+updateSelectedCount;
+
+/* =========================
+   LOAD ROUTES
+========================= */
+
+async function loadBulkRoutes(){
+
+  const querySnapshot =
+  await getDocs(
+
+    collection(
+      db,
+      "routes"
+    )
+
+  );
+
+  const container =
+  document.getElementById(
+    "bulkRouteList"
+  );
+
+  container.innerHTML =
+  "";
+
+  querySnapshot.forEach(docSnap => {
+
+    const route =
+    docSnap.data();
+
+    container.innerHTML += `
+
+<label
+class="route-checkbox-item">
+
+<input
+type="checkbox"
+class="routeCheckbox"
+value="${docSnap.id}"
+onchange="updateSelectedCount()">
+
+${route.from}
+→
+${route.to}
+
+</label>
+
+    `;
+
+  });
+
+}
+
+/* =========================
+   SELECT ALL
+========================= */
+
+document.getElementById(
+  "selectAllRoutes"
+).addEventListener(
+
+  "change",
+
+  function(){
+
+    const checked =
+    this.checked;
+
+    document
+    .querySelectorAll(
+      ".routeCheckbox"
+    )
+    .forEach(box => {
+
+      box.checked =
+      checked;
+
+    });
+
+    updateSelectedCount();
+
+  }
+
+);
+
+/* =========================
+   SEARCH
+========================= */
+
+document.getElementById(
+  "routeSearch"
+).addEventListener(
+
+  "input",
+
+  function(){
+
+    const search =
+    this.value.toLowerCase();
+
+    const labels =
+    document.querySelectorAll(
+      "#bulkRouteList label"
+    );
+
+    labels.forEach(label => {
+
+      if(
+
+        label.innerText
+        .toLowerCase()
+        .includes(search)
+
+      ){
+
+        label.style.display =
+        "flex";
+
+      }
+
+      else{
+
+        label.style.display =
+        "none";
+
+      }
+
+    });
+
+  }
+
+);
 
 /* =========================
    APPLY BULK UPDATE
@@ -344,7 +634,39 @@ async function applyBulkUpdate(){
 
     );
 
-    for(const docSnap of querySnapshot.docs){
+    const selectedRoutes =
+
+    document.querySelectorAll(
+      ".routeCheckbox:checked"
+    );
+
+    if(selectedRoutes.length === 0){
+
+      hideLoader();
+
+      alert(
+        "Please select routes."
+      );
+
+      return;
+
+    }
+
+    for(const selected of selectedRoutes){
+
+      const docId =
+      selected.value;
+
+      const docSnap =
+      querySnapshot.docs.find(
+        d => d.id === docId
+      );
+
+      if(!docSnap){
+
+        continue;
+
+      }
 
       const route =
       docSnap.data();
@@ -353,14 +675,10 @@ async function applyBulkUpdate(){
       doc(
         db,
         "routes",
-        docSnap.id
+        docId
       );
 
       let updateData = {};
-
-      /* =========================
-         TEMPORARY MODE
-      ========================= */
 
       if(updateMode === "temporary"){
 
@@ -368,13 +686,9 @@ async function applyBulkUpdate(){
 
           updateData.tempHireDay =
           Math.max(
-
             0,
-
-            Number(
-              route.tempHireDay || 0
-            ) + adjustment
-
+            Number(route.tempHireDay || 0)
+            + adjustment
           );
 
         }
@@ -383,13 +697,9 @@ async function applyBulkUpdate(){
 
           updateData.tempHireNight =
           Math.max(
-
             0,
-
-            Number(
-              route.tempHireNight || 0
-            ) + adjustment
-
+            Number(route.tempHireNight || 0)
+            + adjustment
           );
 
         }
@@ -398,13 +708,9 @@ async function applyBulkUpdate(){
 
           updateData.tempSharedDay =
           Math.max(
-
             0,
-
-            Number(
-              route.tempSharedDay || 0
-            ) + adjustment
-
+            Number(route.tempSharedDay || 0)
+            + adjustment
           );
 
         }
@@ -413,22 +719,14 @@ async function applyBulkUpdate(){
 
           updateData.tempSharedNight =
           Math.max(
-
             0,
-
-            Number(
-              route.tempSharedNight || 0
-            ) + adjustment
-
+            Number(route.tempSharedNight || 0)
+            + adjustment
           );
 
         }
 
       }
-
-      /* =========================
-         PERMANENT MODE
-      ========================= */
 
       else{
 
@@ -436,13 +734,9 @@ async function applyBulkUpdate(){
 
           updateData.hireDay =
           Math.max(
-
             0,
-
-            Number(
-              route.hireDay || 0
-            ) + adjustment
-
+            Number(route.hireDay || 0)
+            + adjustment
           );
 
         }
@@ -451,13 +745,9 @@ async function applyBulkUpdate(){
 
           updateData.hireNight =
           Math.max(
-
             0,
-
-            Number(
-              route.hireNight || 0
-            ) + adjustment
-
+            Number(route.hireNight || 0)
+            + adjustment
           );
 
         }
@@ -466,13 +756,9 @@ async function applyBulkUpdate(){
 
           updateData.sharedDay =
           Math.max(
-
             0,
-
-            Number(
-              route.sharedDay || 0
-            ) + adjustment
-
+            Number(route.sharedDay || 0)
+            + adjustment
           );
 
         }
@@ -481,13 +767,9 @@ async function applyBulkUpdate(){
 
           updateData.sharedNight =
           Math.max(
-
             0,
-
-            Number(
-              route.sharedNight || 0
-            ) + adjustment
-
+            Number(route.sharedNight || 0)
+            + adjustment
           );
 
         }
@@ -525,6 +807,7 @@ async function applyBulkUpdate(){
 
 window.applyBulkUpdate =
 applyBulkUpdate;
+
 /* =========================
    REMOVE TEMPORARY
 ========================= */
@@ -608,3 +891,15 @@ async function removeTemporaryAdjustments(){
 
 window.removeTemporaryAdjustments =
 removeTemporaryAdjustments;
+
+/* =========================
+   INITIAL LOAD
+========================= */
+
+loadBulkRoutes();
+
+</script>
+
+</body>
+
+</html>
