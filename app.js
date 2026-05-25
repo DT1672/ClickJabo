@@ -60,78 +60,118 @@ districtSelect.addEventListener(
 
   }
 );
-
 async function loadRoutesFromFirestore(){
 
-  const querySnapshot =
-  await getDocs(
+  try{
 
-    collection(
-      db,
-      "routes"
-    )
+    const querySnapshot =
+    await getDocs(
 
-  );
+      collection(
+        db,
+        "routes"
+      )
 
-  routes = [];
-
-  let latestDate =
-  null;
-
-  querySnapshot.forEach(doc => {
-
-    routes.push(
-      doc.data()
     );
 
-    const route =
-    doc.data();
+    routes = [];
 
-    if(route.updatedAt){
+    let latestDate =
+    null;
 
-      const routeDate =
-      route.updatedAt.toDate();
+    querySnapshot.forEach(doc => {
 
-      if(
+      routes.push(
+        doc.data()
+      );
 
-        !latestDate ||
+      const route =
+      doc.data();
 
-        routeDate > latestDate
+      if(route.updatedAt){
 
-      ){
+        const routeDate =
+        route.updatedAt.toDate();
 
-        latestDate =
-        routeDate;
+        if(
+
+          !latestDate ||
+
+          routeDate > latestDate
+
+        ){
+
+          latestDate =
+          routeDate;
+
+        }
 
       }
+
+    });
+
+    /* SAVE OFFLINE CACHE */
+
+    localStorage.setItem(
+
+      "offlineRoutes",
+
+      JSON.stringify(routes)
+
+    );
+
+    if(latestDate){
+
+      document.getElementById(
+        "lastUpdated"
+      ).innerHTML =
+
+      latestDate.toLocaleDateString(
+
+        "en-GB",
+
+        {
+
+          day:"2-digit",
+          month:"short",
+          year:"numeric"
+
+        }
+
+      );
 
     }
 
-  });
-
-  if(latestDate){
-
-    document.getElementById(
-      "lastUpdated"
-    ).innerHTML =
-
-    latestDate.toLocaleDateString(
-
-      "en-GB",
-
-      {
-
-        day:"2-digit",
-        month:"short",
-        year:"numeric"
-
-      }
-
-    );
+    loadLocations();
 
   }
 
-  loadLocations();
+  catch(error){
+
+    console.log(
+      "Offline Mode",
+      error
+    );
+
+    const offlineRoutes =
+
+    localStorage.getItem(
+      "offlineRoutes"
+    );
+
+    if(offlineRoutes){
+
+      routes =
+
+      JSON.parse(
+        offlineRoutes
+      );
+
+      loadLocations();
+
+    }
+
+  }
 
 }
 
