@@ -10,12 +10,9 @@ import {
   collection,
   getDocs,
   doc,
-  getDoc,
-  query,
-  where
+  getDoc
 }
 from "https://www.gstatic.com/firebasejs/12.3.0/firebase-firestore.js";
-
 
 let routes = [];
 
@@ -37,6 +34,10 @@ const toSelect =
 document.getElementById(
   "to"
 );
+
+/* =========================
+   DISTRICT SAVE
+========================= */
 
 const savedDistrict =
 localStorage.getItem(
@@ -67,6 +68,10 @@ districtSelect.addEventListener(
   }
 );
 
+/* =========================
+   LOAD DISTRICTS
+========================= */
+
 async function loadDistricts(){
 
   try{
@@ -94,7 +99,7 @@ async function loadDistricts(){
         districtSelect.innerHTML += `
 
 <option value="${district.name}">
-  ${district.name}
+${district.name}
 </option>
 
         `;
@@ -128,6 +133,10 @@ async function loadDistricts(){
 
 }
 
+/* =========================
+   LOAD ROUTES
+========================= */
+
 async function loadRoutesFromFirestore(){
 
   try{
@@ -144,15 +153,13 @@ async function loadRoutesFromFirestore(){
 
     routes = [];
 
-    querySnapshot.forEach(doc => {
+    querySnapshot.forEach(docSnap => {
 
       routes.push(
-        doc.data()
+        docSnap.data()
       );
 
     });
-
-    /* SAVE OFFLINE CACHE */
 
     localStorage.setItem(
 
@@ -174,7 +181,6 @@ async function loadRoutesFromFirestore(){
     );
 
     const offlineRoutes =
-
     localStorage.getItem(
       "offlineRoutes"
     );
@@ -182,7 +188,6 @@ async function loadRoutesFromFirestore(){
     if(offlineRoutes){
 
       routes =
-
       JSON.parse(
         offlineRoutes
       );
@@ -195,8 +200,9 @@ async function loadRoutesFromFirestore(){
 
 }
 
-
-loadHelpline();
+/* =========================
+   LOAD HELPLINE
+========================= */
 
 async function loadHelpline(){
 
@@ -217,8 +223,6 @@ async function loadHelpline(){
 
       const settings =
       settingsDoc.data();
-
-      /* SAVE OFFLINE CACHE */
 
       localStorage.setItem(
 
@@ -258,48 +262,25 @@ async function loadHelpline(){
       error
     );
 
-    const offlineHelpline =
-
-    localStorage.getItem(
-      "offlineHelpline"
-    );
-
-    if(offlineHelpline){
-
-      const helplineBtn =
-      document.getElementById(
-        "helplineBtn"
-      );
-
-      if(
-
-        helplineBtn &&
-
-        offlineHelpline
-
-      ){
-
-        helplineBtn.href =
-
-        `tel:${offlineHelpline}`;
-
-      }
-
-    }
-
   }
 
 }
+
+loadHelpline();
+
+/* =========================
+   LOAD LOCATIONS
+========================= */
 
 function loadLocations(){
 
   fromSelect.innerHTML =
 
-  '<option value="">Select Pickup Location</option>';
+  '<option value="">📍 Select Pickup Location</option>';
 
   toSelect.innerHTML =
 
-  '<option value="">Select Destination</option>';
+  '<option value="">📍 Select Destination</option>';
 
   let locations = [];
 
@@ -375,30 +356,6 @@ function loadLocations(){
 
   });
 
-  const lastFrom =
-  localStorage.getItem(
-    "lastFrom"
-  );
-
-  const lastTo =
-  localStorage.getItem(
-    "lastTo"
-  );
-
-  if(lastFrom){
-
-    fromSelect.value =
-    lastFrom;
-
-  }
-
-  if(lastTo){
-
-    toSelect.value =
-    lastTo;
-
-  }
-
   if(fromChoices){
 
     fromChoices.destroy();
@@ -411,35 +368,40 @@ function loadLocations(){
 
   }
 
-fromChoices =
-new Choices("#from", {
+  fromChoices =
+  new Choices("#from", {
 
-  searchEnabled:true,
+    searchEnabled:true,
 
-  searchPlaceholderValue:
-  "Type here to search...",
+    searchPlaceholderValue:
+    "Type here to search...",
 
-  itemSelectText:"",
+    itemSelectText:"",
 
-  shouldSort:false
+    shouldSort:false
 
-});
+  });
 
-toChoices =
-new Choices("#to", {
+  toChoices =
+  new Choices("#to", {
 
-  searchEnabled:true,
+    searchEnabled:true,
 
-  searchPlaceholderValue:
-  "Type here to search...",
+    searchPlaceholderValue:
+    "Type here to search...",
 
-  itemSelectText:"",
+    itemSelectText:"",
 
-  shouldSort:false
+    shouldSort:false
 
-});
+  });
 
 }
+
+/* =========================
+   CHECK FARE
+========================= */
+
 function checkFare(){
 
   let from =
@@ -522,25 +484,23 @@ function checkFare(){
 
     ){
 
-      /* LAST UPDATED */
+      if(
 
-     if(
+        route.updatedAt &&
 
-  route.updatedAt &&
+        route.updatedAt.toDate
 
-  route.updatedAt.toDate
+      ){
 
-){
+        document.getElementById(
+          "lastUpdated"
+        ).innerText =
 
-  document.getElementById(
-    "lastUpdated"
-  ).innerText =
+        route.updatedAt
+        .toDate()
+        .toLocaleString();
 
-  route.updatedAt
-  .toDate()
-  .toLocaleString();
-
-}
+      }
 
       if(
         rideType ===
@@ -597,9 +557,7 @@ function checkFare(){
         }
 
         result =
-
         "₹" +
-
         totalSharedFare;
 
       }
@@ -664,28 +622,14 @@ function checkFare(){
   ).innerText =
   result;
 
-  const card =
-  document.querySelector(
-
-    ".result-glass"
-
-  );
-
-  card.classList.remove(
-
-    "result-animate"
-
-  );
-
-  void card.offsetWidth;
-
-  card.classList.add(
-
-    "result-animate"
-
-  );
-
 }
+
+window.checkFare =
+checkFare;
+
+/* =========================
+   SWAP
+========================= */
 
 function swapLocations(){
 
@@ -712,8 +656,11 @@ function swapLocations(){
 window.swapLocations =
 swapLocations;
 
-const offlineRoutes =
+/* =========================
+   APP LOAD
+========================= */
 
+const offlineRoutes =
 localStorage.getItem(
   "offlineRoutes"
 );
@@ -738,11 +685,7 @@ window.addEventListener(
         offlineRoutes
       );
 
-      setTimeout(() => {
-
-        loadLocations();
-
-      }, 500);
+      loadLocations();
 
     }
 
@@ -750,7 +693,7 @@ window.addEventListener(
 
       await loadDistricts();
 
-      loadRoutesFromFirestore();
+      await loadRoutesFromFirestore();
 
     }
 
@@ -758,6 +701,9 @@ window.addEventListener(
 
 );
 
+/* =========================
+   SPLASH
+========================= */
 
 window.addEventListener(
   "load",
@@ -767,13 +713,10 @@ window.addEventListener(
 
       const splash =
       document.getElementById(
-
         "splash-screen"
-
       );
 
       splash.style.transition =
-
       "opacity .6s ease";
 
       splash.style.opacity =

@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+<meta
+name="viewport"
+content="width=device-width, initial-scale=1.0">
+
+<meta
+name="theme-color"
+content="#020817">
+
+<title>
+Vehicle Categories
+</title>
+
+<link
+rel="stylesheet"
+href="admin.css">
+
+<style>
+
+body{
+
+  margin:0;
+  background:#020817;
+  color:white;
+  font-family:sans-serif;
+
+}
+
+.page-container{
+
+  max-width:700px;
+  margin:auto;
+  padding:24px;
+
+}
+
+.page-title{
+
+  font-size:28px;
+  font-weight:700;
+  margin-bottom:24px;
+
+}
+
+.glass-card{
+
+  background:#0f172a;
+
+  border:
+  1px solid rgba(255,255,255,.06);
+
+  border-radius:22px;
+
+  padding:20px;
+
+  margin-bottom:18px;
+
+}
+
+label{
+
+  display:block;
+  margin-bottom:8px;
+
+  font-size:13px;
+  color:#cbd5e1;
+
+}
+
+input{
+
+  width:100%;
+  height:46px;
+
+  border:none;
+  border-radius:14px;
+
+  padding:0 14px;
+
+  box-sizing:border-box;
+
+  background:
+  rgba(255,255,255,.05);
+
+  color:white;
+
+  font-size:14px;
+
+  outline:none;
+
+}
+
+button{
+
+  width:100%;
+  height:46px;
+
+  border:none;
+  border-radius:14px;
+
+  margin-top:14px;
+
+  background:
+  linear-gradient(
+    135deg,
+    #8b6b2e,
+    #c29b47
+  );
+
+  color:white;
+
+  font-size:14px;
+  font-weight:700;
+
+  cursor:pointer;
+
+}
+
+.category-item{
+
+  display:flex;
+
+  justify-content:space-between;
+
+  align-items:center;
+
+  padding:14px;
+
+  border-radius:14px;
+
+  background:
+  rgba(255,255,255,.04);
+
+  margin-bottom:10px;
+
+}
+
+.category-name{
+
+  font-size:14px;
+  font-weight:600;
+
+}
+
+.category-status{
+
+  font-size:12px;
+  color:#4ade80;
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="page-container">
+
+  <div class="page-title">
+
+    Vehicle Categories
+
+  </div>
+
+  <!-- ADD CATEGORY -->
+
+  <div class="glass-card">
+
+    <label>
+
+      Vehicle Category Name
+
+    </label>
+
+    <input
+    type="text"
+    id="categoryName"
+    placeholder="Example: Taxi">
+
+    <button
+    onclick="saveCategory()">
+
+      Save Category
+
+    </button>
+
+  </div>
+
+  <!-- CATEGORY LIST -->
+
+  <div class="glass-card">
+
+    <div
+    id="categoryList">
+
+      Loading...
+
+    </div>
+
+  </div>
+
+</div>
+<script type="module">
+
+import {
+  db
+}
+from "./firebase-config.js";
+
+import {
+  collection,
+  doc,
+  setDoc,
+  getDocs
+}
+from "https://www.gstatic.com/firebasejs/12.3.0/firebase-firestore.js";
+
+/* =========================
+   SAVE CATEGORY
+========================= */
+
+async function saveCategory(){
+
+  const categoryName =
+
+  document.getElementById(
+    "categoryName"
+  ).value.trim();
+
+  if(categoryName === ""){
+
+    alert(
+      "Enter category name."
+    );
+
+    return;
+
+  }
+
+  try{
+
+    await setDoc(
+
+      doc(
+        db,
+        "vehicleCategories",
+        categoryName
+      ),
+
+      {
+
+        name:
+        categoryName,
+
+        isActive:true
+
+      }
+
+    );
+
+    alert(
+      "Category saved."
+    );
+
+    document.getElementById(
+      "categoryName"
+    ).value = "";
+
+    loadCategories();
+
+  }
+
+  catch(error){
+
+    console.log(error);
+
+    alert(
+      error.message
+    );
+
+  }
+
+}
+
+window.saveCategory =
+saveCategory;
+
+/* =========================
+   LOAD CATEGORIES
+========================= */
+
+async function loadCategories(){
+
+  const categoryList =
+
+  document.getElementById(
+    "categoryList"
+  );
+
+  categoryList.innerHTML =
+  "";
+
+  try{
+
+    const snapshot =
+    await getDocs(
+
+      collection(
+        db,
+        "vehicleCategories"
+      )
+
+    );
+
+    if(snapshot.empty){
+
+      categoryList.innerHTML =
+
+      "No categories found.";
+
+      return;
+
+    }
+
+    snapshot.forEach(docSnap => {
+
+      const data =
+      docSnap.data();
+
+      categoryList.innerHTML += `
+
+      <div class="category-item">
+
+        <div>
+
+          <div class="category-name">
+
+            ${data.name}
+
+          </div>
+
+        </div>
+
+        <div class="category-status">
+
+          Active
+
+        </div>
+
+      </div>
+
+      `;
+
+    });
+
+  }
+
+  catch(error){
+
+    console.log(error);
+
+  }
+
+}
+
+loadCategories();
+
+</script>
