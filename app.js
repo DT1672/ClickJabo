@@ -178,9 +178,6 @@ async function loadRoutesFromFirestore(){
 
 }
 
-const isOffline =
-!navigator.onLine;
-
 if(isOffline){
 
   const offlineRoutes =
@@ -236,7 +233,7 @@ async function loadHelpline(){
 
         "offlineHelpline",
 
-        settings.helpline
+        settings.helpline || ""
 
       );
 
@@ -245,9 +242,19 @@ async function loadHelpline(){
         "helplineBtn"
       );
 
-      helplineBtn.href =
+      if(
 
-      `tel:${settings.helpline}`;
+        helplineBtn &&
+
+        settings.helpline
+
+      ){
+
+        helplineBtn.href =
+
+        `tel:${settings.helpline}`;
+
+      }
 
     }
 
@@ -273,9 +280,19 @@ async function loadHelpline(){
         "helplineBtn"
       );
 
-      helplineBtn.href =
+      if(
 
-      `tel:${offlineHelpline}`;
+        helplineBtn &&
+
+        offlineHelpline
+
+      ){
+
+        helplineBtn.href =
+
+        `tel:${offlineHelpline}`;
+
+      }
 
     }
 
