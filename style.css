@@ -674,19 +674,34 @@ button:active{
   font-size:16px!important;
 
   background:
-  rgba(255,255,255,.12)!important;
+  linear-gradient(
+    135deg,
+    rgba(250,204,21,.22),
+    rgba(194,155,71,.18)
+  )!important;
 
   border:
-  1px solid rgba(255,255,255,.20)!important;
+  1px solid rgba(250,204,21,.45)!important;
 
   border-radius:14px!important;
 
-  padding:10px 12px!important;
+  padding:12px 14px!important;
 
   color:white!important;
 
+  font-weight:600!important;
+
   box-shadow:
-  0 0 12px rgba(255,255,255,.05);
+  0 0 18px rgba(250,204,21,.18);
+
+}
+
+.choices__input--cloned::placeholder{
+
+  color:
+  rgba(255,255,255,.88)!important;
+
+  letter-spacing:.3px;
 
 }
 
