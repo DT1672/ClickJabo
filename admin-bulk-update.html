@@ -1,0 +1,610 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+<meta
+name="viewport"
+content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+<meta
+name="theme-color"
+content="#020817">
+
+<title>
+Bulk Update
+</title>
+
+<link
+rel="stylesheet"
+href="admin.css">
+
+<link
+rel="manifest"
+href="admin-manifest.json">
+
+<script
+type="module"
+src="auth-check.js">
+</script>
+
+</head>
+
+<body>
+
+<div
+id="loadingOverlay"
+class="loader-overlay">
+
+  <div class="loader-spinner"></div>
+
+  <div class="loader-text">
+
+    Loading...
+
+  </div>
+
+</div>
+
+<div
+class="dashboard-container"
+style="
+padding:30px 12px 100px 12px;
+">
+
+<h1
+style="
+text-align:center;
+font-size:24px;
+">
+
+Bulk Update
+
+</h1>
+
+<p
+style="
+text-align:center;
+font-size:11px;
+color:#94a3b8;
+margin-bottom:24px;
+">
+
+DISTRICT FARE CONTROL
+
+</p>
+<p
+style="
+font-size:12px;
+margin-bottom:6px;
+">
+
+Update Mode
+
+</p>
+
+<select
+id="updateMode"
+class="form-input">
+
+<option value="temporary">
+
+  Temporary Adjustment
+
+</option>
+
+<option value="permanent">
+
+  Permanent Adjustment
+
+</option>
+
+</select>
+<p
+style="
+font-size:12px;
+margin-top:16px;
+margin-bottom:6px;
+">
+
+Action
+
+</p>
+
+<select
+id="actionType"
+class="form-input">
+
+<option value="increase">
+
+  Increase Fare
+
+</option>
+
+<option value="decrease">
+
+  Decrease Fare
+
+</option>
+
+</select>
+<p
+style="
+font-size:12px;
+margin-top:16px;
+margin-bottom:6px;
+">
+
+Amount
+
+</p>
+
+<input
+type="number"
+id="adjustmentAmount"
+placeholder="Enter amount"
+class="form-input">
+<div
+style="
+margin-top:18px;
+">
+
+<p
+style="
+font-size:12px;
+margin-bottom:10px;
+">
+
+Apply To
+
+</p>
+
+<label>
+
+<input
+type="checkbox"
+id="applyHireDay">
+
+Hire Day
+
+</label>
+
+<br><br>
+
+<label>
+
+<input
+type="checkbox"
+id="applyHireNight">
+
+Hire Night
+
+</label>
+
+<br><br>
+
+<label>
+
+<input
+type="checkbox"
+id="applySharedDay">
+
+Shared Day
+
+</label>
+
+<br><br>
+
+<label>
+
+<input
+type="checkbox"
+id="applySharedNight">
+
+Shared Night
+
+</label>
+
+</div>
+<button
+onclick="applyBulkUpdate()"
+style="
+margin-top:24px;
+">
+
+Apply Bulk Update
+
+</button>
+<button
+onclick="removeTemporaryAdjustments()"
+style="
+margin-top:12px;
+background:#7f1d1d;
+">
+
+Remove Temporary Adjustments
+
+</button>
+</div>
+
+<script type="module">
+
+import {
+  db
+}
+from "./firebase-config.js";
+
+import {
+  collection,
+  getDocs,
+  updateDoc,
+  doc
+}
+from "https://www.gstatic.com/firebasejs/12.3.0/firebase-firestore.js";
+/* =========================
+   SHOW LOADER
+========================= */
+
+function showLoader(){
+
+  document.getElementById(
+    "loadingOverlay"
+  ).style.display =
+  "flex";
+
+}
+
+function hideLoader(){
+
+  document.getElementById(
+    "loadingOverlay"
+  ).style.display =
+  "none";
+
+}
+
+/* =========================
+   APPLY BULK UPDATE
+========================= */
+
+async function applyBulkUpdate(){
+
+  showLoader();
+
+  const updateMode =
+  document.getElementById(
+    "updateMode"
+  ).value;
+
+  const actionType =
+  document.getElementById(
+    "actionType"
+  ).value;
+
+  const amount =
+  Number(
+
+    document.getElementById(
+      "adjustmentAmount"
+    ).value
+
+  );
+
+  const applyHireDay =
+  document.getElementById(
+    "applyHireDay"
+  ).checked;
+
+  const applyHireNight =
+  document.getElementById(
+    "applyHireNight"
+  ).checked;
+
+  const applySharedDay =
+  document.getElementById(
+    "applySharedDay"
+  ).checked;
+
+  const applySharedNight =
+  document.getElementById(
+    "applySharedNight"
+  ).checked;
+
+  if(!amount || amount <= 0){
+
+    hideLoader();
+
+    alert(
+      "Please enter valid amount."
+    );
+
+    return;
+
+  }
+
+  let adjustment =
+  amount;
+
+  if(actionType === "decrease"){
+
+    adjustment =
+    adjustment * -1;
+
+  }
+
+  try{
+
+    const querySnapshot =
+    await getDocs(
+
+      collection(
+        db,
+        "routes"
+      )
+
+    );
+
+    for(const docSnap of querySnapshot.docs){
+
+      const route =
+      docSnap.data();
+
+      const docRef =
+      doc(
+        db,
+        "routes",
+        docSnap.id
+      );
+
+      let updateData = {};
+
+      /* =========================
+         TEMPORARY MODE
+      ========================= */
+
+      if(updateMode === "temporary"){
+
+        if(applyHireDay){
+
+          updateData.tempHireDay =
+          Math.max(
+
+            0,
+
+            Number(
+              route.tempHireDay || 0
+            ) + adjustment
+
+          );
+
+        }
+
+        if(applyHireNight){
+
+          updateData.tempHireNight =
+          Math.max(
+
+            0,
+
+            Number(
+              route.tempHireNight || 0
+            ) + adjustment
+
+          );
+
+        }
+
+        if(applySharedDay){
+
+          updateData.tempSharedDay =
+          Math.max(
+
+            0,
+
+            Number(
+              route.tempSharedDay || 0
+            ) + adjustment
+
+          );
+
+        }
+
+        if(applySharedNight){
+
+          updateData.tempSharedNight =
+          Math.max(
+
+            0,
+
+            Number(
+              route.tempSharedNight || 0
+            ) + adjustment
+
+          );
+
+        }
+
+      }
+
+      /* =========================
+         PERMANENT MODE
+      ========================= */
+
+      else{
+
+        if(applyHireDay){
+
+          updateData.hireDay =
+          Math.max(
+
+            0,
+
+            Number(
+              route.hireDay || 0
+            ) + adjustment
+
+          );
+
+        }
+
+        if(applyHireNight){
+
+          updateData.hireNight =
+          Math.max(
+
+            0,
+
+            Number(
+              route.hireNight || 0
+            ) + adjustment
+
+          );
+
+        }
+
+        if(applySharedDay){
+
+          updateData.sharedDay =
+          Math.max(
+
+            0,
+
+            Number(
+              route.sharedDay || 0
+            ) + adjustment
+
+          );
+
+        }
+
+        if(applySharedNight){
+
+          updateData.sharedNight =
+          Math.max(
+
+            0,
+
+            Number(
+              route.sharedNight || 0
+            ) + adjustment
+
+          );
+
+        }
+
+      }
+
+      await updateDoc(
+        docRef,
+        updateData
+      );
+
+    }
+
+    hideLoader();
+
+    alert(
+      "Bulk update applied successfully."
+    );
+
+  }
+
+  catch(error){
+
+    console.log(error);
+
+    hideLoader();
+
+    alert(
+      "Unable to apply bulk update."
+    );
+
+  }
+
+}
+
+window.applyBulkUpdate =
+applyBulkUpdate;
+/* =========================
+   REMOVE TEMPORARY
+========================= */
+
+async function removeTemporaryAdjustments(){
+
+  const confirmReset =
+  confirm(
+
+    "Remove all temporary adjustments?"
+
+  );
+
+  if(!confirmReset){
+
+    return;
+
+  }
+
+  showLoader();
+
+  try{
+
+    const querySnapshot =
+    await getDocs(
+
+      collection(
+        db,
+        "routes"
+      )
+
+    );
+
+    for(const docSnap of querySnapshot.docs){
+
+      const docRef =
+      doc(
+        db,
+        "routes",
+        docSnap.id
+      );
+
+      await updateDoc(
+
+        docRef,
+
+        {
+
+          tempHireDay:0,
+          tempHireNight:0,
+          tempSharedDay:0,
+          tempSharedNight:0
+
+        }
+
+      );
+
+    }
+
+    hideLoader();
+
+    alert(
+      "Temporary adjustments removed."
+    );
+
+  }
+
+  catch(error){
+
+    console.log(error);
+
+    hideLoader();
+
+    alert(
+      "Unable to remove temporary adjustments."
+    );
+
+  }
+
+}
+
+window.removeTemporaryAdjustments =
+removeTemporaryAdjustments;

@@ -564,8 +564,18 @@ function checkFare(){
 
           totalSharedFare =
 
-          Number(
-            route.sharedDay
+          (
+
+            Number(
+              route.sharedDay || 0
+            )
+
+            +
+
+            Number(
+              route.tempSharedDay || 0
+            )
+
           )
 
           * passengers;
@@ -576,8 +586,18 @@ function checkFare(){
 
           totalSharedFare =
 
-          Number(
-            route.sharedNight
+          (
+
+            Number(
+              route.sharedNight || 0
+            )
+
+            +
+
+            Number(
+              route.tempSharedNight || 0
+            )
+
           )
 
           * passengers;
@@ -603,7 +623,19 @@ function checkFare(){
 
           "₹" +
 
-          route.hireDay;
+          (
+
+            Number(
+              route.hireDay || 0
+            )
+
+            +
+
+            Number(
+              route.tempHireDay || 0
+            )
+
+          );
 
         }
 
@@ -613,7 +645,19 @@ function checkFare(){
 
           "₹" +
 
-          route.hireNight;
+          (
+
+            Number(
+              route.hireNight || 0
+            )
+
+            +
+
+            Number(
+              route.tempHireNight || 0
+            )
+
+          );
 
         }
 
