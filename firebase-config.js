@@ -4,7 +4,9 @@ import {
 from "https://www.gstatic.com/firebasejs/12.3.0/firebase-app.js";
 
 import {
-  getFirestore
+  initializeFirestore,
+  persistentLocalCache,
+  persistentMultipleTabManager
 }
 from "https://www.gstatic.com/firebasejs/12.3.0/firebase-firestore.js";
 
@@ -40,13 +42,41 @@ initializeApp(
   firebaseConfig
 );
 
+/* =========================
+   FIRESTORE OFFLINE CACHE
+========================= */
+
 const db =
-getFirestore(app);
+initializeFirestore(
+
+  app,
+
+  {
+
+    localCache:
+
+    persistentLocalCache(
+
+      {
+
+        tabManager:
+
+        persistentMultipleTabManager()
+
+      }
+
+    )
+
+  }
+
+);
 
 const auth =
 getAuth(app);
 
 export {
+
   db,
   auth
+
 };
