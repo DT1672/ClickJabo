@@ -1,3 +1,6 @@
+const isOffline =
+!navigator.onLine;
+
 import {
   db
 }
@@ -175,7 +178,36 @@ async function loadRoutesFromFirestore(){
 
 }
 
-loadRoutesFromFirestore();
+const isOffline =
+!navigator.onLine;
+
+if(isOffline){
+
+  const offlineRoutes =
+
+  localStorage.getItem(
+    "offlineRoutes"
+  );
+
+  if(offlineRoutes){
+
+    routes =
+
+    JSON.parse(
+      offlineRoutes
+    );
+
+    loadLocations();
+
+  }
+
+}
+
+else{
+
+  loadRoutesFromFirestore();
+
+}
 loadHelpline();
 
 async function loadHelpline(){
@@ -198,6 +230,16 @@ async function loadHelpline(){
       const settings =
       settingsDoc.data();
 
+      /* SAVE OFFLINE CACHE */
+
+      localStorage.setItem(
+
+        "offlineHelpline",
+
+        settings.helpline
+
+      );
+
       const helplineBtn =
       document.getElementById(
         "helplineBtn"
@@ -213,7 +255,29 @@ async function loadHelpline(){
 
   catch(error){
 
-    console.log(error);
+    console.log(
+      "Offline Helpline",
+      error
+    );
+
+    const offlineHelpline =
+
+    localStorage.getItem(
+      "offlineHelpline"
+    );
+
+    if(offlineHelpline){
+
+      const helplineBtn =
+      document.getElementById(
+        "helplineBtn"
+      );
+
+      helplineBtn.href =
+
+      `tel:${offlineHelpline}`;
+
+    }
 
   }
 
