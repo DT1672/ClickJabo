@@ -53,6 +53,11 @@ src="auth-check.js">
 
 <body
 
+style="
+height:100dvh;
+overflow-y:auto;
+overflow-x:hidden;
+">
 
 <div
 id="loadingOverlay"
@@ -71,13 +76,6 @@ class="loader-overlay">
   </div>
 
 </div>
-
-
-style="
-height:100dvh;
-overflow-y:auto;
-overflow-x:hidden;
-">
 
 <div
 class="top-bar"
@@ -548,28 +546,25 @@ gap:5px;
 min-width:74px;
 ">
 
-  <button
-  class="edit-btn"
-  style="
-  padding:8px 12px;
-  font-size:11px;
-  border-radius:12px;
-  "
-  onclick="
-  openEditRoute(
-    '${docId}',
-    '${route.district || "Dimapur"}',
-    '${route.from}',
-    '${route.to}',
-    '${route.hireDay}',
-    '${route.hireNight}',
-    '${route.sharedDay}',
-    '${route.sharedNight}'
-  )
-  ">
-          Edit
-
-        </button>
+<button
+class="edit-btn"
+style="
+padding:8px 12px;
+font-size:11px;
+border-radius:12px;
+"
+onclick='openEditRoute(
+  ${JSON.stringify(docId)},
+  ${JSON.stringify(route.district || "Dimapur")},
+  ${JSON.stringify(route.from)},
+  ${JSON.stringify(route.to)},
+  ${JSON.stringify(route.hireDay)},
+  ${JSON.stringify(route.hireNight)},
+  ${JSON.stringify(route.sharedDay)},
+  ${JSON.stringify(route.sharedNight)}
+)'>
+  Edit
+</button>
 
       <button
 class="delete-btn"
