@@ -384,6 +384,71 @@ border:1px solid rgba(255,255,255,.06);
 
 </div>
 
+<!-- TEMPORARY ACTIVE LIST -->
+
+<div
+style="
+margin-top:24px;
+">
+
+<div
+style="
+display:flex;
+align-items:center;
+justify-content:space-between;
+margin-bottom:12px;
+">
+
+<p
+style="
+font-size:12px;
+font-weight:600;
+">
+
+Active Temporary Adjustments
+
+</p>
+
+<div
+id="tempAdjustmentCount"
+style="
+font-size:11px;
+color:#94a3b8;
+">
+
+0 Active
+
+</div>
+
+</div>
+
+<div
+id="temporaryList"
+style="
+background:rgba(255,255,255,.03);
+border:1px solid rgba(255,255,255,.06);
+border-radius:18px;
+padding:10px;
+max-height:220px;
+overflow-y:auto;
+">
+
+<div
+style="
+font-size:11px;
+color:#94a3b8;
+text-align:center;
+padding:10px;
+">
+
+No temporary adjustments
+
+</div>
+
+</div>
+
+</div>
+
 <!-- BUTTONS -->
 
 <button
@@ -391,6 +456,21 @@ onclick="applyBulkUpdate()"
 style="
 margin-top:24px;
 width:100%;
+height:42px;
+border:none;
+border-radius:14px;
+background:linear-gradient(
+135deg,
+#8b6b2e,
+#c29b47
+);
+color:white;
+font-size:12px;
+font-weight:600;
+letter-spacing:.3px;
+box-shadow:
+0 4px 14px rgba(194,155,71,.16);
+cursor:pointer;
 ">
 
 Apply Bulk Update
@@ -402,7 +482,21 @@ onclick="removeTemporaryAdjustments()"
 style="
 margin-top:12px;
 width:100%;
-background:#7f1d1d;
+height:42px;
+border:none;
+border-radius:14px;
+background:linear-gradient(
+135deg,
+#7f1d1d,
+#b91c1c
+);
+color:white;
+font-size:12px;
+font-weight:600;
+letter-spacing:.3px;
+box-shadow:
+0 4px 14px rgba(185,28,28,.16);
+cursor:pointer;
 ">
 
 Remove Temporary Adjustments
@@ -498,6 +592,16 @@ async function loadBulkRoutes(){
     container.innerHTML =
     "";
 
+    const temporaryList =
+    document.getElementById(
+      "temporaryList"
+    );
+
+    temporaryList.innerHTML =
+    "";
+
+    let tempCount = 0;
+
     querySnapshot.forEach(docSnap => {
 
       const route =
@@ -522,7 +626,115 @@ ${route.to}
 
       `;
 
+      const tempItems = [];
+
+      if(Number(route.tempHireDay || 0) !== 0){
+
+        tempItems.push(
+          "Hire Day: ₹" +
+          route.tempHireDay
+        );
+
+      }
+
+      if(Number(route.tempHireNight || 0) !== 0){
+
+        tempItems.push(
+          "Hire Night: ₹" +
+          route.tempHireNight
+        );
+
+      }
+
+      if(Number(route.tempSharedDay || 0) !== 0){
+
+        tempItems.push(
+          "Shared Day: ₹" +
+          route.tempSharedDay
+        );
+
+      }
+
+      if(Number(route.tempSharedNight || 0) !== 0){
+
+        tempItems.push(
+          "Shared Night: ₹" +
+          route.tempSharedNight
+        );
+
+      }
+
+      if(tempItems.length > 0){
+
+        tempCount++;
+
+        temporaryList.innerHTML += `
+
+<div
+style="
+padding:10px;
+border-radius:14px;
+margin-bottom:8px;
+background:rgba(255,255,255,.04);
+">
+
+<div
+style="
+font-size:12px;
+font-weight:600;
+margin-bottom:6px;
+">
+
+${route.from}
+→
+${route.to}
+
+</div>
+
+<div
+style="
+font-size:11px;
+color:#cbd5e1;
+line-height:1.7;
+">
+
+${tempItems.join("<br>")}
+
+</div>
+
+</div>
+
+        `;
+
+      }
+
     });
+
+    document.getElementById(
+      "tempAdjustmentCount"
+    ).innerText =
+
+    tempCount + " Active";
+
+    if(tempCount === 0){
+
+      temporaryList.innerHTML = `
+
+<div
+style="
+font-size:11px;
+color:#94a3b8;
+text-align:center;
+padding:10px;
+">
+
+No temporary adjustments
+
+</div>
+
+      `;
+
+    }
 
   }
 
@@ -856,6 +1068,8 @@ async function applyBulkUpdate(){
       "Bulk update applied successfully."
     );
 
+    loadBulkRoutes();
+
   }
 
   catch(error){
@@ -883,9 +1097,7 @@ async function removeTemporaryAdjustments(){
 
   const confirmReset =
   confirm(
-
     "Remove all temporary adjustments?"
-
   );
 
   if(!confirmReset){
@@ -939,6 +1151,8 @@ async function removeTemporaryAdjustments(){
     alert(
       "Temporary adjustments removed."
     );
+
+    loadBulkRoutes();
 
   }
 
