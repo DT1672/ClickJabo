@@ -524,17 +524,23 @@ function checkFare(){
 
       /* LAST UPDATED */
 
-      if(route.updatedAt){
+     if(
 
-        document.getElementById(
-          "lastUpdated"
-        ).innerText =
+  route.updatedAt &&
 
-        route.updatedAt
-        .toDate()
-        .toLocaleString();
+  route.updatedAt.toDate
 
-      }
+){
+
+  document.getElementById(
+    "lastUpdated"
+  ).innerText =
+
+  route.updatedAt
+  .toDate()
+  .toLocaleString();
+
+}
 
       if(
         rideType ===
