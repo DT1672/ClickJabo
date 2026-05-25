@@ -1093,11 +1093,31 @@ applyBulkUpdate;
    REMOVE TEMPORARY
 ========================= */
 
+/* =========================
+   REMOVE TEMPORARY
+========================= */
+
 async function removeTemporaryAdjustments(){
+
+  const selectedRoutes =
+
+  document.querySelectorAll(
+    ".routeCheckbox:checked"
+  );
+
+  if(selectedRoutes.length === 0){
+
+    alert(
+      "Please select routes."
+    );
+
+    return;
+
+  }
 
   const confirmReset =
   confirm(
-    "Remove all temporary adjustments?"
+    "Remove temporary adjustments from selected routes?"
   );
 
   if(!confirmReset){
@@ -1110,23 +1130,16 @@ async function removeTemporaryAdjustments(){
 
   try{
 
-    const querySnapshot =
-    await getDocs(
+    for(const selected of selectedRoutes){
 
-      collection(
-        db,
-        "routes"
-      )
-
-    );
-
-    for(const docSnap of querySnapshot.docs){
+      const docId =
+      selected.value;
 
       const docRef =
       doc(
         db,
         "routes",
-        docSnap.id
+        docId
       );
 
       await updateDoc(
@@ -1149,7 +1162,7 @@ async function removeTemporaryAdjustments(){
     hideLoader();
 
     alert(
-      "Temporary adjustments removed."
+      "Selected temporary adjustments removed."
     );
 
     loadBulkRoutes();
