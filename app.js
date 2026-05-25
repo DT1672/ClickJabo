@@ -438,27 +438,33 @@ function loadLocations(){
 
   }
 
-  fromChoices =
-  new Choices("#from", {
+fromChoices =
+new Choices("#from", {
 
-    searchEnabled:true,
+  searchEnabled:true,
 
-    itemSelectText:"",
+  searchPlaceholderValue:
+  "Type here to search...",
 
-    shouldSort:false
+  itemSelectText:"",
 
-  });
+  shouldSort:false
 
-  toChoices =
-  new Choices("#to", {
+});
 
-    searchEnabled:true,
+toChoices =
+new Choices("#to", {
 
-    itemSelectText:"",
+  searchEnabled:true,
 
-    shouldSort:false
+  searchPlaceholderValue:
+  "Type here to search...",
 
-  });
+  itemSelectText:"",
+
+  shouldSort:false
+
+});
 
 }
 

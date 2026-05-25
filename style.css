@@ -701,10 +701,13 @@ button:active{
   color:
   rgba(255,255,255,.88)!important;
 
-  letter-spacing:.3px;
+  font-weight:
+  600;
+
+  letter-spacing:
+  .3px;
 
 }
-
 
 /* push destination section upward */
 
