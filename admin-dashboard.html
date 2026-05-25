@@ -28,9 +28,31 @@ type="module"
 src="auth-check.js">
 </script>
 
+
+
 </head>
 
+
 <body>
+
+  
+<div
+id="loadingOverlay"
+class="loader-overlay">
+
+  <div
+  class="loader-spinner">
+
+  </div>
+
+  <div
+  class="loader-text">
+
+    Loading...
+
+  </div>
+
+</div>
 
 <!-- TOP BAR -->
 
@@ -272,6 +294,23 @@ src="auth-check.js">
 </div>
 
 <script type="module">
+  function showLoader(){
+
+  document.getElementById(
+    "loadingOverlay"
+  ).style.display =
+  "flex";
+
+}
+
+function hideLoader(){
+
+  document.getElementById(
+    "loadingOverlay"
+  ).style.display =
+  "none";
+
+}
 
 import {
   db
@@ -289,6 +328,7 @@ from "https://www.gstatic.com/firebasejs/12.3.0/firebase-firestore.js";
 ========================= */
 
 async function loadDashboardStats(){
+  showLoader();
 
   const querySnapshot =
   await getDocs(
@@ -359,6 +399,8 @@ async function loadDashboardStats(){
     );
 
   }
+
+  hideLoader();
 
 }
 

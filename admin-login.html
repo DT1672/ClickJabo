@@ -5,7 +5,7 @@
 
 <meta
 name="viewport"
-content="width=device-width, initial-scale=1.0">
+content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
 <meta
 name="theme-color"
@@ -26,6 +26,24 @@ href="admin-manifest.json">
 </head>
 
 <body>
+  
+<div
+id="loadingOverlay"
+class="loader-overlay">
+
+  <div
+  class="loader-spinner">
+
+  </div>
+
+  <div
+  class="loader-text">
+
+    Loading...
+
+  </div>
+
+</div>
 
 <!-- LOGIN CONTAINER -->
 
@@ -108,6 +126,23 @@ autocomplete="off">
 </div>
 
 <script type="module">
+ function showLoader(){
+
+  document.getElementById(
+    "loadingOverlay"
+  ).style.display =
+  "flex";
+
+}
+
+function hideLoader(){
+
+  document.getElementById(
+    "loadingOverlay"
+  ).style.display =
+  "none";
+
+} 
 
 import {
   auth
@@ -120,6 +155,8 @@ import {
 from "https://www.gstatic.com/firebasejs/12.3.0/firebase-auth.js";
 
 async function loginAdmin(){
+
+  showLoader();
 
   const email =
   document.getElementById(
@@ -140,6 +177,8 @@ async function loginAdmin(){
     email === "" ||
     password === ""
   ){
+
+    hideLoader();
 
     alert(
       "Please enter email and password."
@@ -171,6 +210,8 @@ async function loginAdmin(){
   }
 
   catch(error){
+
+    hideLoader();
 
     alert(
       "Invalid email or password."

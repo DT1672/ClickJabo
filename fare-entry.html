@@ -5,7 +5,7 @@
 
 <meta
 name="viewport"
-content="width=device-width, initial-scale=1.0">
+content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
 <meta
 name="theme-color"
@@ -45,10 +45,32 @@ src="auth-check.js">
 </head>
 
 <body
+
+<body
 style="
 overflow-y:auto;
 overflow-x:hidden;
 ">
+
+<div
+id="loadingOverlay"
+class="loader-overlay">
+
+  <div
+  class="loader-spinner">
+
+  </div>
+
+  <div
+  class="loader-text">
+
+    Loading...
+
+  </div>
+
+</div>
+
+
 <!-- TOP BAR -->
 
 <div
@@ -438,6 +460,23 @@ cursor:not-allowed;
 </div>
 
 <script type="module">
+  function showLoader(){
+
+  document.getElementById(
+    "loadingOverlay"
+  ).style.display =
+  "flex";
+
+}
+
+function hideLoader(){
+
+  document.getElementById(
+    "loadingOverlay"
+  ).style.display =
+  "none";
+
+}
 
 import {
   db
@@ -530,8 +569,9 @@ function(){
 /* =========================
    SAVE
 ========================= */
-
 async function saveFare(){
+
+  showLoader();
 
   const district =
   document.getElementById(
@@ -579,6 +619,8 @@ async function saveFare(){
 
   ){
 
+    hideLoader();
+
     alert(
       "Please fill all fields."
     );
@@ -588,6 +630,8 @@ async function saveFare(){
   }
 
   if(from === to){
+
+    hideLoader();
 
     alert(
       "Pickup and destination cannot be same."
@@ -622,18 +666,18 @@ async function saveFare(){
 
         {
 
-  district,
-  from,
-  to,
-  hireDay,
-  hireNight,
-  sharedDay,
-  sharedNight,
+          district,
+          from,
+          to,
+          hireDay,
+          hireNight,
+          sharedDay,
+          sharedNight,
 
-  updatedAt:
-  new Date()
+          updatedAt:
+          new Date()
 
-}
+        }
 
       );
 
@@ -652,20 +696,20 @@ async function saveFare(){
           "routes"
         ),
 
-    {
+        {
 
-  district,
-  from,
-  to,
-  hireDay,
-  hireNight,
-  sharedDay,
-  sharedNight,
+          district,
+          from,
+          to,
+          hireDay,
+          hireNight,
+          sharedDay,
+          sharedNight,
 
-  updatedAt:
-  new Date()
+          updatedAt:
+          new Date()
 
-}
+        }
 
       );
 
@@ -696,6 +740,8 @@ async function saveFare(){
 
   saveBtn.disabled =
   false;
+
+  hideLoader();
 
 }
 

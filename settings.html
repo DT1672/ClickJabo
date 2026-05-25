@@ -32,6 +32,25 @@ src="auth-check.js">
 
 <body>
 
+  
+<div
+id="loadingOverlay"
+class="loader-overlay">
+
+  <div
+  class="loader-spinner">
+
+  </div>
+
+  <div
+  class="loader-text">
+
+    Loading...
+
+  </div>
+
+</div>
+
 <!-- TOP BAR -->
 
 <div
@@ -284,6 +303,23 @@ box-sizing:border-box;
 </div>
 
 <script type="module">
+  function showLoader(){
+
+  document.getElementById(
+    "loadingOverlay"
+  ).style.display =
+  "flex";
+
+}
+
+function hideLoader(){
+
+  document.getElementById(
+    "loadingOverlay"
+  ).style.display =
+  "none";
+
+}
 
 import {
   db
@@ -300,8 +336,9 @@ from "https://www.gstatic.com/firebasejs/12.3.0/firebase-firestore.js";
 /* =========================
    LOAD SETTINGS
 ========================= */
-
 async function loadSettings(){
+
+  showLoader();
 
   try{
 
@@ -337,7 +374,10 @@ async function loadSettings(){
 
   }
 
+  hideLoader();
+
 }
+
 
 loadSettings();
 
@@ -347,20 +387,24 @@ loadSettings();
 
 async function saveSettings(){
 
+  showLoader();
+
   const helpline =
   document.getElementById(
     "helplineNumber"
   ).value.trim();
 
-  if(helpline === ""){
+if(helpline === ""){
 
-    alert(
-      "Please enter helpline number."
-    );
+  hideLoader();
 
-    return;
+  alert(
+    "Please enter helpline number."
+  );
 
-  }
+  return;
+
+}
 
   const saveBtn =
   document.getElementById(
@@ -406,6 +450,8 @@ async function saveSettings(){
 
   catch(error){
 
+    hideLoader();
+
     console.log(error);
 
     alert(
@@ -413,6 +459,8 @@ async function saveSettings(){
     );
 
   }
+
+  hideLoader();
 
   saveBtn.innerHTML =
   "Save Settings";

@@ -6,7 +6,7 @@
 
 <meta
 name="viewport"
-content="width=device-width, initial-scale=1.0">
+content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
 <meta
 name="theme-color"
@@ -52,6 +52,27 @@ src="auth-check.js">
 </head>
 
 <body
+
+
+<div
+id="loadingOverlay"
+class="loader-overlay">
+
+  <div
+  class="loader-spinner">
+
+  </div>
+
+  <div
+  class="loader-text">
+
+    Loading...
+
+  </div>
+
+</div>
+
+
 style="
 height:100dvh;
 overflow-y:auto;
@@ -320,6 +341,23 @@ onclick="saveRoute()">
 </div>
 
 <script type="module">
+function showLoader(){
+
+  document.getElementById(
+    "loadingOverlay"
+  ).style.display =
+  "flex";
+
+}
+
+function hideLoader(){
+
+  document.getElementById(
+    "loadingOverlay"
+  ).style.display =
+  "none";
+
+}
 
 import {
   db
@@ -338,8 +376,9 @@ from "https://www.gstatic.com/firebasejs/12.3.0/firebase-firestore.js";
 /* =========================
    LOAD ROUTES
 ========================= */
-
 async function loadRoutes(){
+
+  showLoader();
 
   const querySnapshot =
   await getDocs(
@@ -411,6 +450,8 @@ border-radius:22px;
 </div>
 
     `;
+
+    hideLoader();
 
     return;
 
@@ -556,6 +597,8 @@ deleteRoute(
 
   });
 
+  hideLoader();
+
 }
 
 /* =========================
@@ -603,8 +646,9 @@ openEditRoute;
 /* =========================
    DELETE
 ========================= */
-
 async function deleteRoute(docId){
+
+  showLoader();
 
   const confirmDelete =
   confirm(
@@ -612,6 +656,8 @@ async function deleteRoute(docId){
   );
 
   if(!confirmDelete){
+
+    hideLoader();
 
     return;
 
@@ -643,65 +689,11 @@ async function deleteRoute(docId){
       "Unable to delete route."
     );
 
+    hideLoader();
+
   }
 
 }
-
-window.deleteRoute =
-deleteRoute;
-
-/* =========================
-   SEARCH
-========================= */
-
-document
-.getElementById(
-  "routeSearch"
-)
-.addEventListener(
-
-  "input",
-
-  function(){
-
-    const searchText =
-    this.value
-    .toLowerCase();
-
-    const routeItems =
-    document.querySelectorAll(
-      ".route-item"
-    );
-
-    routeItems.forEach(item => {
-
-      const routeText =
-      item.innerText
-      .toLowerCase();
-
-      if(
-        routeText.includes(
-          searchText
-        )
-      ){
-
-        item.style.display =
-        "flex";
-
-      }
-
-      else{
-
-        item.style.display =
-        "none";
-
-      }
-
-    });
-
-  }
-
-);
 
 /* =========================
    MODAL
@@ -776,8 +768,9 @@ function clearModal(){
 /* =========================
    SAVE ROUTE
 ========================= */
-
 async function saveRoute(){
+
+  showLoader();
 
   const from =
   document
@@ -834,6 +827,8 @@ async function saveRoute(){
 
   ){
 
+    hideLoader();
+
     alert(
       "Please fill all fields."
     );
@@ -843,6 +838,8 @@ async function saveRoute(){
   }
 
   if(from === to){
+
+    hideLoader();
 
     alert(
       "Pickup and destination cannot be same."
@@ -893,9 +890,12 @@ async function saveRoute(){
       "Unable to save route."
     );
 
+    hideLoader();
+
   }
 
 }
+
 
 window.saveRoute =
 saveRoute;
