@@ -62,7 +62,7 @@ class="loader-overlay">
 
   <div class="top-user">
 
-    dimapur_admin
+    Admin
 
   </div>
 
@@ -87,7 +87,7 @@ class="loader-overlay">
     <div class="district-badge">
 
       DISTRICT:
-      DIMAPUR
+      N/A
 
     </div>
 
@@ -302,7 +302,7 @@ class="loader-overlay">
         <div class="route-actions">
 
           <a
-          href="admin-login.html"
+          onclick="logoutAdmin()"
           class="delete-btn"
           style="
           text-decoration:none;
@@ -343,15 +343,76 @@ function hideLoader(){
 }
 
 import {
-  db
+  db,
+  auth
 }
 from "./firebase-config.js";
 
 import {
+
+  getAdminSession,
+  clearAdminSession
+
+}
+from "./shared-config.js";
+
+import {
+
   collection,
-  getDocs
+  getDocs,
+  query,
+  where
+
 }
 from "https://www.gstatic.com/firebasejs/12.3.0/firebase-firestore.js";
+
+import {
+
+  signOut
+
+}
+from "https://www.gstatic.com/firebasejs/12.3.0/firebase-auth.js";
+
+/* =========================
+   ADMIN SESSION
+========================= */
+
+const adminSession =
+
+getAdminSession();
+
+const adminDistrict =
+
+adminSession.district;
+
+const adminVehicleCategory =
+
+adminSession.vehicleCategory;
+
+const adminServiceProvider =
+
+adminSession.serviceProvider;
+
+/* =========================
+   UI SESSION INFO
+========================= */
+
+document.querySelector(
+  ".district-badge"
+).innerHTML =
+
+`
+DISTRICT:
+${adminDistrict || "N/A"}
+`;
+
+document.querySelector(
+  ".top-user"
+).innerHTML =
+
+adminServiceProvider ||
+
+"Admin";
 
 /* =========================
    DASHBOARD STATS
@@ -361,73 +422,112 @@ async function loadDashboardStats(){
 
   showLoader();
 
-  const querySnapshot =
-  await getDocs(
+  try{
 
-    collection(
-      db,
-      "routes"
-    )
+    const routesQuery = query(
 
-  );
+      collection(
+        db,
+        "routes"
+      ),
 
-  /* ROUTE COUNT */
+      where(
+        "district",
+        "==",
+        adminDistrict
+      ),
 
-  document.getElementById(
-    "routeCount"
-  ).innerHTML =
-  querySnapshot.size;
+      where(
+        "vehicleCategory",
+        "==",
+        adminVehicleCategory
+      ),
 
-  /* LAST UPDATED */
+      where(
+        "serviceProvider",
+        "==",
+        adminServiceProvider
+      )
 
-  let latestDate =
-  null;
+    );
 
-  querySnapshot.forEach(docSnap => {
+    const querySnapshot =
+    await getDocs(
+      routesQuery
+    );
 
-    const route =
-    docSnap.data();
+    document.getElementById(
+      "routeCount"
+    ).innerHTML =
 
-    if(route.updatedAt){
+    querySnapshot.size;
 
-      const routeDate =
-      route.updatedAt.toDate();
+    let latestDate =
+    null;
 
-      if(
+    querySnapshot.forEach(docSnap => {
 
-        !latestDate ||
+      const route =
+      docSnap.data();
 
-        routeDate > latestDate
+      if(route.updatedAt){
 
-      ){
+        const routeDate =
+        route.updatedAt.toDate();
 
-        latestDate =
-        routeDate;
+        if(
+
+          !latestDate ||
+
+          routeDate > latestDate
+
+        ){
+
+          latestDate =
+          routeDate;
+
+        }
 
       }
+
+    });
+
+    if(latestDate){
+
+      document.getElementById(
+        "lastUpdated"
+      ).innerHTML =
+
+      latestDate.toLocaleDateString(
+
+        "en-GB",
+
+        {
+
+          day:"2-digit",
+          month:"short"
+
+        }
+
+      );
 
     }
 
-  });
+    else{
 
-  if(latestDate){
+      document.getElementById(
+        "lastUpdated"
+      ).innerHTML =
 
-    document.getElementById(
-      "lastUpdated"
-    ).innerHTML =
+      "--";
 
-    latestDate.toLocaleDateString(
+    }
 
-      "en-GB",
+  }
 
-      {
+  catch(error){
 
-        day:"2-digit",
-        month:"short"
-
-      }
-
-    );
+    console.log(error);
 
   }
 
@@ -436,6 +536,34 @@ async function loadDashboardStats(){
 }
 
 loadDashboardStats();
+
+/* =========================
+   LOGOUT
+========================= */
+
+async function logoutAdmin(){
+
+  try{
+
+    await signOut(auth);
+
+    clearAdminSession();
+
+    window.location.href =
+    "admin-login.html";
+
+  }
+
+  catch(error){
+
+    console.log(error);
+
+  }
+
+}
+
+window.logoutAdmin =
+logoutAdmin;
 
 /* =========================
    REFRESH WHEN RETURNING

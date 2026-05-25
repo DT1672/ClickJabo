@@ -126,7 +126,8 @@ autocomplete="off">
 </div>
 
 <script type="module">
- function showLoader(){
+
+function showLoader(){
 
   document.getElementById(
     "loadingOverlay"
@@ -142,17 +143,37 @@ function hideLoader(){
   ).style.display =
   "none";
 
-} 
+}
 
 import {
-  auth
+  auth,
+  db
 }
 from "./firebase-config.js";
+
+import {
+
+  saveAdminSession
+
+}
+from "./shared-config.js";
 
 import {
   signInWithEmailAndPassword
 }
 from "https://www.gstatic.com/firebasejs/12.3.0/firebase-auth.js";
+
+import {
+
+  doc,
+  getDoc
+
+}
+from "https://www.gstatic.com/firebasejs/12.3.0/firebase-firestore.js";
+
+/* =========================
+   LOGIN
+========================= */
 
 async function loginAdmin(){
 
@@ -196,6 +217,10 @@ async function loginAdmin(){
 
   try{
 
+    /* FIREBASE LOGIN */
+
+    const userCredential =
+
     await signInWithEmailAndPassword(
 
       auth,
@@ -203,6 +228,51 @@ async function loginAdmin(){
       password
 
     );
+
+    const user =
+    userCredential.user;
+
+    /* LOAD ADMIN PROFILE */
+
+    const adminDoc =
+    await getDoc(
+
+      doc(
+        db,
+        "districtAdmins",
+        user.uid
+      )
+
+    );
+
+    if(!adminDoc.exists()){
+
+      hideLoader();
+
+      alert(
+        "Admin profile not found."
+      );
+
+      return;
+
+    }
+
+    const adminData =
+    adminDoc.data();
+
+    /* SAVE SESSION */
+
+    saveAdminSession(
+
+      adminData.district,
+
+      adminData.vehicleCategory,
+
+      adminData.serviceProvider
+
+    );
+
+    /* REDIRECT */
 
     window.location.href =
     "admin-dashboard.html";
@@ -213,12 +283,12 @@ async function loginAdmin(){
 
     hideLoader();
 
-    alert(
-      "Invalid email or password."
-    );
-
     console.log(
       error
+    );
+
+    alert(
+      "Invalid email or password."
     );
 
     loginBtn.innerText =
@@ -235,6 +305,7 @@ window.loginAdmin =
 loginAdmin;
 
 </script>
+ 
 
 </body>
 
