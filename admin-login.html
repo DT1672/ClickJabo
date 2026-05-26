@@ -278,26 +278,29 @@ async function loginAdmin(){
     "admin-dashboard.html";
 
   }
+catch(error){
 
-  catch(error){
+  hideLoader();
 
-    hideLoader();
+  console.log(
+    error.code
+  );
 
-    console.log(
-      error
-    );
+  console.log(
+    error.message
+  );
 
-    alert(
-      "Invalid email or password."
-    );
+  alert(
+    error.code
+  );
 
-    loginBtn.innerText =
-    "Login";
+  loginBtn.innerText =
+  "Login";
 
-    loginBtn.disabled =
-    false;
+  loginBtn.disabled =
+  false;
 
-  }
+}
 
 }
 

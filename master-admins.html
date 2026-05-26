@@ -1,0 +1,659 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+<meta
+name="viewport"
+content="width=device-width, initial-scale=1.0">
+
+<meta
+name="theme-color"
+content="#020817">
+
+<title>
+Master Admins
+</title>
+
+<script
+type="module"
+src="master-auth-check.js">
+</script>
+
+<style>
+
+body{
+
+  margin:0;
+
+  background:
+  radial-gradient(
+    circle at top,
+    #071120,
+    #020817 55%
+  );
+
+  color:white;
+
+  font-family:Arial,sans-serif;
+
+}
+
+.page-container{
+
+  max-width:1200px;
+
+  margin:auto;
+
+  padding:32px;
+
+  box-sizing:border-box;
+
+}
+
+.top-header{
+
+  margin-bottom:24px;
+
+}
+
+.page-title{
+
+  font-size:32px;
+
+  font-weight:700;
+
+}
+
+.page-subtitle{
+
+  margin-top:6px;
+
+  color:#94a3b8;
+
+  font-size:13px;
+
+  letter-spacing:.4px;
+
+}
+
+.dashboard-card{
+
+  background:
+  linear-gradient(
+    135deg,
+    rgba(15,23,42,.94),
+    rgba(15,23,42,.82)
+  );
+
+  border:
+  1px solid rgba(255,255,255,.05);
+
+  border-radius:26px;
+
+  padding:24px;
+
+  margin-bottom:20px;
+
+  backdrop-filter:blur(16px);
+
+  box-shadow:
+  0 10px 32px rgba(0,0,0,.22);
+
+}
+
+.form-grid{
+
+  display:grid;
+
+  grid-template-columns:
+  repeat(
+    auto-fit,
+    minmax(220px,1fr)
+  );
+
+  gap:14px;
+
+}
+
+input,
+select{
+
+  width:100%;
+
+  height:48px;
+
+  border:none;
+
+  border-radius:16px;
+
+  padding:0 14px;
+
+  box-sizing:border-box;
+
+  background:
+  rgba(255,255,255,.04);
+
+  border:
+  1px solid rgba(255,255,255,.06);
+
+  color:white;
+
+  font-size:14px;
+
+  outline:none;
+
+}
+
+select{
+
+  cursor:pointer;
+
+}
+
+option{
+
+  background:#0f172a;
+
+}
+
+.create-btn{
+
+  margin-top:18px;
+
+  width:100%;
+
+  height:50px;
+
+  border:none;
+
+  border-radius:18px;
+
+  background:
+  linear-gradient(
+    135deg,
+    #8b6b2e,
+    #c29b47
+  );
+
+  color:white;
+
+  font-size:15px;
+
+  font-weight:700;
+
+  cursor:pointer;
+
+}
+
+.admin-item{
+
+  display:flex;
+
+  justify-content:space-between;
+
+  align-items:center;
+
+  padding:16px;
+
+  border-radius:18px;
+
+  background:
+  rgba(255,255,255,.03);
+
+  border:
+  1px solid rgba(255,255,255,.05);
+
+  margin-bottom:12px;
+
+}
+
+.admin-left{
+
+  display:flex;
+
+  flex-direction:column;
+
+  gap:4px;
+
+}
+
+.admin-email{
+
+  font-size:15px;
+
+  font-weight:600;
+
+}
+
+.admin-meta{
+
+  font-size:12px;
+
+  color:#94a3b8;
+
+}
+
+.admin-status{
+
+  padding:8px 12px;
+
+  border-radius:999px;
+
+  background:
+  rgba(34,197,94,.12);
+
+  border:
+  1px solid rgba(34,197,94,.18);
+
+  color:#4ade80;
+
+  font-size:12px;
+
+  font-weight:600;
+
+}
+
+@media(max-width:768px){
+
+  .page-container{
+
+    padding:18px;
+
+  }
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="page-container">
+
+  <div class="top-header">
+
+    <div>
+
+      <div class="page-title">
+
+        Admin Management
+
+      </div>
+
+      <div class="page-subtitle">
+
+        CREATE & CONTROL DISTRICT ADMINS
+
+      </div>
+
+    </div>
+
+  </div>
+
+  <!-- CREATE ADMIN -->
+
+  <div class="dashboard-card">
+
+    <h3
+    style="
+    margin-bottom:20px;
+    ">
+
+      Create Admin
+
+    </h3>
+
+    <div
+    class="form-grid">
+
+      <input
+      type="text"
+      id="adminUserID"
+      placeholder="Admin User ID">
+
+      <input
+      type="password"
+      id="adminPassword"
+      placeholder="Password">
+
+      <input
+      type="text"
+      id="adminDistrict"
+      placeholder="District">
+
+      <input
+      type="text"
+      id="adminVehicle"
+      placeholder="Vehicle Category">
+
+      <input
+      type="text"
+      id="adminProvider"
+      placeholder="Service Provider">
+
+      <select id="adminPlan">
+
+        <option>
+          Free
+        </option>
+
+        <option>
+          Monthly
+        </option>
+
+        <option>
+          Lifetime
+        </option>
+
+      </select>
+
+    </div>
+
+    <button
+    class="create-btn"
+    onclick="createAdmin()">
+
+      Create Admin
+
+    </button>
+
+  </div>
+
+  <!-- ADMIN LIST -->
+
+  <div class="dashboard-card">
+
+    <h3
+    style="
+    margin-bottom:20px;
+    ">
+
+      Active Admins
+
+    </h3>
+
+    <div id="adminList">
+
+      No admins found.
+
+    </div>
+
+  </div>
+
+</div>
+
+<script type="module">
+
+import {
+  db,
+  auth
+}
+from "./firebase-config.js";
+
+import {
+  collection,
+  onSnapshot,
+  doc,
+  setDoc
+}
+from "https://www.gstatic.com/firebasejs/12.3.0/firebase-firestore.js";
+
+import {
+  createUserWithEmailAndPassword
+}
+from "https://www.gstatic.com/firebasejs/12.3.0/firebase-auth.js";
+
+/* =========================
+   CREATE ADMIN
+========================= */
+
+async function createAdmin(){
+
+  try{
+
+    const userID =
+
+    document.getElementById(
+      "adminUserID"
+    ).value.trim();
+
+    const email =
+
+    userID +
+    "@clickjabo.com";
+
+    const password =
+
+    document.getElementById(
+      "adminPassword"
+    ).value.trim();
+
+    const district =
+
+    document.getElementById(
+      "adminDistrict"
+    ).value.trim();
+
+    const vehicleCategory =
+
+    document.getElementById(
+      "adminVehicle"
+    ).value.trim();
+
+    const serviceProvider =
+
+    document.getElementById(
+      "adminProvider"
+    ).value.trim();
+
+    const planType =
+
+    document.getElementById(
+      "adminPlan"
+    ).value;
+
+    if(
+
+      userID === "" ||
+
+      password === "" ||
+
+      district === ""
+
+    ){
+
+      alert(
+        "Please fill all required fields."
+      );
+
+      return;
+
+    }
+
+    /* CREATE FIREBASE AUTH */
+
+    const userCredential =
+
+    await createUserWithEmailAndPassword(
+
+      auth,
+      email,
+      password
+
+    );
+
+    const user =
+    userCredential.user;
+
+    /* SAVE FIRESTORE ADMIN */
+
+    await setDoc(
+
+      doc(
+        db,
+        "districtAdmins",
+        user.uid
+      ),
+
+      {
+
+        userID:
+        userID,
+
+        email:
+        email,
+
+        district:
+        district,
+
+        vehicleCategory:
+        vehicleCategory,
+
+        serviceProvider:
+        serviceProvider,
+
+        planType:
+        planType,
+
+        isActive:true,
+
+        createdAt:
+        new Date()
+
+      }
+
+    );
+
+    alert(
+      "Admin created successfully."
+    );
+
+    /* CLEAR FORM */
+
+    document.getElementById(
+      "adminUserID"
+    ).value = "";
+
+    document.getElementById(
+      "adminPassword"
+    ).value = "";
+
+    document.getElementById(
+      "adminDistrict"
+    ).value = "";
+
+    document.getElementById(
+      "adminVehicle"
+    ).value = "";
+
+    document.getElementById(
+      "adminProvider"
+    ).value = "";
+
+  }
+
+  catch(error){
+
+    console.log(error);
+
+    alert(
+      error.message
+    );
+
+  }
+
+}
+
+window.createAdmin =
+createAdmin;
+
+/* =========================
+   LOAD ADMINS
+========================= */
+
+function loadAdmins(){
+
+  onSnapshot(
+
+    collection(
+      db,
+      "districtAdmins"
+    ),
+
+    (snapshot)=>{
+
+      const adminList =
+
+      document.getElementById(
+        "adminList"
+      );
+
+      adminList.innerHTML =
+      "";
+
+      if(snapshot.empty){
+
+        adminList.innerHTML =
+
+        "No admins found.";
+
+        return;
+
+      }
+
+      snapshot.forEach(docSnap => {
+
+        const data =
+        docSnap.data();
+
+        adminList.innerHTML += `
+
+        <div class="admin-item">
+
+          <div class="admin-left">
+
+            <div class="admin-email">
+
+              ${data.userID || "No User ID"}
+
+            </div>
+
+            <div class="admin-meta">
+
+              ${data.district || "No District"}
+
+              •
+
+              ${data.vehicleCategory || "No Vehicle"}
+
+            </div>
+
+          </div>
+
+          <div class="admin-status">
+
+            ${data.isActive ? "Active" : "Disabled"}
+
+          </div>
+
+        </div>
+
+        `;
+
+      });
+
+    }
+
+  );
+
+}
+
+loadAdmins();
+
+</script>
+
+</body>
+
+</html>

@@ -19,14 +19,27 @@ Master Dashboard
 rel="stylesheet"
 href="admin.css">
 
+<script
+type="module"
+src="master-auth-check.js">
+</script>
 <style>
 
 body{
 
   margin:0;
-  background:#020817;
+
+  background:
+  radial-gradient(
+    circle at top,
+    #071120,
+    #020817 55%
+  );
+
   color:white;
-  font-family:sans-serif;
+
+  font-family:Arial,sans-serif;
+
   overflow:hidden;
 
 }
@@ -34,21 +47,35 @@ body{
 .master-layout{
 
   display:flex;
+
   width:100%;
+
   height:100vh;
 
 }
 
-/* SIDEBAR */
+/* =========================
+   SIDEBAR
+========================= */
 
 .sidebar{
 
-  width:260px;
-  background:#0f172a;
-  border-right:1px solid rgba(255,255,255,.06);
+  width:220px;
+
+  background:
+  rgba(15,23,42,.88);
+
+  backdrop-filter:blur(20px);
+
+  border-right:
+  1px solid rgba(255,255,255,.06);
+
   display:flex;
+
   flex-direction:column;
-  padding:24px 18px;
+
+  padding:20px 16px;
+
   box-sizing:border-box;
 
 }
@@ -56,107 +83,362 @@ body{
 .logo{
 
   font-size:24px;
+
   font-weight:700;
-  margin-bottom:40px;
+
+  margin-bottom:32px;
+
+  letter-spacing:.4px;
 
 }
 
 .sidebar button{
 
   width:100%;
-  height:48px;
+
+  min-height:48px;
+
   border:none;
-  border-radius:14px;
-  margin-bottom:12px;
-  background:rgba(255,255,255,.05);
-  color:white;
+
+  border-radius:18px;
+
+  margin-bottom:10px;
+
+  background:
+  rgba(255,255,255,.03);
+
+  border:
+  1px solid rgba(255,255,255,.05);
+
+  color:#e2e8f0;
+
   font-size:14px;
+
+  font-weight:600;
+
   text-align:left;
+
   padding:0 16px;
+
   cursor:pointer;
+
+  transition:.25s;
 
 }
 
 .sidebar button:hover{
 
-  background:rgba(255,255,255,.10);
+  background:
+  rgba(255,255,255,.07);
+
+  transform:
+  translateX(2px);
 
 }
 
-/* MAIN */
+/* =========================
+   MAIN PANEL
+========================= */
 
 .main-panel{
 
   flex:1;
+
   overflow-y:auto;
-  padding:28px;
+
+  padding:24px;
+
   box-sizing:border-box;
 
 }
 
+/* =========================
+   HEADER
+========================= */
+
 .top-header{
 
   display:flex;
+
   justify-content:space-between;
+
   align-items:center;
-  margin-bottom:24px;
+
+  margin-bottom:22px;
 
 }
 
 .page-title{
 
-  font-size:28px;
+  font-size:32px;
+
   font-weight:700;
+
+  line-height:1;
+
+}
+
+.page-subtitle{
+
+  margin-top:6px;
+
+  color:#94a3b8;
+
+  font-size:13px;
+
+  letter-spacing:.4px;
 
 }
 
 .status-box{
 
   padding:10px 16px;
-  border-radius:14px;
-  background:rgba(34,197,94,.15);
+
+  border-radius:999px;
+
+  background:
+  rgba(34,197,94,.12);
+
+  border:
+  1px solid rgba(34,197,94,.18);
+
   color:#4ade80;
-  font-size:13px;
+
+  font-size:12px;
+
+  font-weight:600;
 
 }
 
-/* CARDS */
+/* =========================
+   GRID
+========================= */
 
 .card-grid{
 
   display:grid;
+
   grid-template-columns:
-  repeat(auto-fit,minmax(240px,1fr));
-  gap:18px;
+  repeat(
+    auto-fit,
+    minmax(220px,1fr)
+  );
+
+  gap:16px;
 
 }
+
+/* =========================
+   CARDS
+========================= */
 
 .dashboard-card{
 
-  background:#0f172a;
-  border:1px solid rgba(255,255,255,.06);
-  border-radius:22px;
+  background:
+  linear-gradient(
+    135deg,
+    rgba(15,23,42,.94),
+    rgba(15,23,42,.82)
+  );
+
+  border:
+  1px solid rgba(255,255,255,.05);
+
+  border-radius:26px;
+
   padding:22px;
+
+  backdrop-filter:blur(16px);
+
+  box-shadow:
+  0 10px 32px rgba(0,0,0,.22);
+
+  position:relative;
+
+overflow:hidden;
+}
+.dashboard-card::before{
+
+  content:"";
+
+  position:absolute;
+
+  top:0;
+  left:0;
+
+  width:100%;
+  height:3px;
+
+  background:
+  linear-gradient(
+    90deg,
+    #c29b47,
+    rgba(250,204,21,.2)
+  );
+
+  opacity:.85;
 
 }
 
-.dashboard-card h3{
+.dashboard-card:hover{
 
-  margin:0;
-  font-size:14px;
-  color:#94a3b8;
+  transform:
+  translateY(-2px);
+
+  transition:.25s;
+
+  border:
+  1px solid rgba(250,204,21,.10);
 
 }
 
 .dashboard-card h1{
 
-  margin-top:12px;
+  text-shadow:
+  0 0 24px rgba(250,204,21,.08);
+
+}
+.dashboard-card h3{
+
+  margin:0;
+
+  font-size:13px;
+
+  font-weight:600;
+
+  color:#94a3b8;
+
+  letter-spacing:.3px;
+
+}
+
+.dashboard-card h1{
+
+  margin-top:14px;
+
   margin-bottom:0;
-  font-size:34px;
+
+  font-size:36px;
+
+  font-weight:700;
+
+  line-height:1;
+
+}
+
+/* =========================
+   ACTIVITY CARD
+========================= */
+
+.activity-card{
+
+  grid-column:
+  span 2;
+
+  min-height:280px;
+
+}
+
+.activity-item{
+
+  background:
+  rgba(255,255,255,.04);
+
+  border:
+  1px solid rgba(255,255,255,.04);
+
+  border-radius:16px;
+
+  padding:14px;
+
+  font-size:14px;
+
+  color:#e2e8f0;
+
+}
+
+/* =========================
+   SCROLLBAR
+========================= */
+
+.main-panel::-webkit-scrollbar{
+
+  width:8px;
+
+}
+
+.main-panel::-webkit-scrollbar-thumb{
+
+  background:
+  rgba(255,255,255,.08);
+
+  border-radius:999px;
+
+}
+
+/* =========================
+   MOBILE
+========================= */
+
+@media(max-width:900px){
+
+  .master-layout{
+
+    flex-direction:column;
+
+  }
+
+  .sidebar{
+
+    width:100%;
+
+    height:auto;
+
+    flex-direction:row;
+
+    overflow-x:auto;
+
+    gap:10px;
+
+    padding:12px;
+
+  }
+
+  .logo{
+
+    display:none;
+
+  }
+
+  .sidebar button{
+
+    min-width:160px;
+
+    margin-bottom:0;
+
+  }
+
+  .top-header{
+
+    flex-direction:column;
+
+    align-items:flex-start;
+
+    gap:12px;
+
+  }
+
+  .activity-card{
+
+    grid-column:
+    span 1;
+
+  }
 
 }
 
 </style>
+
 
 </head>
 
@@ -164,203 +446,278 @@ body{
 <body>
 
 <div class="master-layout">
+<!-- SIDEBAR -->
 
-  <!-- SIDEBAR -->
+<div class="sidebar">
 
-  <div class="sidebar">
+  <div class="logo">
 
-    <div class="logo">
+    ClickJabo
 
-      ClickJabo
+  </div>
 
-    </div>
+  <button
+  style="
+  background:
+  linear-gradient(
+    135deg,
+    rgba(194,155,71,.24),
+    rgba(250,204,21,.12)
+  );
 
-    <button>
+  border:
+  1px solid rgba(250,204,21,.24);
 
-      Dashboard
+  color:white;
+  ">
 
-    </button>
+    ⌂ Dashboard
 
-    <button>
+  </button>
 
-      Districts
+  <button
+  onclick="
+  window.location.href=
+  'master-districts.html'
+  ">
 
-    </button>
+    🏙 Districts
 
-    <button>
-
-      Admin Accounts
-
-    </button>
-
-    <button>
-
-      Fare Analytics
-
-    </button>
+  </button>
 
 <button
 onclick="
 window.location.href=
-'master-vehicle-categories.html'
+'master-admins.html'
 ">
 
-  Vehicle Categories
+  👤 Admin Accounts
 
 </button>
-    <button>
 
-      Reports
+  <button>
 
-    </button>
+    📈 Fare Analytics
 
-    <button>
+  </button>
 
-      Logout
+  <button
+  onclick="
+  window.location.href=
+  'master-vehicle-categories.html'
+  ">
 
-    </button>
+    🚕 Vehicle Categories
+
+  </button>
+
+  <button>
+
+    📑 Reports
+
+  </button>
+
+  <div
+  style="
+  flex:1;
+  ">
 
   </div>
+
+  <button
+  style="
+  background:
+  rgba(220,38,38,.12);
+
+  border:
+  1px solid rgba(220,38,38,.18);
+
+  color:#fca5a5;
+  ">
+
+    ⎋ Logout
+
+  </button>
+
+</div>
 
   <!-- MAIN -->
 
   <div class="main-panel">
 
-    <div class="top-header">
+   <div class="top-header">
 
-      <div class="page-title">
+  <div>
 
-        Master Dashboard
+    <div class="page-title">
 
-      </div>
+      Master Dashboard
 
-      <div class="status-box">
+    </div>
 
-        System Active
+    <div class="page-subtitle">
+
+      CLICKJABO PLATFORM CONTROL CENTER
+
+    </div>
+
+  </div>
+
+  <div class="status-box">
+
+    ● System Active
+
+  </div>
+
+</div>
+
+    
+<div class="card-grid">
+
+  <!-- DISTRICTS -->
+
+  <div class="dashboard-card">
+
+    <h3>
+      Total Districts
+    </h3>
+
+    <h1 id="districtCount">
+      0
+    </h1>
+
+  </div>
+
+  <!-- ROUTES -->
+
+  <div class="dashboard-card">
+
+    <h3>
+      Total Routes
+    </h3>
+
+    <h1 id="routeCount">
+      0
+    </h1>
+
+  </div>
+
+  <!-- ADMINS -->
+
+  <div class="dashboard-card">
+
+    <h3>
+      Active Admins
+    </h3>
+
+    <h1 id="adminCount">
+      0
+    </h1>
+
+  </div>
+
+  <!-- SYSTEM -->
+
+  <div class="dashboard-card">
+
+    <h3>
+      System Status
+    </h3>
+
+    <h1>
+      LIVE
+    </h1>
+
+  </div>
+
+  <!-- TEMPORARY -->
+
+  <div class="dashboard-card">
+
+    <h3>
+      Temporary Adjustments
+    </h3>
+
+    <h1 id="temporaryCount">
+      0
+    </h1>
+
+  </div>
+
+  <!-- SPONSORS -->
+
+  <div class="dashboard-card">
+
+    <h3>
+      Sponsors
+    </h3>
+
+    <h1 id="sponsorCount">
+      0
+    </h1>
+
+  </div>
+
+  <!-- NOTICES -->
+
+  <div class="dashboard-card">
+
+    <h3>
+      Notices
+    </h3>
+
+    <h1 id="noticeCount">
+      0
+    </h1>
+
+  </div>
+
+  <!-- LAST SYNC -->
+
+  <div class="dashboard-card">
+
+    <h3>
+      Last Sync
+    </h3>
+
+    <h1 id="lastSync">
+      --
+    </h1>
+
+  </div>
+
+  <!-- RECENT ACTIVITIES -->
+
+  <div class="dashboard-card activity-card">
+
+    <h3>
+      Recent Activities
+    </h3>
+
+    <div
+    id="activityList"
+    style="
+      margin-top:18px;
+      display:flex;
+      flex-direction:column;
+      gap:12px;
+    ">
+
+      <div
+      style="
+        color:#94a3b8;
+        font-size:14px;
+      ">
+
+        No recent activity
 
       </div>
 
     </div>
 
-    <div class="card-grid">
+  </div>
 
-      <!-- DISTRICTS -->
-
-      <div class="dashboard-card">
-
-        <h3>
-          Total Districts
-        </h3>
-
-        <h1 id="districtCount">
-          0
-        </h1>
-
-      </div>
-
-      <!-- ROUTES -->
-
-      <div class="dashboard-card">
-
-        <h3>
-          Total Routes
-        </h3>
-
-        <h1 id="routeCount">
-          0
-        </h1>
-
-      </div>
-
-      <!-- ADMINS -->
-
-      <div class="dashboard-card">
-
-        <h3>
-          Active Admins
-        </h3>
-
-        <h1 id="adminCount">
-          0
-        </h1>
-
-      </div>
-
-      <!-- SYSTEM -->
-
-      <div class="dashboard-card">
-
-        <h3>
-          System Status
-        </h3>
-
-        <h1>
-          LIVE
-        </h1>
-
-      </div>
-
-      <!-- TEMPORARY -->
-
-      <div class="dashboard-card">
-
-        <h3>
-          Temporary Adjustments
-        </h3>
-
-        <h1 id="temporaryCount">
-          0
-        </h1>
-
-      </div>
-
-      <!-- SPONSORS -->
-
-      <div class="dashboard-card">
-
-        <h3>
-          Sponsors
-        </h3>
-
-        <h1 id="sponsorCount">
-          0
-        </h1>
-
-      </div>
-
-      <!-- NOTICES -->
-
-      <div class="dashboard-card">
-
-        <h3>
-          Notices
-        </h3>
-
-        <h1 id="noticeCount">
-          0
-        </h1>
-
-      </div>
-
-      <!-- LAST SYNC -->
-
-      <div class="dashboard-card">
-
-        <h3>
-          Last Sync
-        </h3>
-
-        <h1 id="lastSync">
-          --
-        </h1>
-
-      </div>
-
-      <div class="dashboard-card">
-
-  <h3>
-    Recent Activities
-  </h3>
+</div>
 
   <div
     id="activityList"
