@@ -3,25 +3,25 @@
 
 <head>
 
-  <meta
-  name="viewport"
-  content="width=device-width, initial-scale=1.0">
+<meta
+name="viewport"
+content="width=device-width, initial-scale=1.0">
 
-  <title>
-    ClickJabo
-  </title>
+<title>
+ClickJabo
+</title>
 
-  <link
-  rel="stylesheet"
-  href="style.css">
+<link
+rel="stylesheet"
+href="style.css">
 
-  <link
-  rel="stylesheet"
-  href="https://cdn.jsdelivr.net/npm/choices.js/public/assets/styles/choices.min.css">
+<link
+rel="stylesheet"
+href="https://cdn.jsdelivr.net/npm/choices.js/public/assets/styles/choices.min.css">
 
-  <link
-  rel="manifest"
-  href="manifest.json">
+<link
+rel="manifest"
+href="manifest.json">
 
 </head>
 
@@ -29,235 +29,288 @@
 
 <div id="splash-screen">
 
-  <img
-  src="splash.png"
-  class="splash-image">
+<img
+src="splash.png"
+class="splash-image">
 
-  <div class="travel-dot"></div>
+<div class="travel-dot"></div>
 
 </div>
 
 <div class="container">
 
-  <!-- HEADER -->
+<!-- HEADER -->
 
-  <div class="header">
+<div class="header">
 
-    <h1>
-      ClickJabo
-    </h1>
+<h1>
+ClickJabo
+</h1>
 
-    <p>
-      KNOW FARE BEFORE YOU GO
-    </p>
+<p>
+KNOW FARE BEFORE YOU GO
+</p>
+
+</div>
+
+<!-- ROUTE CARD -->
+
+<div class="glass-card route-card">
+
+<div class="row">
+
+<div class="half">
+
+<label>
+District
+</label>
+
+<select id="district">
+
+</select>
+
+</div>
+
+<div class="half">
+
+<label>
+Ride Type
+</label>
+
+<select id="rideType">
+
+<option value="hire">
+Hire
+</option>
+
+<option value="shared">
+Shared
+</option>
+
+</select>
+
+</div>
+
+</div>
+
+<!-- VEHICLE CATEGORY -->
+
+<label class="top-space">
+Vehicle Type
+</label>
+
+<div
+id="vehicleCategoryContainer"
+class="vehicle-category-row">
+
+</div>
+<!-- SERVICE PROVIDER -->
+
+<div class="provider-section">
+
+  <div class="provider-title">
+
+    Choose Service
 
   </div>
 
-  <!-- ROUTE CARD -->
-
-  <div class="glass-card route-card">
-
-    <div class="row">
-
-      <div class="half">
-
-        <label>
-          District
-        </label>
-
-        <select id="district">
-
-        </select>
-
-      </div>
-
-      <div class="half">
-
-        <label>
-          Ride Type
-        </label>
-
-        <select id="rideType">
-
-          <option value="hire">
-            Hire
-          </option>
-
-          <option value="shared">
-            Shared
-          </option>
-
-        </select>
-
-      </div>
-
-    </div>
-
-    <!-- PICKUP -->
-
-    <label class="top-space">
-      🟩 Pickup Location
-    </label>
-
-    <select id="from">
-
-      <option value="">
-        📍 Select Pickup Location
-      </option>
-
-    </select>
-
-    <!-- DESTINATION -->
-
-    <label class="top-space">
-      🟥 Destination
-    </label>
-
-    <select id="to">
-
-      <option value="">
-        📍 Select Destination
-      </option>
-
-    </select>
-
-    <!-- SWAP -->
+  <div class="provider-list">
 
     <button
-    class="swap-btn"
-    onclick="swapLocations()">
+    class="provider-chip active-provider">
 
-      ⇅ Swap Route
+      Dimapur Auto Association
 
     </button>
 
-    <!-- PASSENGERS + FARE MODE -->
+    <button
+    class="provider-chip">
 
-    <div class="row top-space">
+      ABC Auto
 
-      <div class="half">
+    </button>
 
-        <label>
-          Passengers
-        </label>
+    <button
+    class="provider-chip">
 
-        <input
-        type="number"
-        id="passengers"
-        value="1"
-        min="1">
-
-      </div>
-
-      <div class="half">
-
-        <label>
-          Fare Mode
-        </label>
-
-        <select id="fareMode">
-
-          <option value="day">
-            ☀️ Day
-          </option>
-
-          <option value="night">
-            🌙 Night
-          </option>
-
-        </select>
-
-      </div>
-
-    </div>
-
-    <!-- CHECK FARE -->
-
-    <button onclick="checkFare()">
-
-      Check Fare
+      City Auto Union
 
     </button>
 
   </div>
 
-  <!-- RESULT CARD -->
+</div>
 
-  <div class="glass-card result-glass">
+<!-- PICKUP -->
 
-    <p class="fare-label">
+<label class="pickup-label">
 
-      ESTIMATED FARE
+  Pickup Location
 
-    </p>
+</label>
 
-    <h2 id="result">
+<select id="from">
 
-      Select Route
+<option value="">
+Select Pickup Location
+</option>
 
-    </h2>
+</select>
 
-    <p class="cheapest-tag">
+<!-- DESTINATION -->
 
-      ✓ Recommended Fare
+<label class="destination-label">
 
-    </p>
+  Destination
 
-    <p class="updated-date">
+</label>
 
-      Fare Last Updated:
-      <span id="lastUpdated">
+<select id="to">
 
-        --
+<option value="">
+Select Destination
+</option>
 
-      </span>
+</select>
 
-    </p>
 
-  </div>
+<!-- SWAP -->
 
-  <!-- INSTALL BANNER -->
+<button
+class="swap-btn"
+onclick="swapLocations()">
 
-  <div class="glass-card install-card">
+⇅ Swap Route
 
-    <img
-    src="banner.png"
-    alt="Install ClickJabo"
-    class="install-banner">
+</button>
 
-  </div>
+<!-- PASSENGERS + FARE MODE -->
 
-  <!-- BOTTOM ACTION BAR -->
+<div class="row top-space">
 
-  <div class="bottom-bar">
+<div class="half">
 
-    <a
-    href="https://yourwebsite.com"
-    target="_blank"
-    class="mini-about">
+<label>
+Passengers
+</label>
 
-      About ClickKounter
+<input
+type="number"
+id="passengers"
+value="1"
+min="1">
 
-    </a>
+</div>
 
-    <a
-    id="helplineBtn"
-    href="#"
-    class="mini-complaint">
+<div class="half">
 
-      Overcharged? Call Helpline
+<label>
+Fare Mode
+</label>
 
-    </a>
+<select id="fareMode">
 
-  </div>
+<option value="day">
+☀️ Day
+</option>
 
-  <!-- FOOTER -->
+<option value="night">
+🌙 Night
+</option>
 
-  <div class="footer-brand">
+</select>
 
-    Recommended Fare Guide • Supported by Dimapur Taxi Association • A ClickKounter Product
+</div>
 
-  </div>
+</div>
+
+<!-- CHECK FARE -->
+
+<button onclick="checkFare()">
+
+Check Fare
+
+</button>
+
+</div>
+
+<!-- RESULT CARD -->
+
+<div class="glass-card result-glass">
+
+<p class="fare-label">
+
+ESTIMATED FARE
+
+</p>
+
+<h2 id="result">
+
+Select Route
+
+</h2>
+
+<p class="cheapest-tag">
+
+✓ Recommended Fare
+
+</p>
+
+<p class="updated-date">
+
+Fare Last Updated:
+<span id="lastUpdated">
+
+--
+
+</span>
+
+</p>
+
+</div>
+
+<!-- INSTALL BANNER -->
+
+<div class="glass-card install-card">
+
+<img
+src="banner.png"
+alt="Install ClickJabo"
+class="install-banner">
+
+</div>
+
+<!-- BOTTOM ACTION BAR -->
+
+<div class="bottom-bar">
+
+<a
+href="https://yourwebsite.com"
+target="_blank"
+class="mini-about">
+
+About ClickKounter
+
+</a>
+
+<a
+id="helplineBtn"
+href="#"
+class="mini-complaint">
+
+Overcharged? Call Helpline
+
+</a>
+
+</div>
+
+<!-- FOOTER -->
+
+<div class="footer-brand">
+
+Recommended Fare Guide • Supported by Dimapur Taxi Association • A ClickKounter Product
+
+</div>
 
 </div>
 
@@ -269,6 +322,7 @@ src="app.js"
 defer>
 
 </script>
+
 
 </body>
 

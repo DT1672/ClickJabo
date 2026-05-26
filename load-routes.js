@@ -5,29 +5,63 @@ from "./firebase-config.js";
 
 import {
   collection,
-  getDocs
+  getDocs,
+  query,
+  where
 }
 from "https://www.gstatic.com/firebasejs/12.3.0/firebase-firestore.js";
 
 async function loadRoutes(){
 
-  const querySnapshot =
-  await getDocs(
+  try{
 
-    collection(
-      db,
-      "routes"
-    )
+    const routesQuery = query(
 
-  );
+      collection(
+        db,
+        "routes"
+      ),
 
-  querySnapshot.forEach(doc => {
+      where(
+        "district",
+        "==",
+        "Dimapur"
+      ),
 
-    console.log(
-      doc.data()
+      where(
+        "vehicleCategory",
+        "==",
+        "Taxi"
+      ),
+
+      where(
+        "serviceProvider",
+        "==",
+        "Dimapur Taxi Association"
+      )
+
     );
 
-  });
+    const querySnapshot =
+    await getDocs(
+      routesQuery
+    );
+
+    querySnapshot.forEach(docSnap => {
+
+      console.log(
+        docSnap.data()
+      );
+
+    });
+
+  }
+
+  catch(error){
+
+    console.log(error);
+
+  }
 
 }
 

@@ -32,22 +32,21 @@ src="auth-check.js">
 
 <body>
 
-  
 <div
 id="loadingOverlay"
 class="loader-overlay">
 
-  <div
-  class="loader-spinner">
+<div
+class="loader-spinner">
 
-  </div>
+</div>
 
-  <div
-  class="loader-text">
+<div
+class="loader-text">
 
-    Loading...
+Loading...
 
-  </div>
+</div>
 
 </div>
 
@@ -71,28 +70,28 @@ backdrop-filter:blur(18px);
 box-sizing:border-box;
 ">
 
-  <button
-  class="back-btn"
-  onclick="window.location.href='admin-dashboard.html'"
-  style="
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  width:38px;
-  height:38px;
-  border:none;
-  border-radius:14px;
-  background:rgba(255,255,255,.06);
-  border:1px solid rgba(255,255,255,.08);
-  color:white;
-  font-size:18px;
-  backdrop-filter:blur(12px);
-  cursor:pointer;
-  ">
+<button
+class="back-btn"
+onclick="window.location.href='admin-dashboard.html'"
+style="
+display:flex;
+align-items:center;
+justify-content:center;
+width:38px;
+height:38px;
+border:none;
+border-radius:14px;
+background:rgba(255,255,255,.06);
+border:1px solid rgba(255,255,255,.08);
+color:white;
+font-size:18px;
+backdrop-filter:blur(12px);
+cursor:pointer;
+">
 
-    ←
+←
 
-  </button>
+</button>
 
 </div>
 
@@ -107,174 +106,244 @@ overflow-x:hidden;
 box-sizing:border-box;
 ">
 
-  <!-- HEADER -->
+<!-- HEADER -->
 
-  <div
-  class="dashboard-header"
-  style="
-  text-align:center;
-  ">
+<div
+class="dashboard-header"
+style="
+text-align:center;
+">
 
-    <h1
-    style="
-    font-size:22px;
-    margin-bottom:6px;
-    ">
+<h1
+style="
+font-size:22px;
+margin-bottom:6px;
+">
 
-      Settings
+Settings
 
-    </h1>
+</h1>
 
-    <p
-    style="
-    font-size:9px;
-    letter-spacing:2px;
-    margin-top:4px;
-    ">
+<p
+style="
+font-size:9px;
+letter-spacing:2px;
+margin-top:4px;
+">
 
-      DISTRICT CONTROL SETTINGS
+DISTRICT CONTROL SETTINGS
 
-    </p>
+</p>
 
-    <div
-    class="district-badge"
-    style="
-    margin-top:16px;
-    padding:5px 12px;
-    font-size:9px;
-    ">
+<div
+class="district-badge"
+style="
+margin-top:16px;
+padding:5px 12px;
+font-size:9px;
+">
 
-      DIMAPUR DISTRICT
+N/A DISTRICT
 
-    </div>
+</div>
 
-  </div>
+</div>
 
-  <!-- SETTINGS SECTION -->
+<!-- SETTINGS SECTION -->
 
-  <div
-  class="route-section"
-  style="
-  margin-top:16px;
-  ">
+<div
+class="route-section"
+style="
+margin-top:16px;
+">
 
-    <div class="route-title">
+<div class="route-title">
 
-      District Configuration
+District Configuration
 
-    </div>
+</div>
 
-    <div class="route-list">
+<div class="route-list">
 
-      <div
-      class="route-item"
-      style="
-      flex-direction:column;
-      align-items:stretch;
-      gap:10px;
-      ">
+<div
+class="route-item"
+style="
+flex-direction:column;
+align-items:stretch;
+gap:10px;
+">
 
-        <!-- USERNAME -->
+<!-- USERNAME -->
 
-        <div class="route-info">
+<div class="route-info">
 
-          <strong>
-            Admin User ID
-          </strong>
+<strong>
+Admin User ID
+</strong>
 
-          <p>
-            Assigned district administrator
-          </p>
+<p>
+Assigned district administrator
+</p>
 
-        </div>
+</div>
 
-        <input
-        type="text"
-        value="admin_dimapur"
-        readonly
-        style="
-        width:100%;
-        padding:11px 12px;
-        border:none;
-        border-radius:14px;
-        background:rgba(255,255,255,.04);
-        border:1px solid rgba(255,255,255,.06);
-        color:#94a3b8;
-        font-size:12px;
-        outline:none;
-        box-sizing:border-box;
-        cursor:not-allowed;
-        ">
+<input
+type="text"
+id="adminUserId"
+readonly
+style="
+width:100%;
+padding:11px 12px;
+border:none;
+border-radius:14px;
+background:rgba(255,255,255,.04);
+border:1px solid rgba(255,255,255,.06);
+color:#94a3b8;
+font-size:12px;
+outline:none;
+box-sizing:border-box;
+cursor:not-allowed;
+">
 
-        <!-- DISTRICT -->
+<!-- DISTRICT -->
 
-        <div class="route-info"
-        style="
-        margin-top:4px;
-        ">
+<div class="route-info"
+style="
+margin-top:4px;
+">
 
-          <strong>
-            Assigned District
-          </strong>
+<strong>
+Assigned District
+</strong>
 
-          <p>
-            Controlled operational district
-          </p>
+<p>
+Controlled operational district
+</p>
 
-        </div>
+</div>
 
-        <input
-        type="text"
-        value="Dimapur"
-        readonly
-        style="
-        width:100%;
-        padding:11px 12px;
-        border:none;
-        border-radius:14px;
-        background:rgba(255,255,255,.04);
-        border:1px solid rgba(255,255,255,.06);
-        color:#94a3b8;
-        font-size:12px;
-        outline:none;
-        box-sizing:border-box;
-        cursor:not-allowed;
-        ">
+<input
+type="text"
+id="districtInput"
+readonly
+style="
+width:100%;
+padding:11px 12px;
+border:none;
+border-radius:14px;
+background:rgba(255,255,255,.04);
+border:1px solid rgba(255,255,255,.06);
+color:#94a3b8;
+font-size:12px;
+outline:none;
+box-sizing:border-box;
+cursor:not-allowed;
+">
 
-        <!-- HELPLINE -->
+<!-- VEHICLE CATEGORY -->
 
-        <div class="route-info"
-        style="
-        margin-top:4px;
-        ">
+<div class="route-info"
+style="
+margin-top:4px;
+">
 
-          <strong>
-            District Helpline
-          </strong>
+<strong>
+Vehicle Category
+</strong>
 
-          <p>
-            Public complaint and support number
-          </p>
+<p>
+Assigned operational category
+</p>
 
-        </div>
+</div>
 
-        <input
-        type="text"
-        id="helplineNumber"
-        placeholder="Enter helpline number"
-        autocomplete="off"
-        style="
-        width:100%;
-        padding:11px 12px;
-        border:none;
-        border-radius:14px;
-        background:rgba(255,255,255,.06);
-        border:1px solid rgba(255,255,255,.08);
-        color:white;
-        font-size:12px;
-        outline:none;
-        box-sizing:border-box;
-        ">
+<input
+type="text"
+id="vehicleCategoryInput"
+readonly
+style="
+width:100%;
+padding:11px 12px;
+border:none;
+border-radius:14px;
+background:rgba(255,255,255,.04);
+border:1px solid rgba(255,255,255,.06);
+color:#94a3b8;
+font-size:12px;
+outline:none;
+box-sizing:border-box;
+cursor:not-allowed;
+">
+
+<!-- PROVIDER -->
+
+<div class="route-info"
+style="
+margin-top:4px;
+">
+
+<strong>
+Service Provider
+</strong>
+
+<p>
+Assigned union or provider
+</p>
+
+</div>
+
+<input
+type="text"
+id="providerInput"
+readonly
+style="
+width:100%;
+padding:11px 12px;
+border:none;
+border-radius:14px;
+background:rgba(255,255,255,.04);
+border:1px solid rgba(255,255,255,.06);
+color:#94a3b8;
+font-size:12px;
+outline:none;
+box-sizing:border-box;
+cursor:not-allowed;
+">
+
+<!-- HELPLINE -->
+
+<div class="route-info"
+style="
+margin-top:4px;
+">
+
+<strong>
+District Helpline
+</strong>
+
+<p>
+Public complaint and support number
+</p>
+
+</div>
+
+<input
+type="text"
+id="helplineNumber"
+placeholder="Enter helpline number"
+autocomplete="off"
+style="
+width:100%;
+padding:11px 12px;
+border:none;
+border-radius:14px;
+background:rgba(255,255,255,.06);
+border:1px solid rgba(255,255,255,.08);
+color:white;
+font-size:12px;
+outline:none;
+box-sizing:border-box;
+">
 
 <!-- PASSWORD -->
 
@@ -283,13 +352,13 @@ style="
 margin-top:4px;
 ">
 
-  <strong>
-    Change Password
-  </strong>
+<strong>
+Change Password
+</strong>
 
-  <p>
-    Update administrator password
-  </p>
+<p>
+Update administrator password
+</p>
 
 </div>
 
@@ -330,272 +399,336 @@ outline:none;
 box-sizing:border-box;
 ">
 
-        <!-- SAVE BUTTON -->
+<!-- SAVE BUTTON -->
 
-        <button
-        id="saveBtn"
-        class="save-settings-btn"
-        style="
-        width:100%;
-        padding:12px;
-        border-radius:14px;
-        font-size:13px;
-        margin-top:6px;
-        "
-        onclick="saveSettings()">
+<button
+id="saveBtn"
+class="save-settings-btn"
+style="
+width:100%;
+padding:12px;
+border-radius:14px;
+font-size:13px;
+margin-top:6px;
+"
+onclick="saveSettings()">
 
-          Save Settings
+Save Settings
 
-        </button>
+</button>
 
-      </div>
+</div>
 
-    </div>
+</div>
 
-  </div>
+</div>
 
 </div>
 
 <script type="module">
-  function showLoader(){
 
-  document.getElementById(
-    "loadingOverlay"
-  ).style.display =
-  "flex";
+function showLoader(){
+
+document.getElementById(
+"loadingOverlay"
+).style.display =
+"flex";
 
 }
 
 function hideLoader(){
 
-  document.getElementById(
-    "loadingOverlay"
-  ).style.display =
-  "none";
+document.getElementById(
+"loadingOverlay"
+).style.display =
+"none";
 
 }
 
 import {
-  db
+db,
+auth
 }
 from "./firebase-config.js";
 
 import {
-  doc,
-  getDoc,
-  setDoc
+
+getAdminSession
+
+}
+from "./shared-config.js";
+
+import {
+doc,
+getDoc,
+setDoc
 }
 from "https://www.gstatic.com/firebasejs/12.3.0/firebase-firestore.js";
 
 import {
-  auth
-}
-from "./firebase-config.js";
-
-import {
-  updatePassword
+updatePassword
 }
 from "https://www.gstatic.com/firebasejs/12.3.0/firebase-auth.js";
 
 /* =========================
-   LOAD SETTINGS
+ADMIN SESSION
 ========================= */
+
+const adminSession =
+
+getAdminSession();
+
+const adminDistrict =
+
+adminSession.district;
+
+const adminVehicleCategory =
+
+adminSession.vehicleCategory;
+
+const adminServiceProvider =
+
+adminSession.serviceProvider;
+
+const adminUserId =
+
+adminSession.userId;
+
+/* =========================
+UI SESSION INFO
+========================= */
+
+document.querySelector(
+".district-badge"
+).innerHTML =
+
+`${adminDistrict || "N/A"} DISTRICT`;
+
+document.getElementById(
+"adminUserId"
+).value =
+
+adminUserId || "";
+
+document.getElementById(
+"districtInput"
+).value =
+
+adminDistrict || "";
+
+document.getElementById(
+"vehicleCategoryInput"
+).value =
+
+adminVehicleCategory || "";
+
+document.getElementById(
+"providerInput"
+).value =
+
+adminServiceProvider || "";
+
+/* =========================
+LOAD SETTINGS
+========================= */
+
 async function loadSettings(){
 
-  showLoader();
+showLoader();
 
-  try{
+try{
 
-    const settingsDoc =
-    await getDoc(
+const settingsDoc =
+await getDoc(
 
-      doc(
-        db,
-        "settings",
-        "Dimapur"
-      )
+doc(
+db,
+"settings",
+adminDistrict
+)
 
-    );
+);
 
-    if(settingsDoc.exists()){
+if(settingsDoc.exists()){
 
-      const settings =
-      settingsDoc.data();
+const settings =
+settingsDoc.data();
 
-      document.getElementById(
-        "helplineNumber"
-      ).value =
+document.getElementById(
+"helplineNumber"
+).value =
 
-      settings.helpline || "";
-
-    }
-
-  }
-
-  catch(error){
-
-    console.log(error);
-
-  }
-
-  hideLoader();
+settings.helpline || "";
 
 }
 
+}
+
+catch(error){
+
+console.log(error);
+
+}
+
+hideLoader();
+
+}
 
 loadSettings();
 
 /* =========================
-   SAVE SETTINGS
+SAVE SETTINGS
 ========================= */
 
 async function saveSettings(){
 
-  showLoader();
+showLoader();
 
-  const helpline =
-  document.getElementById(
-    "helplineNumber"
-  ).value.trim();
-
-  const newPassword =
+const helpline =
 document.getElementById(
-  "newPassword"
+"helplineNumber"
+).value.trim();
+
+const newPassword =
+document.getElementById(
+"newPassword"
 ).value.trim();
 
 const confirmPassword =
 document.getElementById(
-  "confirmPassword"
+"confirmPassword"
 ).value.trim();
 
 if(helpline === ""){
 
-  hideLoader();
+hideLoader();
 
-  alert(
-    "Please enter helpline number."
-  );
+alert(
+"Please enter helpline number."
+);
 
-  return;
-
-}
-if(
-
-  newPassword !== "" &&
-
-  newPassword.length < 6
-
-){
-
-  hideLoader();
-
-  alert(
-    "Password must be at least 6 characters."
-  );
-
-  return;
+return;
 
 }
 
 if(
 
-  newPassword !==
-  confirmPassword
+newPassword !== "" &&
+newPassword.length < 6
 
 ){
 
-  hideLoader();
+hideLoader();
 
-  alert(
-    "Passwords do not match."
-  );
+alert(
+"Password must be at least 6 characters."
+);
 
-  return;
+return;
 
 }
 
-  const saveBtn =
-  document.getElementById(
-    "saveBtn"
-  );
+if(
 
-  saveBtn.innerHTML =
-  "Please wait...";
+newPassword !==
+confirmPassword
 
-  saveBtn.disabled =
-  true;
+){
 
-  try{
+hideLoader();
+
+alert(
+"Passwords do not match."
+);
+
+return;
+
+}
+
+const saveBtn =
+document.getElementById(
+"saveBtn"
+);
+
+saveBtn.innerHTML =
+"Please wait...";
+
+saveBtn.disabled =
+true;
+
+try{
 
 await setDoc(
 
-  doc(
-    db,
-    "settings",
-    "Dimapur"
-  ),
+doc(
+db,
+"settings",
+adminDistrict
+),
 
-  {
+{
 
-    districtName:
-    "Dimapur",
+districtName:
+adminDistrict,
 
-    helpline:
-    helpline,
+vehicleCategory:
+adminVehicleCategory,
 
-    isActive:
-    true,
+serviceProvider:
+adminServiceProvider,
 
-    updatedAt:
-    new Date()
+helpline:
+helpline,
 
-  },
+isActive:
+true,
 
-  {
+updatedAt:
+new Date()
 
-    merge:true
+},
 
-  }
+{
+merge:true
+}
 
 );
 
 if(newPassword !== ""){
 
-  await updatePassword(
+await updatePassword(
 
-    auth.currentUser,
+auth.currentUser,
 
-    newPassword
+newPassword
 
-  );
+);
 
 }
 
 alert(
-  "Settings updated successfully."
+"Settings updated successfully."
 );
 
-  }
+}
 
-  catch(error){
+catch(error){
 
-    hideLoader();
+console.log(error);
 
-    console.log(error);
+alert(
+"Unable to save settings."
+);
 
-    alert(
-      "Unable to save settings."
-    );
+}
 
-  }
+hideLoader();
 
-  hideLoader();
+saveBtn.innerHTML =
+"Save Settings";
 
-  saveBtn.innerHTML =
-  "Save Settings";
-
-  saveBtn.disabled =
-  false;
+saveBtn.disabled =
+false;
 
 }
 

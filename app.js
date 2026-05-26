@@ -10,7 +10,9 @@ import {
   collection,
   getDocs,
   doc,
-  getDoc
+  getDoc,
+  query,
+  where
 }
 from "https://www.gstatic.com/firebasejs/12.3.0/firebase-firestore.js";
 
@@ -35,6 +37,14 @@ document.getElementById(
   "to"
 );
 
+const vehicleCategoryContainer =
+document.getElementById(
+  "vehicleCategoryContainer"
+);
+
+let selectedVehicleCategory =
+"";
+
 /* =========================
    DISTRICT SAVE
 ========================= */
@@ -52,8 +62,10 @@ if(savedDistrict){
 }
 
 districtSelect.addEventListener(
+
   "change",
-  () => {
+
+  async () => {
 
     localStorage.setItem(
 
@@ -63,9 +75,12 @@ districtSelect.addEventListener(
 
     );
 
-    loadLocations();
+    await loadVehicleCategories();
+
+    await loadRoutesFromFirestore();
 
   }
+
 );
 
 /* =========================
@@ -108,11 +123,6 @@ ${district.name}
 
     });
 
-    const savedDistrict =
-    localStorage.getItem(
-      "selectedDistrict"
-    );
-
     if(savedDistrict){
 
       districtSelect.value =
@@ -124,10 +134,148 @@ ${district.name}
 
   catch(error){
 
-    console.log(
-      "Unable to load districts",
-      error
+    console.log(error);
+
+  }
+
+}
+/* =========================
+   LOAD VEHICLE CATEGORIES
+========================= */
+
+async function loadVehicleCategories(){
+
+  try{
+
+    const querySnapshot =
+    await getDocs(
+
+      collection(
+        db,
+        "vehicleCategories"
+      )
+
     );
+
+    vehicleCategoryContainer.innerHTML =
+    "";
+
+    querySnapshot.forEach(docSnap => {
+
+      const category =
+      docSnap.data();
+
+      if(category.isActive){
+
+        const button =
+        document.createElement(
+          "button"
+        );
+
+        button.className =
+        "vehicle-category-btn";
+
+  
+
+button.innerHTML = `
+
+<img
+src="${category.icon}"
+class="vehicle-icon">
+
+<div class="vehicle-text">
+
+${category.name}
+
+</div>
+
+`;
+
+
+        button.dataset.category =
+        category.name;
+
+        button.onclick =
+        async function(){
+
+          document
+          .querySelectorAll(
+            ".vehicle-category-btn"
+          )
+          .forEach(btn => {
+
+            btn.classList.remove(
+              "active"
+            );
+
+          });
+
+          button.classList.add(
+            "active"
+          );
+
+          selectedVehicleCategory =
+          category.name;
+
+          localStorage.setItem(
+
+            "selectedVehicleCategory",
+
+            category.name
+
+          );
+
+          await loadRoutesFromFirestore();
+
+        };
+
+        vehicleCategoryContainer.appendChild(
+          button
+        );
+
+      }
+
+    });
+
+    const savedCategory =
+    localStorage.getItem(
+      "selectedVehicleCategory"
+    );
+
+    if(savedCategory){
+
+      selectedVehicleCategory =
+      savedCategory;
+
+      const buttons =
+      document.querySelectorAll(
+        ".vehicle-category-btn"
+      );
+
+      buttons.forEach(btn => {
+
+        if(
+
+          btn.dataset.category ===
+          savedCategory
+
+        ){
+
+          btn.classList.add(
+            "active"
+          );
+
+        }
+
+      });
+
+    }
+
+  }
+
+  catch(error){
+
+    console.log(error);
 
   }
 
@@ -141,14 +289,30 @@ async function loadRoutesFromFirestore(){
 
   try{
 
-    const querySnapshot =
-    await getDocs(
+    const routesQuery = query(
 
       collection(
         db,
         "routes"
+      ),
+
+      where(
+        "district",
+        "==",
+        districtSelect.value
+      ),
+
+      where(
+        "vehicleCategory",
+        "==",
+        selectedVehicleCategory
       )
 
+    );
+
+    const querySnapshot =
+    await getDocs(
+      routesQuery
     );
 
     routes = [];
@@ -175,10 +339,7 @@ async function loadRoutesFromFirestore(){
 
   catch(error){
 
-    console.log(
-      "Offline Mode",
-      error
-    );
+    console.log(error);
 
     const offlineRoutes =
     localStorage.getItem(
@@ -188,6 +349,7 @@ async function loadRoutesFromFirestore(){
     if(offlineRoutes){
 
       routes =
+
       JSON.parse(
         offlineRoutes
       );
@@ -214,7 +376,7 @@ async function loadHelpline(){
       doc(
         db,
         "settings",
-        "Dimapur"
+        districtSelect.value
       )
 
     );
@@ -224,25 +386,14 @@ async function loadHelpline(){
       const settings =
       settingsDoc.data();
 
-      localStorage.setItem(
-
-        "offlineHelpline",
-
-        settings.helpline || ""
-
-      );
-
       const helplineBtn =
       document.getElementById(
         "helplineBtn"
       );
 
       if(
-
         helplineBtn &&
-
         settings.helpline
-
       ){
 
         helplineBtn.href =
@@ -257,16 +408,11 @@ async function loadHelpline(){
 
   catch(error){
 
-    console.log(
-      "Offline Helpline",
-      error
-    );
+    console.log(error);
 
   }
 
 }
-
-loadHelpline();
 
 /* =========================
    LOAD LOCATIONS
@@ -276,47 +422,37 @@ function loadLocations(){
 
   fromSelect.innerHTML =
 
-  '<option value="">📍 Select Pickup Location</option>';
+  '<option value="">Select Pickup Location</option>';
 
   toSelect.innerHTML =
 
-  '<option value="">📍 Select Destination</option>';
+  '<option value="">Select Destination</option>';
 
   let locations = [];
-
-  let selectedDistrict =
-  districtSelect.value;
 
   routes.forEach(route => {
 
     if(
-      route.district ===
-      selectedDistrict
+      !locations.includes(
+        route.from
+      )
     ){
 
-      if(
-        !locations.includes(
-          route.from
-        )
-      ){
+      locations.push(
+        route.from
+      );
 
-        locations.push(
-          route.from
-        );
+    }
 
-      }
+    if(
+      !locations.includes(
+        route.to
+      )
+    ){
 
-      if(
-        !locations.includes(
-          route.to
-        )
-      ){
-
-        locations.push(
-          route.to
-        );
-
-      }
+      locations.push(
+        route.to
+      );
 
     }
 
@@ -461,46 +597,14 @@ function checkFare(){
 
   }
 
-  localStorage.setItem(
-    "lastFrom",
-    from
-  );
-
-  localStorage.setItem(
-    "lastTo",
-    to
-  );
-
   routes.forEach(route => {
 
     if(
 
-      route.district ===
-      districtSelect.value &&
-
       route.from === from &&
-
       route.to === to
 
     ){
-
-      if(
-
-        route.updatedAt &&
-
-        route.updatedAt.toDate
-
-      ){
-
-        document.getElementById(
-          "lastUpdated"
-        ).innerText =
-
-        route.updatedAt
-        .toDate()
-        .toLocaleString();
-
-      }
 
       if(
         rideType ===
@@ -660,42 +764,19 @@ swapLocations;
    APP LOAD
 ========================= */
 
-const offlineRoutes =
-localStorage.getItem(
-  "offlineRoutes"
-);
-
 window.addEventListener(
 
   "load",
 
   async () => {
 
-    if(
+    await loadDistricts();
 
-      isOffline &&
+    await loadVehicleCategories();
 
-      offlineRoutes
+    await loadRoutesFromFirestore();
 
-    ){
-
-      routes =
-
-      JSON.parse(
-        offlineRoutes
-      );
-
-      loadLocations();
-
-    }
-
-    else{
-
-      await loadDistricts();
-
-      await loadRoutesFromFirestore();
-
-    }
+    await loadHelpline();
 
   }
 
@@ -706,7 +787,9 @@ window.addEventListener(
 ========================= */
 
 window.addEventListener(
+
   "load",
+
   () => {
 
     setTimeout(() => {
@@ -732,4 +815,5 @@ window.addEventListener(
     }, 2800);
 
   }
+
 );

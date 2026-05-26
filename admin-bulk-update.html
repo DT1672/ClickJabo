@@ -27,36 +27,36 @@ href="admin-manifest.json">
 
 .form-input{
 
-  width:100%;
-  padding:11px 12px;
-  border:none;
-  border-radius:16px;
-  background:rgba(255,255,255,.06);
-  border:1px solid rgba(255,255,255,.08);
-  color:white;
-  font-size:12px;
-  outline:none;
-  box-sizing:border-box;
+width:100%;
+padding:11px 12px;
+border:none;
+border-radius:16px;
+background:rgba(255,255,255,.06);
+border:1px solid rgba(255,255,255,.08);
+color:white;
+font-size:12px;
+outline:none;
+box-sizing:border-box;
 
 }
 
 .form-input option{
 
-  background:#0f172a;
-  color:white;
+background:#0f172a;
+color:white;
 
 }
 
 .route-checkbox-item{
 
-  display:flex;
-  align-items:center;
-  gap:10px;
-  padding:10px;
-  border-radius:14px;
-  margin-bottom:8px;
-  background:rgba(255,255,255,.04);
-  font-size:12px;
+display:flex;
+align-items:center;
+gap:10px;
+padding:10px;
+border-radius:14px;
+margin-bottom:8px;
+background:rgba(255,255,255,.04);
+font-size:12px;
 
 }
 
@@ -83,13 +83,13 @@ overflow-x:hidden;
 id="loadingOverlay"
 class="loader-overlay">
 
-  <div class="loader-spinner"></div>
+<div class="loader-spinner"></div>
 
-  <div class="loader-text">
+<div class="loader-text">
 
-    Loading...
+Loading...
 
-  </div>
+</div>
 
 </div>
 
@@ -113,28 +113,28 @@ backdrop-filter:blur(18px);
 box-sizing:border-box;
 ">
 
-  <button
-  class="back-btn"
-  onclick="window.location.href='admin-dashboard.html'"
-  style="
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  width:38px;
-  height:38px;
-  border:none;
-  border-radius:14px;
-  background:rgba(255,255,255,.06);
-  border:1px solid rgba(255,255,255,.08);
-  color:white;
-  font-size:18px;
-  backdrop-filter:blur(12px);
-  cursor:pointer;
-  ">
+<button
+class="back-btn"
+onclick="window.location.href='admin-dashboard.html'"
+style="
+display:flex;
+align-items:center;
+justify-content:center;
+width:38px;
+height:38px;
+border:none;
+border-radius:14px;
+background:rgba(255,255,255,.06);
+border:1px solid rgba(255,255,255,.08);
+color:white;
+font-size:18px;
+backdrop-filter:blur(12px);
+cursor:pointer;
+">
 
-    ←
+←
 
-  </button>
+</button>
 
 </div>
 
@@ -165,12 +165,25 @@ style="
 text-align:center;
 font-size:11px;
 color:#94a3b8;
-margin-bottom:24px;
+margin-bottom:12px;
 ">
 
 DISTRICT FARE CONTROL
 
 </p>
+
+<div
+class="district-badge"
+style="
+margin:0 auto 24px auto;
+padding:5px 12px;
+font-size:9px;
+width:max-content;
+">
+
+N/A DISTRICT
+
+</div>
 
 <!-- UPDATE MODE -->
 
@@ -190,13 +203,13 @@ class="form-input">
 
 <option value="temporary">
 
-  Temporary Adjustment
+Temporary Adjustment
 
 </option>
 
 <option value="permanent">
 
-  Permanent Adjustment
+Permanent Adjustment
 
 </option>
 
@@ -221,13 +234,13 @@ class="form-input">
 
 <option value="increase">
 
-  Increase Fare
+Increase Fare
 
 </option>
 
 <option value="decrease">
 
-  Decrease Fare
+Decrease Fare
 
 </option>
 
@@ -508,80 +521,137 @@ Remove Temporary Adjustments
 <script type="module">
 
 import {
-  db
+db
 }
 from "./firebase-config.js";
 
 import {
-  collection,
-  getDocs,
-  updateDoc,
-  doc,
-  addDoc,
-  serverTimestamp
+
+getAdminSession
+
+}
+from "./shared-config.js";
+
+import {
+collection,
+getDocs,
+updateDoc,
+doc,
+addDoc,
+serverTimestamp,
+query,
+where
 }
 from "https://www.gstatic.com/firebasejs/12.3.0/firebase-firestore.js";
 
+/* =========================
+ADMIN SESSION
+========================= */
+
+const adminSession =
+
+getAdminSession();
+
+const adminDistrict =
+adminSession.district;
+
+const adminVehicleCategory =
+adminSession.vehicleCategory;
+
+const adminServiceProvider =
+adminSession.serviceProvider;
+
+const adminUserId =
+adminSession.userId;
+
+/* =========================
+UI SESSION INFO
+========================= */
+
+document.querySelector(
+".district-badge"
+).innerHTML =
+
+`
+${adminDistrict || "N/A"} DISTRICT
+`;
+
+/* =========================
+ACTIVITY LOG
+========================= */
+
 async function addActivityLog(text){
 
-  await addDoc(
+await addDoc(
 
-    collection(
-      db,
-      "activityLogs"
-    ),
+collection(
+db,
+"activityLogs"
+),
 
-    {
+{
 
-      action:text,
+action:text,
 
-      createdAt:
-      serverTimestamp()
+district:
+adminDistrict,
 
-    }
+vehicleCategory:
+adminVehicleCategory,
 
-  );
+serviceProvider:
+adminServiceProvider,
+
+adminUserId:
+adminUserId,
+
+createdAt:
+serverTimestamp()
+
+}
+
+);
 
 }
 
 /* =========================
-   SHOW LOADER
+SHOW LOADER
 ========================= */
 
 function showLoader(){
 
-  document.getElementById(
-    "loadingOverlay"
-  ).style.display =
-  "flex";
+document.getElementById(
+"loadingOverlay"
+).style.display =
+"flex";
 
 }
 
 function hideLoader(){
 
-  document.getElementById(
-    "loadingOverlay"
-  ).style.display =
-  "none";
+document.getElementById(
+"loadingOverlay"
+).style.display =
+"none";
 
 }
 
 /* =========================
-   UPDATE SELECT COUNT
+UPDATE SELECT COUNT
 ========================= */
 
 function updateSelectedCount(){
 
-  const selected =
-  document.querySelectorAll(
-    ".routeCheckbox:checked"
-  ).length;
+const selected =
+document.querySelectorAll(
+".routeCheckbox:checked"
+).length;
 
-  document.getElementById(
-    "selectedCount"
-  ).innerText =
+document.getElementById(
+"selectedCount"
+).innerText =
 
-  selected + " Selected";
+selected + " Selected";
 
 }
 
@@ -589,49 +659,71 @@ window.updateSelectedCount =
 updateSelectedCount;
 
 /* =========================
-   LOAD ROUTES
+LOAD ROUTES
 ========================= */
 
 async function loadBulkRoutes(){
 
-  showLoader();
+showLoader();
 
-  try{
+try{
 
-    const querySnapshot =
-    await getDocs(
+const routesQuery = query(
 
-      collection(
-        db,
-        "routes"
-      )
+collection(
+db,
+"routes"
+),
 
-    );
+where(
+"district",
+"==",
+adminDistrict
+),
 
-    const container =
-    document.getElementById(
-      "bulkRouteList"
-    );
+where(
+"vehicleCategory",
+"==",
+adminVehicleCategory
+),
 
-    container.innerHTML =
-    "";
+where(
+"serviceProvider",
+"==",
+adminServiceProvider
+)
 
-    const temporaryList =
-    document.getElementById(
-      "temporaryList"
-    );
+);
 
-    temporaryList.innerHTML =
-    "";
+const querySnapshot =
+await getDocs(
+routesQuery
+);
 
-    let tempCount = 0;
+const container =
+document.getElementById(
+"bulkRouteList"
+);
 
-    querySnapshot.forEach(docSnap => {
+container.innerHTML =
+"";
 
-      const route =
-      docSnap.data();
+const temporaryList =
+document.getElementById(
+"temporaryList"
+);
 
-      container.innerHTML += `
+temporaryList.innerHTML =
+"";
+
+let tempCount = 0;
+
+querySnapshot.forEach(docSnap => {
+
+const route =
+docSnap.data();
+
+container.innerHTML += `
 
 <label
 class="route-checkbox-item">
@@ -648,51 +740,51 @@ ${route.to}
 
 </label>
 
-      `;
+`;
 
-      const tempItems = [];
+const tempItems = [];
 
-      if(Number(route.tempHireDay || 0) !== 0){
+if(Number(route.tempHireDay || 0) !== 0){
 
-        tempItems.push(
-          "Hire Day: ₹" +
-          route.tempHireDay
-        );
+tempItems.push(
+"Hire Day: ₹" +
+route.tempHireDay
+);
 
-      }
+}
 
-      if(Number(route.tempHireNight || 0) !== 0){
+if(Number(route.tempHireNight || 0) !== 0){
 
-        tempItems.push(
-          "Hire Night: ₹" +
-          route.tempHireNight
-        );
+tempItems.push(
+"Hire Night: ₹" +
+route.tempHireNight
+);
 
-      }
+}
 
-      if(Number(route.tempSharedDay || 0) !== 0){
+if(Number(route.tempSharedDay || 0) !== 0){
 
-        tempItems.push(
-          "Shared Day: ₹" +
-          route.tempSharedDay
-        );
+tempItems.push(
+"Shared Day: ₹" +
+route.tempSharedDay
+);
 
-      }
+}
 
-      if(Number(route.tempSharedNight || 0) !== 0){
+if(Number(route.tempSharedNight || 0) !== 0){
 
-        tempItems.push(
-          "Shared Night: ₹" +
-          route.tempSharedNight
-        );
+tempItems.push(
+"Shared Night: ₹" +
+route.tempSharedNight
+);
 
-      }
+}
 
-      if(tempItems.length > 0){
+if(tempItems.length > 0){
 
-        tempCount++;
+tempCount++;
 
-        temporaryList.innerHTML += `
+temporaryList.innerHTML += `
 
 <div
 style="
@@ -728,21 +820,21 @@ ${tempItems.join("<br>")}
 
 </div>
 
-        `;
+`;
 
-      }
+}
 
-    });
+});
 
-    document.getElementById(
-      "tempAdjustmentCount"
-    ).innerText =
+document.getElementById(
+"tempAdjustmentCount"
+).innerText =
 
-    tempCount + " Active";
+tempCount + " Active";
 
-    if(tempCount === 0){
+if(tempCount === 0){
 
-      temporaryList.innerHTML = `
+temporaryList.innerHTML = `
 
 <div
 style="
@@ -756,369 +848,391 @@ No temporary adjustments
 
 </div>
 
-      `;
+`;
 
-    }
+}
 
-  }
+}
 
-  catch(error){
+catch(error){
 
-    console.log(error);
+console.log(error);
 
-    alert(
-      "Unable to load routes."
-    );
+alert(
+"Unable to load routes."
+);
 
-  }
+}
 
-  hideLoader();
+hideLoader();
 
 }
 
 /* =========================
-   SELECT ALL
+SELECT ALL
 ========================= */
 
 document.getElementById(
-  "selectAllRoutes"
+"selectAllRoutes"
 ).addEventListener(
 
-  "change",
+"change",
 
-  function(){
+function(){
 
-    const checked =
-    this.checked;
+const checked =
+this.checked;
 
-    document
-    .querySelectorAll(
-      ".routeCheckbox"
-    )
-    .forEach(box => {
+document
+.querySelectorAll(
+".routeCheckbox"
+)
+.forEach(box => {
 
-      box.checked =
-      checked;
+box.checked =
+checked;
 
-    });
+});
 
-    updateSelectedCount();
+updateSelectedCount();
 
-  }
+}
 
 );
 
 /* =========================
-   SEARCH
+SEARCH
 ========================= */
 
 document.getElementById(
-  "routeSearch"
+"routeSearch"
 ).addEventListener(
 
-  "input",
+"input",
 
-  function(){
+function(){
 
-    const search =
-    this.value.toLowerCase();
+const search =
+this.value.toLowerCase();
 
-    const labels =
-    document.querySelectorAll(
-      "#bulkRouteList label"
-    );
+const labels =
+document.querySelectorAll(
+"#bulkRouteList label"
+);
 
-    labels.forEach(label => {
+labels.forEach(label => {
 
-      if(
+if(
 
-        label.innerText
-        .toLowerCase()
-        .includes(search)
+label.innerText
+.toLowerCase()
+.includes(search)
 
-      ){
+){
 
-        label.style.display =
-        "flex";
+label.style.display =
+"flex";
 
-      }
+}
 
-      else{
+else{
 
-        label.style.display =
-        "none";
+label.style.display =
+"none";
 
-      }
+}
 
-    });
+});
 
-  }
+}
 
 );
 
 /* =========================
-   APPLY BULK UPDATE
+APPLY BULK UPDATE
 ========================= */
 
 async function applyBulkUpdate(){
 
-  showLoader();
-
-  const updateMode =
-  document.getElementById(
-    "updateMode"
-  ).value;
-
-  const actionType =
-  document.getElementById(
-    "actionType"
-  ).value;
-
-  const amount =
-  Number(
-
-    document.getElementById(
-      "adjustmentAmount"
-    ).value
-
-  );
-
-  const applyHireDay =
-  document.getElementById(
-    "applyHireDay"
-  ).checked;
-
-  const applyHireNight =
-  document.getElementById(
-    "applyHireNight"
-  ).checked;
-
-  const applySharedDay =
-  document.getElementById(
-    "applySharedDay"
-  ).checked;
-
-  const applySharedNight =
-  document.getElementById(
-    "applySharedNight"
-  ).checked;
-
-  if(!amount || amount <= 0){
-
-    hideLoader();
-
-    alert(
-      "Please enter valid amount."
-    );
-
-    return;
-
-  }
-
-  let adjustment =
-  amount;
-
-  if(actionType === "decrease"){
-
-    adjustment =
-    adjustment * -1;
-
-  }
-
-  try{
-
-    const querySnapshot =
-    await getDocs(
-
-      collection(
-        db,
-        "routes"
-      )
-
-    );
-
-    const selectedRoutes =
-
-    document.querySelectorAll(
-      ".routeCheckbox:checked"
-    );
-
-    if(selectedRoutes.length === 0){
-
-      hideLoader();
-
-      alert(
-        "Please select routes."
-      );
-
-      return;
-
-    }
-
-    for(const selected of selectedRoutes){
-
-      const docId =
-      selected.value;
-
-      const docSnap =
-      querySnapshot.docs.find(
-        d => d.id === docId
-      );
-
-      if(!docSnap){
-
-        continue;
-
-      }
-
-      const route =
-      docSnap.data();
-
-      const docRef =
-      doc(
-        db,
-        "routes",
-        docId
-      );
-
-     let updateData = {
-
-  updatedAt:
-  serverTimestamp()
-
-};
-
-      if(updateMode === "temporary"){
-
-        if(applyHireDay){
-
-          updateData.tempHireDay =
-          Math.max(
-            0,
-            Number(route.tempHireDay || 0)
-            + adjustment
-          );
-
-        }
-
-        if(applyHireNight){
-
-          updateData.tempHireNight =
-          Math.max(
-            0,
-            Number(route.tempHireNight || 0)
-            + adjustment
-          );
-
-        }
-
-        if(applySharedDay){
-
-          updateData.tempSharedDay =
-          Math.max(
-            0,
-            Number(route.tempSharedDay || 0)
-            + adjustment
-          );
-
-        }
-
-        if(applySharedNight){
-
-          updateData.tempSharedNight =
-          Math.max(
-            0,
-            Number(route.tempSharedNight || 0)
-            + adjustment
-          );
-
-        }
-
-      }
-
-      else{
-
-        if(applyHireDay){
-
-          updateData.hireDay =
-          Math.max(
-            0,
-            Number(route.hireDay || 0)
-            + adjustment
-          );
-
-        }
-
-        if(applyHireNight){
-
-          updateData.hireNight =
-          Math.max(
-            0,
-            Number(route.hireNight || 0)
-            + adjustment
-          );
-
-        }
-
-        if(applySharedDay){
-
-          updateData.sharedDay =
-          Math.max(
-            0,
-            Number(route.sharedDay || 0)
-            + adjustment
-          );
-
-        }
-
-        if(applySharedNight){
-
-          updateData.sharedNight =
-          Math.max(
-            0,
-            Number(route.sharedNight || 0)
-            + adjustment
-          );
-
-        }
-
-      }
-
-      await updateDoc(
-        docRef,
-        updateData
-      );
-
-    }
-
-    hideLoader();
-
-    addActivityLog(
-
-  selectedRoutes.length +
-  " routes updated"
+showLoader();
+
+const updateMode =
+document.getElementById(
+"updateMode"
+).value;
+
+const actionType =
+document.getElementById(
+"actionType"
+).value;
+
+const amount =
+Number(
+
+document.getElementById(
+"adjustmentAmount"
+).value
 
 );
 
-    alert(
-      "Bulk update applied successfully."
-    );
+const applyHireDay =
+document.getElementById(
+"applyHireDay"
+).checked;
 
-    loadBulkRoutes();
+const applyHireNight =
+document.getElementById(
+"applyHireNight"
+).checked;
 
-  }
+const applySharedDay =
+document.getElementById(
+"applySharedDay"
+).checked;
 
-  catch(error){
+const applySharedNight =
+document.getElementById(
+"applySharedNight"
+).checked;
 
-    console.log(error);
+if(!amount || amount <= 0){
 
-    hideLoader();
+hideLoader();
 
-    alert(
-      "Unable to apply bulk update."
-    );
+alert(
+"Please enter valid amount."
+);
 
-  }
+return;
+
+}
+
+let adjustment =
+amount;
+
+if(actionType === "decrease"){
+
+adjustment =
+adjustment * -1;
+
+}
+
+try{
+
+const routesQuery = query(
+
+collection(
+db,
+"routes"
+),
+
+where(
+"district",
+"==",
+adminDistrict
+),
+
+where(
+"vehicleCategory",
+"==",
+adminVehicleCategory
+),
+
+where(
+"serviceProvider",
+"==",
+adminServiceProvider
+)
+
+);
+
+const querySnapshot =
+await getDocs(
+routesQuery
+);
+
+const selectedRoutes =
+
+document.querySelectorAll(
+".routeCheckbox:checked"
+);
+
+if(selectedRoutes.length === 0){
+
+hideLoader();
+
+alert(
+"Please select routes."
+);
+
+return;
+
+}
+
+for(const selected of selectedRoutes){
+
+const docId =
+selected.value;
+
+const docSnap =
+querySnapshot.docs.find(
+d => d.id === docId
+);
+
+if(!docSnap){
+
+continue;
+
+}
+
+const route =
+docSnap.data();
+
+const docRef =
+doc(
+db,
+"routes",
+docId
+);
+
+let updateData = {
+
+updatedAt:
+serverTimestamp()
+
+};
+
+if(updateMode === "temporary"){
+
+if(applyHireDay){
+
+updateData.tempHireDay =
+Math.max(
+0,
+Number(route.tempHireDay || 0)
++ adjustment
+);
+
+}
+
+if(applyHireNight){
+
+updateData.tempHireNight =
+Math.max(
+0,
+Number(route.tempHireNight || 0)
++ adjustment
+);
+
+}
+
+if(applySharedDay){
+
+updateData.tempSharedDay =
+Math.max(
+0,
+Number(route.tempSharedDay || 0)
++ adjustment
+);
+
+}
+
+if(applySharedNight){
+
+updateData.tempSharedNight =
+Math.max(
+0,
+Number(route.tempSharedNight || 0)
++ adjustment
+);
+
+}
+
+}
+
+else{
+
+if(applyHireDay){
+
+updateData.hireDay =
+Math.max(
+0,
+Number(route.hireDay || 0)
++ adjustment
+);
+
+}
+
+if(applyHireNight){
+
+updateData.hireNight =
+Math.max(
+0,
+Number(route.hireNight || 0)
++ adjustment
+);
+
+}
+
+if(applySharedDay){
+
+updateData.sharedDay =
+Math.max(
+0,
+Number(route.sharedDay || 0)
++ adjustment
+);
+
+}
+
+if(applySharedNight){
+
+updateData.sharedNight =
+Math.max(
+0,
+Number(route.sharedNight || 0)
++ adjustment
+);
+
+}
+
+}
+
+await updateDoc(
+docRef,
+updateData
+);
+
+}
+
+hideLoader();
+
+addActivityLog(
+
+selectedRoutes.length +
+" routes updated"
+
+);
+
+alert(
+"Bulk update applied successfully."
+);
+
+loadBulkRoutes();
+
+}
+
+catch(error){
+
+console.log(error);
+
+hideLoader();
+
+alert(
+"Unable to apply bulk update."
+);
+
+}
 
 }
 
@@ -1126,103 +1240,102 @@ window.applyBulkUpdate =
 applyBulkUpdate;
 
 /* =========================
-   REMOVE TEMPORARY
+REMOVE TEMPORARY
 ========================= */
 
 async function removeTemporaryAdjustments(){
 
-  const selectedRoutes =
+const selectedRoutes =
 
-  document.querySelectorAll(
-    ".routeCheckbox:checked"
-  );
+document.querySelectorAll(
+".routeCheckbox:checked"
+);
 
-  if(selectedRoutes.length === 0){
+if(selectedRoutes.length === 0){
 
-    alert(
-      "Please select routes."
-    );
+alert(
+"Please select routes."
+);
 
-    return;
-
-  }
-
-  const confirmReset =
-  confirm(
-    "Remove temporary adjustments from selected routes?"
-  );
-
-  if(!confirmReset){
-
-    return;
-
-  }
-
-  showLoader();
-
-  try{
-
-    for(const selected of selectedRoutes){
-
-      const docId =
-      selected.value;
-
-      const docRef =
-      doc(
-        db,
-        "routes",
-        docId
-      );
-
-      await updateDoc(
-
-        docRef,
-
-        
-{
-
-  tempHireDay:0,
-  tempHireNight:0,
-  tempSharedDay:0,
-  tempSharedNight:0,
-
-  updatedAt:
-  serverTimestamp()
+return;
 
 }
 
-      );
+const confirmReset =
+confirm(
+"Remove temporary adjustments from selected routes?"
+);
 
-    }
+if(!confirmReset){
 
-    hideLoader();
+return;
 
-    addActivityLog(
+}
 
-  selectedRoutes.length +
-  " temporary adjustments removed"
+showLoader();
+
+try{
+
+for(const selected of selectedRoutes){
+
+const docId =
+selected.value;
+
+const docRef =
+doc(
+db,
+"routes",
+docId
+);
+
+await updateDoc(
+
+docRef,
+
+{
+
+tempHireDay:0,
+tempHireNight:0,
+tempSharedDay:0,
+tempSharedNight:0,
+
+updatedAt:
+serverTimestamp()
+
+}
 
 );
 
-    alert(
-      "Selected temporary adjustments removed."
-    );
+}
 
-    loadBulkRoutes();
+hideLoader();
 
-  }
+addActivityLog(
 
-  catch(error){
+selectedRoutes.length +
+" temporary adjustments removed"
 
-    console.log(error);
+);
 
-    hideLoader();
+alert(
+"Selected temporary adjustments removed."
+);
 
-    alert(
-      "Unable to remove temporary adjustments."
-    );
+loadBulkRoutes();
 
-  }
+}
+
+catch(error){
+
+console.log(error);
+
+hideLoader();
+
+alert(
+"Unable to remove temporary adjustments."
+);
+
+}
 
 }
 
@@ -1230,7 +1343,7 @@ window.removeTemporaryAdjustments =
 removeTemporaryAdjustments;
 
 /* =========================
-   INITIAL LOAD
+INITIAL LOAD
 ========================= */
 
 loadBulkRoutes();

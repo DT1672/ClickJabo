@@ -5,7 +5,8 @@ from "./firebase-config.js";
 
 import {
   collection,
-  addDoc
+  addDoc,
+  serverTimestamp
 }
 from "https://www.gstatic.com/firebasejs/12.3.0/firebase-firestore.js";
 
@@ -21,6 +22,15 @@ async function addRoute(){
       ),
 
       {
+
+        district:
+        "Dimapur",
+
+        vehicleCategory:
+        "Taxi",
+
+        serviceProvider:
+        "Dimapur Taxi Association",
 
         from:
         "Rail Gate",
@@ -38,7 +48,25 @@ async function addRoute(){
         50,
 
         sharedNight:
-        70
+        70,
+
+        tempHireDay:
+        0,
+
+        tempHireNight:
+        0,
+
+        tempSharedDay:
+        0,
+
+        tempSharedNight:
+        0,
+
+        createdAt:
+        serverTimestamp(),
+
+        updatedAt:
+        serverTimestamp()
 
       }
 

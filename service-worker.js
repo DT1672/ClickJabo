@@ -1,12 +1,12 @@
-const CACHE_NAME = "clickjabo-v3";
+const CACHE_NAME =
+"clickjabo-v6";
 
-const urlsToCache = [
+const STATIC_CACHE = [
 
   "/",
   "/index.html",
   "/style.css",
   "/app.js",
-  "/routes.json",
   "/icon.png",
   "/manifest.json",
   "/banner.png",
@@ -18,7 +18,9 @@ const urlsToCache = [
 
 ];
 
-/* INSTALL */
+/* =========================
+INSTALL
+========================= */
 
 self.addEventListener(
 
@@ -35,48 +37,22 @@ self.addEventListener(
       .then(cache => {
 
         return cache.addAll(
-          urlsToCache
+          STATIC_CACHE
         );
 
       })
 
     );
 
-  }
-
-);
-
-/* FETCH */
-
-self.addEventListener(
-
-  "fetch",
-
-  event => {
-
-    event.respondWith(
-
-      caches.match(
-        event.request
-      )
-
-      .then(response => {
-
-        return response ||
-
-        fetch(
-          event.request
-        );
-
-      })
-
-    );
+    self.skipWaiting();
 
   }
 
 );
 
-/* ACTIVATE */
+/* =========================
+ACTIVATE
+========================= */
 
 self.addEventListener(
 
@@ -111,6 +87,142 @@ self.addEventListener(
       })
 
     );
+
+    self.clients.claim();
+
+  }
+
+);
+
+/* =========================
+FETCH
+========================= */
+
+self.addEventListener(
+
+  "fetch",
+
+  event => {
+
+    if(
+      event.request.method !==
+      "GET"
+    ){
+
+      return;
+
+    }
+
+    event.respondWith(
+
+      caches.match(
+        event.request
+      )
+
+      .then(cachedResponse => {
+
+        if(cachedResponse){
+
+          fetch(
+            event.request
+          )
+
+          .then(networkResponse => {
+
+            return caches.open(
+              CACHE_NAME
+            )
+
+            .then(cache => {
+
+              cache.put(
+                event.request,
+                networkResponse.clone()
+              );
+
+            });
+
+          })
+
+          .catch(() => {});
+
+          return cachedResponse;
+
+        }
+
+        return fetch(
+          event.request
+        )
+
+        .then(networkResponse => {
+
+          const clonedResponse =
+          networkResponse.clone();
+
+          caches.open(
+            CACHE_NAME
+          )
+
+          .then(cache => {
+
+            cache.put(
+              event.request,
+              clonedResponse
+            );
+
+          });
+
+          return networkResponse;
+
+        })
+
+        .catch(() => {
+
+          if(
+
+            event.request.mode ===
+            "navigate"
+
+          ){
+
+            return caches.match(
+              "/index.html"
+            );
+
+          }
+
+        });
+
+      })
+
+    );
+
+  }
+
+);
+
+/* =========================
+MESSAGE
+========================= */
+
+self.addEventListener(
+
+  "message",
+
+  event => {
+
+    if(
+
+      event.data &&
+
+      event.data.type ===
+      "SKIP_WAITING"
+
+    ){
+
+      self.skipWaiting();
+
+    }
 
   }
 
