@@ -16,6 +16,100 @@ import {
 }
 from "https://www.gstatic.com/firebasejs/12.3.0/firebase-firestore.js";
 
+/* =========================
+   LOAD SPONSOR
+========================= */
+
+async function loadSponsorBanner(){
+
+  try{
+
+    const sponsorImage =
+
+    document.getElementById(
+      "sponsorBanner"
+    );
+
+    const sponsorLink =
+
+    document.getElementById(
+      "sponsorLinkWrap"
+    );
+
+    const sponsorSnapshot =
+
+    await getDocs(
+
+      collection(
+        db,
+        "sponsors"
+      )
+
+    );
+
+    let matchedSponsor =
+    null;
+
+    sponsorSnapshot.forEach(docSnap => {
+
+      const sponsor =
+      docSnap.data();
+
+      if(
+
+        sponsor.isActive === true &&
+
+        (
+
+          sponsor.isGlobal === true ||
+
+          sponsor.district === districtSelect.value
+
+        )
+
+      ){
+
+        matchedSponsor =
+        sponsor;
+
+      }
+
+    });
+
+    if(matchedSponsor){
+
+      sponsorImage.src =
+
+      matchedSponsor.imageUrl;
+
+      sponsorLink.href =
+
+      matchedSponsor.redirectUrl ||
+
+      "#";
+
+    }
+
+    else{
+
+      sponsorImage.src =
+      "banner.png";
+
+      sponsorLink.href =
+      "#";
+
+    }
+
+  }
+
+  catch(error){
+
+    console.log(error);
+
+  }
+
+}
+
 let routes = [];
 
 let fromChoices;
@@ -79,6 +173,10 @@ districtSelect.addEventListener(
 
     await loadRoutesFromFirestore();
 
+    await loadHelpline();
+
+    await loadSponsorBanner();
+
   }
 
 );
@@ -139,6 +237,7 @@ ${district.name}
   }
 
 }
+
 /* =========================
    LOAD VEHICLE CATEGORIES
 ========================= */
@@ -175,9 +274,7 @@ async function loadVehicleCategories(){
         button.className =
         "vehicle-category-btn";
 
-  
-
-button.innerHTML = `
+        button.innerHTML = `
 
 <img
 src="${category.icon}"
@@ -190,7 +287,6 @@ ${category.name}
 </div>
 
 `;
-
 
         button.dataset.category =
         category.name;
@@ -777,6 +873,8 @@ window.addEventListener(
     await loadRoutesFromFirestore();
 
     await loadHelpline();
+
+    await loadSponsorBanner();
 
   }
 
