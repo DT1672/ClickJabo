@@ -39,6 +39,70 @@ body{
 
 }
 
+/* =========================
+   LOADER
+========================= */
+
+.page-loader{
+
+  position:fixed;
+
+  top:0;
+  left:0;
+
+  width:100%;
+  height:100%;
+
+  background:
+  rgba(2,8,23,.72);
+
+  backdrop-filter:blur(6px);
+
+  display:none;
+
+  justify-content:center;
+  align-items:center;
+
+  z-index:99999;
+
+}
+
+.loader-spinner{
+
+  width:62px;
+  height:62px;
+
+  border-radius:50%;
+
+  border:
+  4px solid rgba(255,255,255,.08);
+
+  border-top:
+  4px solid #c29b47;
+
+  animation:
+  spin .8s linear infinite;
+
+}
+
+@keyframes spin{
+
+  from{
+
+    transform:
+    rotate(0deg);
+
+  }
+
+  to{
+
+    transform:
+    rotate(360deg);
+
+  }
+
+}
+
 .page-container{
 
   max-width:1200px;
@@ -145,6 +209,14 @@ select{
 
 }
 
+input:disabled{
+
+  opacity:.6;
+
+  cursor:not-allowed;
+
+}
+
 select{
 
   cursor:pointer;
@@ -234,23 +306,56 @@ option{
 
 }
 
-.admin-status{
+.action-wrap{
 
-  padding:8px 12px;
+  display:flex;
 
-  border-radius:999px;
+  align-items:center;
+
+  gap:10px;
+
+}
+
+.action-btn{
+
+  height:36px;
+
+  padding:0 14px;
+
+  border:none;
+
+  border-radius:12px;
+
+  font-size:12px;
+
+  cursor:pointer;
+
+  color:white;
+
+}
+
+.edit-btn{
+
+  background:
+  rgba(255,255,255,.06);
+
+}
+
+.disable-btn{
+
+  background:
+  rgba(220,38,38,.12);
+
+  color:#fca5a5;
+
+}
+
+.enable-btn{
 
   background:
   rgba(34,197,94,.12);
 
-  border:
-  1px solid rgba(34,197,94,.18);
-
-  color:#4ade80;
-
-  font-size:12px;
-
-  font-weight:600;
+  color:#86efac;
 
 }
 
@@ -262,6 +367,16 @@ option{
 
   }
 
+  .admin-item{
+
+    flex-direction:column;
+
+    align-items:flex-start;
+
+    gap:14px;
+
+  }
+
 }
 
 </style>
@@ -270,21 +385,72 @@ option{
 
 <body>
 
+<!-- LOADER -->
+
+<div
+class="page-loader"
+id="globalLoader">
+
+  <div
+  class="loader-spinner">
+
+  </div>
+
+</div>
+
 <div class="page-container">
+
+  <!-- HEADER -->
 
   <div class="top-header">
 
-    <div>
+    <div
+    style="
+    display:flex;
+    align-items:center;
+    gap:14px;
+    ">
 
-      <div class="page-title">
+      <button
+      onclick="
+      window.location.href=
+      'master-dashboard.html'
+      "
+      style="
+      width:42px;
+      height:42px;
+      border:none;
+      border-radius:14px;
+      background:
+      rgba(255,255,255,.05);
 
-        Admin Management
+      border:
+      1px solid rgba(255,255,255,.06);
 
-      </div>
+      color:white;
 
-      <div class="page-subtitle">
+      font-size:18px;
 
-        CREATE & CONTROL DISTRICT ADMINS
+      cursor:pointer;
+      ">
+
+        ←
+
+      </button>
+
+      <div>
+
+        <div class="page-title">
+
+          Admin Management
+
+        </div>
+
+        <div class="page-subtitle">
+
+          CREATE & CONTROL DISTRICT ADMINS
+
+        </div>
 
       </div>
 
@@ -305,13 +471,17 @@ option{
 
     </h3>
 
-    <div
-    class="form-grid">
+    <div class="form-grid">
 
       <input
       type="text"
       id="adminUserID"
       placeholder="Admin User ID">
+
+      <input
+      type="text"
+      id="adminName"
+      placeholder="Admin Name">
 
       <input
       type="password"
@@ -340,11 +510,15 @@ option{
         </option>
 
         <option>
-          Monthly
+          3 Months
         </option>
 
         <option>
-          Lifetime
+          6 Months
+        </option>
+
+        <option>
+          Yearly
         </option>
 
       </select>
@@ -406,17 +580,63 @@ import {
 from "https://www.gstatic.com/firebasejs/12.3.0/firebase-auth.js";
 
 /* =========================
-   CREATE ADMIN
+   LOADER
+========================= */
+
+function showLoader(){
+
+  const loader =
+
+  document.getElementById(
+    "globalLoader"
+  );
+
+  if(loader){
+
+    loader.style.display =
+    "flex";
+
+  }
+
+}
+
+function hideLoader(){
+
+  const loader =
+
+  document.getElementById(
+    "globalLoader"
+  );
+
+  if(loader){
+
+    loader.style.display =
+    "none";
+
+  }
+
+}
+
+/* =========================
+   CREATE / UPDATE ADMIN
 ========================= */
 
 async function createAdmin(){
 
   try{
 
+    showLoader();
+
     const userID =
 
     document.getElementById(
       "adminUserID"
+    ).value.trim();
+
+    const adminName =
+
+    document.getElementById(
+      "adminName"
     ).value.trim();
 
     const email =
@@ -454,15 +674,61 @@ async function createAdmin(){
       "adminPlan"
     ).value;
 
+    let expiryDate = null;
+
+    if(planType === "3 Months"){
+
+      expiryDate =
+
+      new Date(
+
+        Date.now() +
+
+        90 * 24 * 60 * 60 * 1000
+
+      );
+
+    }
+
+    else if(planType === "6 Months"){
+
+      expiryDate =
+
+      new Date(
+
+        Date.now() +
+
+        180 * 24 * 60 * 60 * 1000
+
+      );
+
+    }
+
+    else if(planType === "Yearly"){
+
+      expiryDate =
+
+      new Date(
+
+        Date.now() +
+
+        365 * 24 * 60 * 60 * 1000
+
+      );
+
+    }
+
     if(
 
       userID === "" ||
 
-      password === "" ||
+      adminName === "" ||
 
       district === ""
 
     ){
+
+      hideLoader();
 
       alert(
         "Please fill all required fields."
@@ -472,68 +738,150 @@ async function createAdmin(){
 
     }
 
-    /* CREATE FIREBASE AUTH */
+    /* UPDATE ADMIN */
 
-    const userCredential =
+    if(window.editingAdminID){
 
-    await createUserWithEmailAndPassword(
+      await setDoc(
 
-      auth,
-      email,
-      password
+        doc(
+          db,
+          "districtAdmins",
+          window.editingAdminID
+        ),
 
-    );
+        {
 
-    const user =
-    userCredential.user;
+          name:
+          adminName,
 
-    /* SAVE FIRESTORE ADMIN */
+          district:
+          district,
 
-    await setDoc(
+          vehicleCategory:
+          vehicleCategory,
 
-      doc(
-        db,
-        "districtAdmins",
-        user.uid
-      ),
+          serviceProvider:
+          serviceProvider,
 
-      {
+          planType:
+          planType,
 
-        userID:
-        userID,
+          expiryDate:
+          expiryDate,
 
-        email:
-        email,
+          updatedAt:
+          new Date()
 
-        district:
-        district,
+        },
 
-        vehicleCategory:
-        vehicleCategory,
+        {
 
-        serviceProvider:
-        serviceProvider,
+          merge:true
 
-        planType:
-        planType,
+        }
 
-        isActive:true,
+      );
 
-        createdAt:
-        new Date()
+      alert(
+        "Admin updated successfully."
+      );
+
+      window.editingAdminID =
+      null;
+
+    }
+
+    /* CREATE ADMIN */
+
+    else{
+
+      if(password === ""){
+
+        hideLoader();
+
+        alert(
+          "Password required."
+        );
+
+        return;
 
       }
 
-    );
+      const userCredential =
 
-    alert(
-      "Admin created successfully."
-    );
+      await createUserWithEmailAndPassword(
 
-    /* CLEAR FORM */
+        auth,
+        email,
+        password
+
+      );
+
+      const user =
+      userCredential.user;
+
+      await setDoc(
+
+        doc(
+          db,
+          "districtAdmins",
+          user.uid
+        ),
+
+        {
+
+          name:
+          adminName,
+
+          userID:
+          userID,
+
+          email:
+          email,
+
+          district:
+          district,
+
+          vehicleCategory:
+          vehicleCategory,
+
+          serviceProvider:
+          serviceProvider,
+
+          planType:
+          planType,
+
+          expiryDate:
+          expiryDate,
+
+          isActive:true,
+
+          createdAt:
+          new Date()
+
+        }
+
+      );
+
+      alert(
+        "Admin created successfully."
+      );
+
+    }
+
+    hideLoader();
 
     document.getElementById(
       "adminUserID"
+    ).value = "";
+
+    document.getElementById(
+      "adminUserID"
+    ).disabled = false;
+
+    document.getElementById(
+      "adminName"
     ).value = "";
 
     document.getElementById(
@@ -552,9 +900,17 @@ async function createAdmin(){
       "adminProvider"
     ).value = "";
 
+    document.querySelector(
+      ".create-btn"
+    ).innerText =
+
+    "Create Admin";
+
   }
 
   catch(error){
+
+    hideLoader();
 
     console.log(error);
 
@@ -628,13 +984,52 @@ function loadAdmins(){
 
               ${data.vehicleCategory || "No Vehicle"}
 
+              •
+
+              ${data.planType || "No Plan"}
+
             </div>
 
           </div>
 
-          <div class="admin-status">
+          <div class="action-wrap">
 
-            ${data.isActive ? "Active" : "Disabled"}
+            <button
+            class="action-btn edit-btn"
+            onclick="
+            editAdmin(
+            '${docSnap.id}',
+            '${data.userID || ""}',
+            '${data.name || ""}',
+            '${data.district || ""}',
+            '${data.vehicleCategory || ""}',
+            '${data.serviceProvider || ""}',
+            '${data.planType || ""}'
+            )
+            ">
+
+              Edit
+
+            </button>
+
+            <button
+            class="action-btn
+            ${data.isActive
+            ? "disable-btn"
+            : "enable-btn"}"
+
+            onclick="
+            toggleAdminStatus(
+            '${docSnap.id}',
+            ${data.isActive}
+            )
+            ">
+
+              ${data.isActive
+              ? "Disable"
+              : "Activate"}
+
+            </button>
 
           </div>
 
@@ -649,6 +1044,129 @@ function loadAdmins(){
   );
 
 }
+
+/* =========================
+   EDIT ADMIN
+========================= */
+
+function editAdmin(
+
+  id,
+  userID,
+  name,
+  district,
+  vehicle,
+  provider,
+  plan
+
+){
+
+  window.editingAdminID =
+  id;
+
+  document.getElementById(
+    "adminUserID"
+  ).value =
+  userID;
+
+  document.getElementById(
+    "adminUserID"
+  ).disabled = true;
+
+  document.getElementById(
+    "adminName"
+  ).value =
+  name;
+
+  document.getElementById(
+    "adminDistrict"
+  ).value =
+  district;
+
+  document.getElementById(
+    "adminVehicle"
+  ).value =
+  vehicle;
+
+  document.getElementById(
+    "adminProvider"
+  ).value =
+  provider;
+
+  document.getElementById(
+    "adminPlan"
+  ).value =
+  plan;
+
+  document.querySelector(
+    ".create-btn"
+  ).innerText =
+
+  "Update Admin";
+
+}
+
+window.editAdmin =
+editAdmin;
+
+/* =========================
+   TOGGLE STATUS
+========================= */
+
+async function toggleAdminStatus(
+
+  id,
+  currentStatus
+
+){
+
+  try{
+
+    showLoader();
+
+    await setDoc(
+
+      doc(
+        db,
+        "districtAdmins",
+        id
+      ),
+
+      {
+
+        isActive:
+        !currentStatus
+
+      },
+
+      {
+
+        merge:true
+
+      }
+
+    );
+
+    hideLoader();
+
+  }
+
+  catch(error){
+
+    hideLoader();
+
+    console.log(error);
+
+    alert(
+      error.message
+    );
+
+  }
+
+}
+
+window.toggleAdminStatus =
+toggleAdminStatus;
 
 loadAdmins();
 

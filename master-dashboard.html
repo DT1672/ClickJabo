@@ -23,6 +23,7 @@ href="admin.css">
 type="module"
 src="master-auth-check.js">
 </script>
+
 <style>
 
 body{
@@ -41,6 +42,66 @@ body{
   font-family:Arial,sans-serif;
 
   overflow:hidden;
+
+}
+
+.page-loader{
+
+  position:fixed;
+
+  top:0;
+  left:0;
+
+  width:100%;
+  height:100%;
+
+  background:
+  rgba(2,8,23,.72);
+
+  backdrop-filter:blur(6px);
+
+  display:none;
+
+  justify-content:center;
+  align-items:center;
+
+  z-index:99999;
+
+}
+
+.loader-spinner{
+
+  width:62px;
+  height:62px;
+
+  border-radius:50%;
+
+  border:
+  4px solid rgba(255,255,255,.08);
+
+  border-top:
+  4px solid #c29b47;
+
+  animation:
+  spin .8s linear infinite;
+
+}
+
+@keyframes spin{
+
+  from{
+
+    transform:
+    rotate(0deg);
+
+  }
+
+  to{
+
+    transform:
+    rotate(360deg);
+
+  }
 
 }
 
@@ -255,8 +316,10 @@ body{
 
   position:relative;
 
-overflow:hidden;
+  overflow:hidden;
+
 }
+
 .dashboard-card::before{
 
   content:"";
@@ -298,6 +361,7 @@ overflow:hidden;
   0 0 24px rgba(250,204,21,.08);
 
 }
+
 .dashboard-card h3{
 
   margin:0;
@@ -336,24 +400,6 @@ overflow:hidden;
   span 2;
 
   min-height:280px;
-
-}
-
-.activity-item{
-
-  background:
-  rgba(255,255,255,.04);
-
-  border:
-  1px solid rgba(255,255,255,.04);
-
-  border-radius:16px;
-
-  padding:14px;
-
-  font-size:14px;
-
-  color:#e2e8f0;
 
 }
 
@@ -439,13 +485,20 @@ overflow:hidden;
 
 </style>
 
-
 </head>
-
 
 <body>
 
+<!-- LOADER -->
+
+<div class="page-loader" id="globalLoader">
+
+  <div class="loader-spinner"></div>
+
+</div>
+
 <div class="master-layout">
+
 <!-- SIDEBAR -->
 
 <div class="sidebar">
@@ -485,15 +538,15 @@ overflow:hidden;
 
   </button>
 
-<button
-onclick="
-window.location.href=
-'master-admins.html'
-">
+  <button
+  onclick="
+  window.location.href=
+  'master-admins.html'
+  ">
 
-  👤 Admin Accounts
+    👤 Admin Accounts
 
-</button>
+  </button>
 
   <button>
 
@@ -525,6 +578,7 @@ window.location.href=
   </div>
 
   <button
+  onclick="logoutMaster()"
   style="
   background:
   rgba(220,38,38,.12);
@@ -541,11 +595,11 @@ window.location.href=
 
 </div>
 
-  <!-- MAIN -->
+<!-- MAIN -->
 
-  <div class="main-panel">
+<div class="main-panel">
 
-   <div class="top-header">
+<div class="top-header">
 
   <div>
 
@@ -571,10 +625,7 @@ window.location.href=
 
 </div>
 
-    
 <div class="card-grid">
-
-  <!-- DISTRICTS -->
 
   <div class="dashboard-card">
 
@@ -588,8 +639,6 @@ window.location.href=
 
   </div>
 
-  <!-- ROUTES -->
-
   <div class="dashboard-card">
 
     <h3>
@@ -601,8 +650,6 @@ window.location.href=
     </h1>
 
   </div>
-
-  <!-- ADMINS -->
 
   <div class="dashboard-card">
 
@@ -616,8 +663,6 @@ window.location.href=
 
   </div>
 
-  <!-- SYSTEM -->
-
   <div class="dashboard-card">
 
     <h3>
@@ -629,8 +674,6 @@ window.location.href=
     </h1>
 
   </div>
-
-  <!-- TEMPORARY -->
 
   <div class="dashboard-card">
 
@@ -644,8 +687,6 @@ window.location.href=
 
   </div>
 
-  <!-- SPONSORS -->
-
   <div class="dashboard-card">
 
     <h3>
@@ -657,8 +698,6 @@ window.location.href=
     </h1>
 
   </div>
-
-  <!-- NOTICES -->
 
   <div class="dashboard-card">
 
@@ -672,8 +711,6 @@ window.location.href=
 
   </div>
 
-  <!-- LAST SYNC -->
-
   <div class="dashboard-card">
 
     <h3>
@@ -686,8 +723,6 @@ window.location.href=
 
   </div>
 
-  <!-- RECENT ACTIVITIES -->
-
   <div class="dashboard-card activity-card">
 
     <h3>
@@ -697,16 +732,16 @@ window.location.href=
     <div
     id="activityList"
     style="
-      margin-top:18px;
-      display:flex;
-      flex-direction:column;
-      gap:12px;
+    margin-top:18px;
+    display:flex;
+    flex-direction:column;
+    gap:12px;
     ">
 
       <div
       style="
-        color:#94a3b8;
-        font-size:14px;
+      color:#94a3b8;
+      font-size:14px;
       ">
 
         No recent activity
@@ -719,40 +754,15 @@ window.location.href=
 
 </div>
 
-  <div
-    id="activityList"
-    style="
-      margin-top:18px;
-      display:flex;
-      flex-direction:column;
-      gap:12px;
-    "
-  >
-
-    <div
-      style="
-        color:#94a3b8;
-        font-size:14px;
-      "
-    >
-
-      No recent activity
-
-    </div>
-
-  </div>
-
 </div>
-    </div>
-
-  </div>
 
 </div>
 
 <script type="module">
 
 import {
-  db
+  db,
+  auth
 }
 from "./firebase-config.js";
 
@@ -761,235 +771,260 @@ import {
   onSnapshot,
   query,
   orderBy,
-  limit,
-  addDoc,
-  serverTimestamp
+  limit
 }
 from "https://www.gstatic.com/firebasejs/12.3.0/firebase-firestore.js";
 
-async function addActivityLog(text){
+import {
+  signOut
+}
+from "https://www.gstatic.com/firebasejs/12.3.0/firebase-auth.js";
 
-  await addDoc(
+/* =========================
+   LOADER
+========================= */
 
-    collection(
-      db,
-      "activityLogs"
-    ),
+function showLoader(){
 
-    {
+  document.getElementById(
+    "globalLoader"
+  ).style.display =
 
-      action:text,
+  "flex";
 
-      createdAt:
-      serverTimestamp()
+}
 
-    }
+function hideLoader(){
 
-  );
+  document.getElementById(
+    "globalLoader"
+  ).style.display =
+
+  "none";
 
 }
 
 /* =========================
-   LOAD DASHBOARD COUNTS
+   LOGOUT
+========================= */
+
+async function logoutMaster(){
+
+  try{
+
+    showLoader();
+
+    await signOut(auth);
+
+    localStorage.removeItem(
+      "masterLoggedIn"
+    );
+
+    window.location.href =
+
+    "master-login.html";
+
+  }
+
+  catch(error){
+
+    hideLoader();
+
+    console.log(error);
+
+    alert(
+      "Logout failed."
+    );
+
+  }
+
+}
+
+window.logoutMaster =
+logoutMaster;
+
+/* =========================
+   LOAD DASHBOARD
 ========================= */
 
 async function loadDashboardCounts(){
 
   try{
 
-    /* DISTRICTS */
+    showLoader();
 
     document.getElementById(
       "districtCount"
     ).innerText = 1;
 
+    onSnapshot(
 
-/* ROUTES */
+      collection(
+        db,
+        "routes"
+      ),
 
-onSnapshot(
+      (snapshot)=>{
 
-  collection(
-    db,
-    "routes"
-  ),
+        document.getElementById(
+          "routeCount"
+        ).innerText =
 
-  (snapshot)=>{
+        snapshot.size;
 
-    document.getElementById(
-      "routeCount"
-    ).innerText =
+      }
 
-    snapshot.size;
-
-  }
-
-);
-
-
- /* ADMINS */
-
-onSnapshot(
-
-  collection(
-    db,
-    "districtAdmins"
-  ),
-
-  (snapshot)=>{
-
-    document.getElementById(
-      "adminCount"
-    ).innerText =
-
-    snapshot.size;
-
-  }
-
-);
-
-/* TEMPORARY ADJUSTMENTS */
-
-onSnapshot(
-
-  collection(
-    db,
-    "temporaryAdjustments"
-  ),
-
-  (snapshot)=>{
-
-    document.getElementById(
-      "temporaryCount"
-    ).innerText =
-
-    snapshot.size;
-
-  }
-
-);
-
-  /* SPONSORS */
-
-onSnapshot(
-
-  collection(
-    db,
-    "sponsors"
-  ),
-
-  (snapshot)=>{
-
-    document.getElementById(
-      "sponsorCount"
-    ).innerText =
-
-    snapshot.size;
-
-  }
-
-);  
-
-   /* NOTICES */
-
-onSnapshot(
-
-  collection(
-    db,
-    "notices"
-  ),
-
-  (snapshot)=>{
-
-    document.getElementById(
-      "noticeCount"
-    ).innerText =
-
-    snapshot.size;
-
-  }
-
-);
-
-/* RECENT ACTIVITIES */
-
-const activityQuery = query(
-
-  collection(
-    db,
-    "activityLogs"
-  ),
-
-  orderBy(
-    "createdAt",
-    "desc"
-  ),
-
-  limit(5)
-
-);
-
-onSnapshot(
-
-  activityQuery,
-
-  (snapshot)=>{
-
-    const activityList =
-    document.getElementById(
-      "activityList"
     );
 
-    activityList.innerHTML = "";
+    onSnapshot(
 
+      collection(
+        db,
+        "districtAdmins"
+      ),
 
+      (snapshot)=>{
 
-    if(snapshot.empty){
+        document.getElementById(
+          "adminCount"
+        ).innerText =
 
-      activityList.innerHTML =
+        snapshot.size;
 
-      `
-      <div
-      style="
-        color:#94a3b8;
-        font-size:14px;
-      ">
-        No recent activity
-      </div>
-      `;
+      }
 
-      return;
+    );
 
-    }
+    onSnapshot(
 
+      collection(
+        db,
+        "temporaryAdjustments"
+      ),
 
+      (snapshot)=>{
 
-    snapshot.forEach((doc)=>{
+        document.getElementById(
+          "temporaryCount"
+        ).innerText =
 
-      const data = doc.data();
+        snapshot.size;
 
-      activityList.innerHTML +=
+      }
 
-      `
-      <div
-      style="
-        background:rgba(255,255,255,.04);
-        padding:12px;
-        border-radius:12px;
-        font-size:14px;
-      ">
+    );
 
-        ${data.action || "Activity"}
+    onSnapshot(
 
-      </div>
-      `;
+      collection(
+        db,
+        "sponsors"
+      ),
 
-    });
+      (snapshot)=>{
 
-  }
+        document.getElementById(
+          "sponsorCount"
+        ).innerText =
 
-);
+        snapshot.size;
 
-    /* LAST SYNC */
+      }
+
+    );
+
+    onSnapshot(
+
+      collection(
+        db,
+        "notices"
+      ),
+
+      (snapshot)=>{
+
+        document.getElementById(
+          "noticeCount"
+        ).innerText =
+
+        snapshot.size;
+
+      }
+
+    );
+
+    const activityQuery = query(
+
+      collection(
+        db,
+        "activityLogs"
+      ),
+
+      orderBy(
+        "createdAt",
+        "desc"
+      ),
+
+      limit(5)
+
+    );
+
+    onSnapshot(
+
+      activityQuery,
+
+      (snapshot)=>{
+
+        const activityList =
+
+        document.getElementById(
+          "activityList"
+        );
+
+        activityList.innerHTML = "";
+
+        if(snapshot.empty){
+
+          activityList.innerHTML =
+
+          `
+          <div
+          style="
+          color:#94a3b8;
+          font-size:14px;
+          ">
+            No recent activity
+          </div>
+          `;
+
+          return;
+
+        }
+
+        snapshot.forEach((doc)=>{
+
+          const data = doc.data();
+
+          activityList.innerHTML +=
+
+          `
+          <div
+          style="
+          background:rgba(255,255,255,.04);
+          padding:12px;
+          border-radius:12px;
+          font-size:14px;
+          ">
+
+            ${data.action || "Activity"}
+
+          </div>
+          `;
+
+        });
+
+      }
+
+    );
 
     document.getElementById(
       "lastSync"
@@ -997,9 +1032,13 @@ onSnapshot(
 
     new Date().toLocaleTimeString();
 
+    hideLoader();
+
   }
 
   catch(error){
+
+    hideLoader();
 
     console.log(error);
 

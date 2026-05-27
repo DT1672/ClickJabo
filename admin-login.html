@@ -179,10 +179,16 @@ async function loginAdmin(){
 
   showLoader();
 
-  const email =
-  document.getElementById(
-    "adminEmail"
-  ).value.trim();
+ const userID =
+
+document.getElementById(
+  "adminEmail"
+).value.trim();
+
+const email =
+
+userID +
+"@clickjabo.com";
 
   const password =
   document.getElementById(
@@ -195,14 +201,14 @@ async function loginAdmin(){
   );
 
   if(
-    email === "" ||
+    userID === "" ||
     password === ""
   ){
 
     hideLoader();
 
     alert(
-      "Please enter email and password."
+      "Please enter user ID and password."
     );
 
     return;
