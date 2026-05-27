@@ -76,29 +76,52 @@ async function loadSponsorBanner(){
 
     });
 
-    if(matchedSponsor){
+if(matchedSponsor){
 
-      sponsorImage.src =
+  sponsorImage.src =
 
-      matchedSponsor.imageUrl;
+  matchedSponsor.imageUrl;
 
-      sponsorLink.href =
+  if(matchedSponsor.redirectUrl){
 
-      matchedSponsor.redirectUrl ||
+    sponsorLink.href =
 
-      "#";
+    matchedSponsor.redirectUrl;
 
-    }
+    sponsorLink.style.pointerEvents =
 
-    else{
+    "auto";
 
-      sponsorImage.src =
-      "banner.png";
+  }
 
-      sponsorLink.href =
-      "#";
+  else{
 
-    }
+    sponsorLink.removeAttribute(
+      "href"
+    );
+
+    sponsorLink.style.pointerEvents =
+
+    "none";
+
+  }
+
+}
+
+else{
+
+  sponsorImage.src =
+  "banner.png";
+
+  sponsorLink.removeAttribute(
+    "href"
+  );
+
+  sponsorLink.style.pointerEvents =
+
+  "none";
+
+}
 
   }
 

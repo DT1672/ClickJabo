@@ -297,6 +297,30 @@ option{
 
   margin-bottom:12px;
 
+  transition:.25s ease;
+
+}
+
+.sponsor-item.active-sponsor{
+
+  border:
+  1px solid rgba(34,197,94,.45);
+
+  box-shadow:
+  0 0 0 1px rgba(34,197,94,.08),
+  0 0 18px rgba(34,197,94,.08);
+
+}
+
+.sponsor-item.inactive-sponsor{
+
+  border:
+  1px solid rgba(239,68,68,.38);
+
+  box-shadow:
+  0 0 0 1px rgba(239,68,68,.06),
+  0 0 18px rgba(239,68,68,.06);
+
 }
 
 .sponsor-left{
@@ -509,15 +533,27 @@ for best mobile visibility.
     id="sponsorLink"
     placeholder="Redirect URL">
 
-  <select id="sponsorDistrict">
+<div
+id="districtCheckboxContainer"
 
-  <option value="">
+style="
+display:grid;
+grid-template-columns:
+repeat(auto-fit,minmax(180px,1fr));
+gap:10px;
+padding:14px;
+border-radius:16px;
+background:
+rgba(255,255,255,.03);
+border:
+1px solid rgba(255,255,255,.05);
+max-height:220px;
+overflow:auto;
+">
 
-    Select District
+Loading districts...
 
-  </option>
-
-</select>
+</div>
 
     <select id="sponsorGlobal">
 
@@ -599,6 +635,10 @@ from "https://www.gstatic.com/firebasejs/12.3.0/firebase-storage.js";
 
 const storage =
 getStorage();
+
+let editingSponsorId =
+null;
+
 /* =========================
    LOADER
 ========================= */
@@ -622,6 +662,11 @@ function hideLoader(){
   "none";
 
 }
+
+/* =========================
+   SAVE SPONSOR
+========================= */
+
 async function saveSponsor(){
 
   try{
@@ -646,11 +691,21 @@ async function saveSponsor(){
       "sponsorLink"
     ).value.trim();
 
-    const district =
+ const selectedDistricts =
 
-    document.getElementById(
-      "sponsorDistrict"
-    ).value.trim();
+[];
+
+document
+.querySelectorAll(
+  ".district-checkbox:checked"
+)
+.forEach(box => {
+
+  selectedDistricts.push(
+    box.value
+  );
+
+});
 
     const isGlobal =
 
@@ -670,7 +725,44 @@ async function saveSponsor(){
 
     }
 
-    if(!imageFile){
+    let imageUrl =
+
+    window.currentSponsorImage || "";
+
+    if(imageFile){
+
+      const imageRef =
+
+      ref(
+
+        storage,
+
+        "sponsors/" +
+
+        Date.now() +
+
+        "-" +
+
+        imageFile.name
+
+      );
+
+      await uploadBytes(
+
+        imageRef,
+        imageFile
+
+      );
+
+      imageUrl =
+
+      await getDownloadURL(
+        imageRef
+      );
+
+    }
+
+    if(imageUrl === ""){
 
       hideLoader();
 
@@ -682,73 +774,95 @@ async function saveSponsor(){
 
     }
 
-    const imageRef =
+    if(editingSponsorId){
 
-    ref(
+      await updateDoc(
 
-      storage,
+        doc(
+          db,
+          "sponsors",
+          editingSponsorId
+        ),
 
-      "sponsors/" +
+        {
 
-      Date.now() +
+          title:
+          title,
 
-      "-" +
+          imageUrl:
+          imageUrl,
 
-      imageFile.name
+          redirectUrl:
+          redirectUrl,
 
-    );
+          districts:
+          selectedDistricts,
 
-    await uploadBytes(
+          isGlobal:
+          isGlobal
 
-      imageRef,
-      imageFile
+        }
 
-    );
+      );
 
-    const imageUrl =
+      alert(
+        "Sponsor updated successfully."
+      );
 
-    await getDownloadURL(
-      imageRef
-    );
+    }
 
-    await addDoc(
+    else{
 
-      collection(
-        db,
-        "sponsors"
-      ),
+      await addDoc(
 
-      {
+        collection(
+          db,
+          "sponsors"
+        ),
 
-        title:
-        title,
+        {
 
-        imageUrl:
-        imageUrl,
+          title:
+          title,
 
-        redirectUrl:
-        redirectUrl,
+          imageUrl:
+          imageUrl,
 
-        district:
-        district,
+          redirectUrl:
+          redirectUrl,
 
-        isGlobal:
-        isGlobal,
+         districts:
+selectedDistricts,
 
-        isActive:true,
+          isGlobal:
+          isGlobal,
 
-        createdAt:
-        serverTimestamp()
+          isActive:true,
 
-      }
+          createdAt:
+          serverTimestamp()
 
-    );
+        }
 
-    hideLoader();
+      );
 
-    alert(
-      "Sponsor added successfully."
-    );
+      alert(
+        "Sponsor added successfully."
+      );
+
+    }
+
+    editingSponsorId =
+    null;
+
+    window.currentSponsorImage =
+    "";
+
+    document.querySelector(
+      ".save-btn"
+    ).innerText =
+
+    "Save Sponsor";
 
     document.getElementById(
       "sponsorTitle"
@@ -762,9 +876,14 @@ async function saveSponsor(){
       "sponsorLink"
     ).value = "";
 
+
     document.getElementById(
-      "sponsorDistrict"
-    ).value = "";
+      "sponsorGlobal"
+    ).value =
+
+    "false";
+
+    hideLoader();
 
     loadSponsors();
 
@@ -784,9 +903,8 @@ async function saveSponsor(){
 
 }
 
-  window.saveSponsor =
+window.saveSponsor =
 saveSponsor;
-
 
 /* =========================
    LOAD SPONSORS
@@ -838,7 +956,10 @@ async function loadSponsors(){
       sponsorList.innerHTML += `
 
 <div
-class="sponsor-item">
+class="sponsor-item
+${data.isActive
+? "active-sponsor"
+: "inactive-sponsor"}">
 
 <div class="sponsor-left">
 
@@ -858,7 +979,9 @@ ${data.title}
 
 ${data.isGlobal
 ? "Global Sponsor"
-: data.district || "No District"}
+: data.districts
+? data.districts.join(", ")
+: "No District"}
 
 </div>
 
@@ -867,6 +990,26 @@ ${data.isGlobal
 </div>
 
 <div class="action-wrap">
+
+<button
+class="action-btn"
+
+style="
+background:
+rgba(59,130,246,.12);
+
+color:#93c5fd;
+"
+
+onclick="
+editSponsor(
+'${docSnap.id}'
+)
+">
+
+Edit
+
+</button>
 
 <button
 class="action-btn
@@ -919,6 +1062,156 @@ Delete
     console.log(error);
 
   }
+
+}
+
+async function editSponsor(id){
+
+  try{
+
+    const snapshot =
+
+    await getDocs(
+
+      collection(
+        db,
+        "sponsors"
+      )
+
+    );
+
+    snapshot.forEach(docSnap => {
+
+      if(docSnap.id === id){
+
+        const data =
+        docSnap.data();
+
+        editingSponsorId =
+        id;
+
+        window.currentSponsorImage =
+        data.imageUrl || "";
+
+        document.getElementById(
+          "sponsorTitle"
+        ).value =
+
+        data.title || "";
+
+        document.getElementById(
+          "sponsorLink"
+        ).value =
+
+        data.redirectUrl || "";
+
+        document.getElementById(
+          "sponsorGlobal"
+        ).value =
+
+        data.isGlobal
+        ? "true"
+        : "false";
+
+        document
+        .querySelectorAll(
+          ".district-checkbox"
+        )
+        .forEach(box => {
+
+          box.checked =
+          false;
+
+        });
+
+        if(data.districts){
+
+          data.districts.forEach(district => {
+
+            const checkbox =
+
+            document.querySelector(
+
+              `.district-checkbox[value="${district}"]`
+
+            );
+
+            if(checkbox){
+
+              checkbox.checked =
+              true;
+
+            }
+
+          });
+
+        }
+
+        toggleDistrictSelection();
+
+        document.querySelector(
+          ".save-btn"
+        ).innerText =
+
+        "Update Sponsor";
+
+      }
+
+    });
+
+  }
+
+  catch(error){
+
+    console.log(error);
+
+  }
+
+}
+
+window.editSponsor =
+editSponsor;
+
+const sponsorGlobal =
+
+document.getElementById(
+  "sponsorGlobal"
+);
+
+sponsorGlobal.addEventListener(
+
+  "change",
+
+  toggleDistrictSelection
+
+);
+
+function toggleDistrictSelection(){
+
+  const isGlobal =
+
+  sponsorGlobal.value ===
+  "true";
+
+  const checkboxes =
+
+  document.querySelectorAll(
+    ".district-checkbox"
+  );
+
+  checkboxes.forEach(box => {
+
+    box.disabled =
+    isGlobal;
+
+    if(isGlobal){
+
+      box.checked =
+      false;
+
+    }
+
+  });
 
 }
 
@@ -1027,16 +1320,18 @@ deleteSponsor;
 /* =========================
    LOAD DISTRICTS
 ========================= */
-
 async function loadDistrictOptions(){
 
   try{
 
-    const districtSelect =
+    const container =
 
     document.getElementById(
-      "sponsorDistrict"
+      "districtCheckboxContainer"
     );
+
+    container.innerHTML =
+    "";
 
     const snapshot =
 
@@ -1054,13 +1349,31 @@ async function loadDistrictOptions(){
       const data =
       docSnap.data();
 
-      districtSelect.innerHTML += `
+      container.innerHTML += `
 
-      <option value="${data.name}">
+<label
+style="
+display:flex;
+align-items:center;
+gap:10px;
+font-size:13px;
+color:white;
+">
 
-        ${data.name}
+<input
+type="checkbox"
+class="district-checkbox"
+value="${data.name}"
 
-      </option>
+style="
+width:18px;
+height:18px;
+accent-color:#c29b47;
+">
+
+${data.name}
+
+</label>
 
       `;
 
