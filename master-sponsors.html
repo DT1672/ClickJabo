@@ -528,10 +528,17 @@ for best mobile visibility.
 
 </div>
 
-    <input
-    type="text"
-    id="sponsorLink"
-    placeholder="Redirect URL">
+
+<input
+type="text"
+id="sponsorLink"
+placeholder="Redirect URL">
+
+<input
+type="date"
+id="sponsorExpiry">
+
+
 
 <div
 id="districtCheckboxContainer"
@@ -691,21 +698,33 @@ async function saveSponsor(){
       "sponsorLink"
     ).value.trim();
 
- const selectedDistricts =
+    const expiryValue =
 
-[];
+    document.getElementById(
+      "sponsorExpiry"
+    ).value;
 
-document
-.querySelectorAll(
-  ".district-checkbox:checked"
-)
-.forEach(box => {
+    const expiryDate =
 
-  selectedDistricts.push(
-    box.value
-  );
+    expiryValue
+    ? new Date(expiryValue)
+    : null;
 
-});
+    const selectedDistricts =
+
+    [];
+
+    document
+    .querySelectorAll(
+      ".district-checkbox:checked"
+    )
+    .forEach(box => {
+
+      selectedDistricts.push(
+        box.value
+      );
+
+    });
 
     const isGlobal =
 
@@ -799,7 +818,10 @@ document
           selectedDistricts,
 
           isGlobal:
-          isGlobal
+          isGlobal,
+
+          expiryDate:
+          expiryDate
 
         }
 
@@ -831,11 +853,14 @@ document
           redirectUrl:
           redirectUrl,
 
-         districts:
-selectedDistricts,
+          districts:
+          selectedDistricts,
 
           isGlobal:
           isGlobal,
+
+          expiryDate:
+          expiryDate,
 
           isActive:true,
 
@@ -876,6 +901,9 @@ selectedDistricts,
       "sponsorLink"
     ).value = "";
 
+    document.getElementById(
+      "sponsorExpiry"
+    ).value = "";
 
     document.getElementById(
       "sponsorGlobal"
@@ -902,6 +930,8 @@ selectedDistricts,
   }
 
 }
+
+
 
 window.saveSponsor =
 saveSponsor;
@@ -1106,6 +1136,17 @@ async function editSponsor(id){
         data.redirectUrl || "";
 
         document.getElementById(
+          "sponsorExpiry"
+        ).value =
+
+        data.expiryDate
+        ? data.expiryDate
+            .toDate()
+            .toISOString()
+            .split("T")[0]
+        : "";
+
+        document.getElementById(
           "sponsorGlobal"
         ).value =
 
@@ -1171,20 +1212,6 @@ async function editSponsor(id){
 
 window.editSponsor =
 editSponsor;
-
-const sponsorGlobal =
-
-document.getElementById(
-  "sponsorGlobal"
-);
-
-sponsorGlobal.addEventListener(
-
-  "change",
-
-  toggleDistrictSelection
-
-);
 
 function toggleDistrictSelection(){
 

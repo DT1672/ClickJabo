@@ -16,6 +16,9 @@ import {
 }
 from "https://www.gstatic.com/firebasejs/12.3.0/firebase-firestore.js";
 
+let sponsorRotationInterval =
+null;
+
 /* =========================
    LOAD SPONSOR
 ========================= */
@@ -24,16 +27,10 @@ async function loadSponsorBanner(){
 
   try{
 
-    const sponsorImage =
+    const sponsorCarousel =
 
     document.getElementById(
-      "sponsorBanner"
-    );
-
-    const sponsorLink =
-
-    document.getElementById(
-      "sponsorLinkWrap"
+      "sponsorCarousel"
     );
 
     const sponsorSnapshot =
@@ -47,81 +44,298 @@ async function loadSponsorBanner(){
 
     );
 
-    let matchedSponsor =
-    null;
+    sponsorCarousel.innerHTML = `
+
+<div
+id="sponsorDots"
+
+style="
+position:absolute;
+bottom:14px;
+left:50%;
+transform:translateX(-50%);
+display:flex;
+gap:6px;
+z-index:5;
+">
+
+</div>
+
+    `;
+
+    const sponsorDots =
+
+    document.getElementById(
+      "sponsorDots"
+    );
+
+    const now =
+    new Date();
+
+    let validSponsors =
+    [];
 
     sponsorSnapshot.forEach(docSnap => {
 
       const sponsor =
       docSnap.data();
 
+      /* =========================
+         EXPIRY CHECK
+      ========================= */
+
+      const isExpired =
+
+        sponsor.expiryDate &&
+
+        sponsor.expiryDate.toDate() < now;
+
+      /* =========================
+         DISTRICT CHECK
+      ========================= */
+
+      const districtMatched =
+
+        sponsor.isGlobal === true ||
+
+        (
+
+          sponsor.districts &&
+
+          sponsor.districts.includes(
+            districtSelect.value
+          )
+
+        );
+
+      /* =========================
+         VALID SPONSOR
+      ========================= */
+
       if(
 
         sponsor.isActive === true &&
 
-        (
+        !isExpired &&
 
-          sponsor.isGlobal === true ||
-
-          sponsor.district === districtSelect.value
-
-        )
+        districtMatched
 
       ){
 
-        matchedSponsor =
-        sponsor;
+        validSponsors.push(
+          sponsor
+        );
 
       }
 
     });
 
-if(matchedSponsor){
+ /* =========================
+   FALLBACK BANNER
+========================= */
 
-  sponsorImage.src =
+if(validSponsors.length === 0){
 
-  matchedSponsor.imageUrl;
+  sponsorCarousel.innerHTML = `
 
-  if(matchedSponsor.redirectUrl){
+<div
+id="sponsorDots"
 
-    sponsorLink.href =
+style="
+position:absolute;
+bottom:14px;
+left:50%;
+transform:translateX(-50%);
+display:flex;
+gap:6px;
+z-index:10;
+"
 
-    matchedSponsor.redirectUrl;
+>
+</div>
 
-    sponsorLink.style.pointerEvents =
+<a
+href="#"
+style="
+display:block;
+width:100%;
+height:100%;
+pointer-events:none;
+">
 
-    "auto";
+<img
+src="banner.png"
+class="install-banner"
 
-  }
+style="
+width:100%;
+height:100%;
+object-fit:cover;
+border-radius:22px;
+">
 
-  else{
+</a>
 
-    sponsorLink.removeAttribute(
-      "href"
-    );
+  `;
 
-    sponsorLink.style.pointerEvents =
-
-    "none";
-
-  }
+  return;
 
 }
 
-else{
+/* =========================
+   CREATE SLIDES
+========================= */
 
-  sponsorImage.src =
-  "banner.png";
+validSponsors.forEach((sponsor,index) => {
 
-  sponsorLink.removeAttribute(
-    "href"
+  sponsorCarousel.innerHTML += `
+
+<a
+href="${
+  sponsor.redirectUrl || "#"
+}"
+target="_blank"
+
+class="sponsor-slide"
+
+style="
+position:absolute;
+inset:0;
+z-index:1;
+opacity:${index === 0 ? "1" : "0"};
+transition:opacity .6s ease;
+pointer-events:${
+  index === 0
+  ? "auto"
+  : "none"
+};
+"
+
+>
+
+<img
+src="${sponsor.imageUrl}"
+
+class="install-banner"
+
+style="
+width:100%;
+height:100%;
+object-fit:cover;
+border-radius:22px;
+">
+
+</a>
+
+  `;
+
+});
+
+/* =========================
+   CREATE DOTS
+========================= */
+
+sponsorDots.innerHTML = "";
+
+validSponsors.forEach((_,index) => {
+
+  sponsorDots.innerHTML += `
+
+<div
+class="sponsor-dot"
+
+style="
+width:8px;
+height:8px;
+border-radius:50%;
+background:${
+  index === 0
+  ? "#ffffff"
+  : "rgba(255,255,255,.35)"
+};
+transition:.3s ease;
+box-shadow:
+0 0 8px rgba(255,255,255,.45);
+">
+
+</div>
+
+  `;
+
+});
+
+/* =========================
+   AUTO ROTATION
+========================= */
+
+if(sponsorRotationInterval){
+
+  clearInterval(
+    sponsorRotationInterval
   );
 
-  sponsorLink.style.pointerEvents =
-
-  "none";
-
 }
+
+let currentIndex =
+0;
+
+const slides =
+
+document.querySelectorAll(
+  ".sponsor-slide"
+);
+
+const dots =
+
+document.querySelectorAll(
+  ".sponsor-dot"
+);
+
+sponsorRotationInterval =
+
+setInterval(() => {
+
+  slides.forEach(slide => {
+
+    slide.style.opacity =
+    "0";
+
+    slide.style.pointerEvents =
+    "none";
+
+  });
+
+  currentIndex++;
+
+  if(
+    currentIndex >=
+    slides.length
+  ){
+
+    currentIndex = 0;
+
+  }
+
+  slides[currentIndex]
+  .style.opacity = "1";
+
+  slides[currentIndex]
+  .style.pointerEvents =
+  "auto";
+
+  dots.forEach(dot => {
+
+    dot.style.background =
+
+    "rgba(255,255,255,.35)";
+
+  });
+
+  dots[currentIndex]
+  .style.background =
+  "#ffffff";
+
+}, 4000);
 
   }
 
