@@ -511,6 +511,7 @@ id="sponsorImage"
 accept="image/png,image/jpeg,image/webp">
 
 
+
 <div
 style="
 font-size:11px;
@@ -537,6 +538,28 @@ placeholder="Redirect URL">
 <input
 type="date"
 id="sponsorExpiry">
+
+<select id="sponsorPriority">
+
+  <option value="1">
+
+    Priority 1 (Highest)
+
+  </option>
+
+  <option value="2">
+
+    Priority 2
+
+  </option>
+
+  <option value="3">
+
+    Priority 3
+
+  </option>
+
+</select>
 
 
 
@@ -710,6 +733,16 @@ async function saveSponsor(){
     ? new Date(expiryValue)
     : null;
 
+    const priority =
+
+Number(
+
+  document.getElementById(
+    "sponsorPriority"
+  ).value
+
+);
+
     const selectedDistricts =
 
     [];
@@ -821,7 +854,10 @@ async function saveSponsor(){
           isGlobal,
 
           expiryDate:
-          expiryDate
+          expiryDate,
+
+          priority:
+          priority,
 
         }
 
@@ -861,6 +897,9 @@ async function saveSponsor(){
 
           expiryDate:
           expiryDate,
+
+          priority:
+          priority,
 
           isActive:true,
 
@@ -910,6 +949,12 @@ async function saveSponsor(){
     ).value =
 
     "false";
+
+    document.getElementById(
+  "sponsorPriority"
+).value =
+
+"1";
 
     hideLoader();
 
@@ -1149,6 +1194,12 @@ async function editSponsor(id){
         document.getElementById(
           "sponsorGlobal"
         ).value =
+
+        document.getElementById(
+  "sponsorPriority"
+).value =
+
+data.priority || 1;
 
         data.isGlobal
         ? "true"
@@ -1415,6 +1466,7 @@ ${data.name}
   }
 
 }
+
 
 /* =========================
    INITIAL LOAD

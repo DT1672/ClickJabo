@@ -56,9 +56,11 @@ left:50%;
 transform:translateX(-50%);
 display:flex;
 gap:6px;
-z-index:5;
-">
+z-index:999;
+pointer-events:none;
+"
 
+>
 </div>
 
     `;
@@ -129,6 +131,21 @@ z-index:5;
       }
 
     });
+
+    
+    /* =========================
+   PRIORITY SORT
+========================= */
+
+validSponsors.sort(
+
+  (a,b) =>
+
+  (a.priority || 1) -
+
+  (b.priority || 1)
+
+);
 
  /* =========================
    FALLBACK BANNER
