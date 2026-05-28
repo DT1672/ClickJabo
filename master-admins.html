@@ -1396,7 +1396,6 @@ if(
 
 userID === "" ||
 adminName === "" ||
-password === "" ||
 providerName === "" ||
 providerID === "" ||
 districtID === "" ||
@@ -1415,8 +1414,51 @@ return;
 }
 
 /* =========================
+   PASSWORD REQUIRED ONLY
+   FOR NEW ADMIN
+========================= */
+
+if(
+
+!window.editingAdminID &&
+password === ""
+
+){
+
+hideLoader();
+
+alert(
+"Please enter password."
+);
+
+return;
+
+}
+
+
+
+/* =========================
    CREATE AUTH ACCOUNT
 ========================= */
+
+let userIDToSave = "";
+
+/* =========================
+   EDIT MODE
+========================= */
+
+if(window.editingAdminID){
+
+userIDToSave =
+window.editingAdminID;
+
+}
+
+/* =========================
+   CREATE MODE
+========================= */
+
+else{
 
 const userCredential =
 
@@ -1431,6 +1473,12 @@ password
 const user =
 userCredential.user;
 
+userIDToSave =
+user.uid;
+
+}
+
+
 /* =========================
    SAVE ADMIN
 ========================= */
@@ -1440,7 +1488,9 @@ await setDoc(
 doc(
 db,
 "districtAdmins",
-user.uid
+userIDToSave
+
+
 ),
 
 {
@@ -1683,6 +1733,12 @@ document.getElementById(
 "adminUserID"
 ).disabled = false;
 
+
+document.getElementById(
+"adminUserID"
+).disabled = false;
+
+
 /* =========================
    RESET BUTTON
 ========================= */
@@ -1750,6 +1806,14 @@ openAdminDetails(
 '${data.districtName || ""}',
 '${data.vehicleName || ""}',
 '${data.planType || ""}',
+
+'${data.expiryDate
+? new Date(
+data.expiryDate.seconds * 1000
+).toLocaleDateString()
+: "No Expiry"}',
+
+
 '${data.helplineNumber || ""}',
 '${data.isActive}'
 )
@@ -2099,6 +2163,13 @@ document.getElementById(
 "adminUserID"
 ).disabled = true;
 
+
+document.getElementById(
+"adminPassword"
+).disabled = true;
+
+
+
 }
 
 });
@@ -2132,7 +2203,6 @@ window.editAdmin =
 editAdmin;
 
 
-
 /* =========================
    OPEN DETAILS MODAL
 ========================= */
@@ -2144,6 +2214,7 @@ userID,
 district,
 vehicle,
 plan,
+expiry,
 helpline,
 isActive
 
@@ -2226,6 +2297,18 @@ ${plan || "-"}
 <div class="details-box">
 
 <div class="details-label">
+Expiry
+</div>
+
+<div class="details-value">
+${expiry || "-"}
+</div>
+
+</div>
+
+<div class="details-box">
+
+<div class="details-label">
 Helpline
 </div>
 
@@ -2258,6 +2341,7 @@ modal.style.display =
 
 window.openAdminDetails =
 openAdminDetails;
+
 
 /* =========================
    CLOSE MODAL
