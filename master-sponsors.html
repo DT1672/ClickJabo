@@ -671,6 +671,118 @@ Loading districts...
 
 </div>
 
+<!-- SPONSOR DETAILS MODAL -->
+
+<div
+id="sponsorDetailsModal"
+
+style="
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+background:rgba(2,8,23,.78);
+backdrop-filter:blur(8px);
+display:none;
+justify-content:center;
+align-items:center;
+z-index:999999;
+padding:20px;
+box-sizing:border-box;
+">
+
+<div
+
+style="
+width:100%;
+max-width:520px;
+background:
+linear-gradient(
+135deg,
+rgba(15,23,42,.96),
+rgba(15,23,42,.88)
+);
+border:
+1px solid rgba(255,255,255,.08);
+border-radius:28px;
+padding:24px;
+box-sizing:border-box;
+box-shadow:
+0 20px 60px rgba(0,0,0,.45);
+"
+
+>
+
+<div
+style="
+display:flex;
+justify-content:space-between;
+align-items:center;
+margin-bottom:20px;
+"
+>
+
+<div>
+
+<div
+style="
+font-size:22px;
+font-weight:700;
+"
+>
+
+Sponsor Details
+
+</div>
+
+<div
+style="
+font-size:12px;
+color:#94a3b8;
+margin-top:4px;
+"
+>
+
+MASTER SPONSOR INSIGHTS
+
+</div>
+
+</div>
+
+<button
+
+onclick="
+closeSponsorDetails()
+"
+
+style="
+width:40px;
+height:40px;
+border:none;
+border-radius:14px;
+background:rgba(255,255,255,.06);
+color:white;
+font-size:18px;
+cursor:pointer;
+"
+
+>
+
+✕
+
+</button>
+
+</div>
+
+<div id="sponsorDetailsContent">
+
+</div>
+
+</div>
+
+</div>
+
 <script type="module">
 
 import {
@@ -691,12 +803,15 @@ import {
 from "https://www.gstatic.com/firebasejs/12.3.0/firebase-firestore.js";
 
 import {
-  getStorage,
-  ref,
-  uploadBytes,
-  getDownloadURL
+getStorage,
+ref,
+uploadBytes,
+getDownloadURL,
+deleteObject,
 }
 from "https://www.gstatic.com/firebasejs/12.3.0/firebase-storage.js";
+
+
 
 const storage =
 getStorage();
@@ -1339,7 +1454,16 @@ doc(
 class="sponsor-item
 ${data.isActive
 ? "active-sponsor"
-: "inactive-sponsor"}">
+: "inactive-sponsor"}"
+
+ondblclick="
+openSponsorDetails(
+'${docSnap.id}'
+)
+"
+>
+
+
 
 <div class="sponsor-left">
 
@@ -1559,6 +1683,300 @@ console.log(error);
 }
 
 }
+/* =========================
+   SPONSOR DETAILS MODAL
+========================= */
+
+async function openSponsorDetails(id){
+
+try{
+
+showLoader();
+
+const snapshot =
+
+await getDocs(
+
+collection(
+db,
+"sponsors"
+)
+
+);
+
+snapshot.forEach(docSnap => {
+
+if(docSnap.id === id){
+
+const data =
+docSnap.data();
+
+const now =
+new Date();
+
+const isExpired =
+
+data.expiryDate &&
+
+data.expiryDate.toDate() < now;
+
+let statusText =
+"ACTIVE";
+
+let statusColor =
+"#22c55e";
+
+if(!data.isActive){
+
+statusText =
+"DISABLED";
+
+statusColor =
+"#ef4444";
+
+}
+
+else if(isExpired){
+
+statusText =
+"EXPIRED";
+
+statusColor =
+"#f59e0b";
+
+}
+
+document.getElementById(
+"sponsorDetailsContent"
+).innerHTML = `
+
+<div
+style="
+display:flex;
+gap:18px;
+align-items:flex-start;
+margin-bottom:20px;
+"
+>
+
+<img
+src="${
+data.imageUrl || "banner.png"
+}"
+
+style="
+width:110px;
+height:110px;
+border-radius:20px;
+object-fit:cover;
+border:
+1px solid rgba(255,255,255,.08);
+"
+>
+
+<div
+style="
+flex:1;
+"
+>
+
+<div
+style="
+font-size:22px;
+font-weight:700;
+margin-bottom:10px;
+"
+>
+
+${data.title || "-"}
+
+</div>
+
+<div
+
+style="
+display:inline-flex;
+padding:6px 12px;
+border-radius:999px;
+font-size:11px;
+font-weight:700;
+background:${statusColor}22;
+color:${statusColor};
+border:1px solid ${statusColor}55;
+margin-bottom:14px;
+"
+
+>
+
+${statusText}
+
+</div>
+
+<div
+style="
+font-size:13px;
+color:#94a3b8;
+line-height:1.8;
+"
+>
+
+<div>
+
+Type:
+<b style="color:white;">
+${
+data.isGlobal
+? "Global Sponsor"
+: "District Sponsor"
+}
+</b>
+
+</div>
+
+<div>
+
+Priority:
+<b style="color:white;">
+${data.priority || 1}
+</b>
+
+</div>
+
+<div>
+
+Views:
+<b style="color:white;">
+${data.impressions || 0}
+</b>
+
+</div>
+
+<div>
+
+Clicks:
+<b style="color:white;">
+${data.clicks || 0}
+</b>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+<div
+style="
+margin-top:10px;
+padding-top:18px;
+border-top:
+1px solid rgba(255,255,255,.06);
+font-size:13px;
+line-height:1.9;
+color:#cbd5e1;
+"
+>
+
+<div>
+
+Districts:
+${
+data.districts
+? data.districts.join(", ")
+: "None"
+}
+
+</div>
+
+<div>
+
+Start Date:
+${
+data.startDate
+? data.startDate
+.toDate()
+.toLocaleDateString()
+: "Immediate"
+}
+
+</div>
+
+<div>
+
+Expiry Date:
+${
+data.expiryDate
+? data.expiryDate
+.toDate()
+.toLocaleDateString()
+: "No Expiry"
+}
+
+</div>
+
+<div
+style="
+word-break:break-all;
+"
+>
+
+Redirect URL:
+${
+data.redirectUrl || "-"
+}
+
+</div>
+
+</div>
+
+`;
+
+document.getElementById(
+"sponsorDetailsModal"
+).style.display =
+
+"flex";
+
+}
+
+});
+
+hideLoader();
+
+}
+
+catch(error){
+
+hideLoader();
+
+console.log(error);
+
+}
+
+}
+
+window.openSponsorDetails =
+openSponsorDetails;
+
+/* =========================
+   CLOSE MODAL
+========================= */
+
+function closeSponsorDetails(){
+
+document.getElementById(
+"sponsorDetailsModal"
+).style.display =
+
+"none";
+
+}
+
+window.closeSponsorDetails =
+closeSponsorDetails;
+
+
 
 async function editSponsor(id){
 
@@ -1777,48 +2195,111 @@ toggleSponsor;
 /* =========================
    DELETE
 ========================= */
-
 async function deleteSponsor(id){
 
-  const confirmDelete =
+const confirmDelete =
 
-  confirm(
-    "Delete sponsor?"
-  );
+confirm(
+"Delete sponsor?"
+);
 
-  if(!confirmDelete){
+if(!confirmDelete){
 
-    return;
+
+return;
+
+
+}
+
+try{
+
+
+showLoader();
+
+const snapshot =
+
+await getDocs(
+
+  collection(
+    db,
+    "sponsors"
+  )
+
+);
+
+for(const docSnap of snapshot.docs){
+
+  if(docSnap.id === id){
+
+    const data =
+    docSnap.data();
+
+    /* =========================
+       DELETE STORAGE IMAGE
+    ========================= */
+
+    if(data.imageUrl){
+
+      try{
+
+  const imageRef =
+
+ref(
+storage,
+data.imageUrl
+);
+
+
+        await deleteObject(
+          imageRef
+        );
+
+      }
+
+      catch(storageError){
+
+        console.log(
+          storageError
+        );
+
+      }
+
+    }
 
   }
 
-  try{
+}
 
-    showLoader();
+/* =========================
+   DELETE FIRESTORE DOC
+========================= */
 
-    await deleteDoc(
+await deleteDoc(
 
-      doc(
-        db,
-        "sponsors",
-        id
-      )
+  doc(
+    db,
+    "sponsors",
+    id
+  )
 
-    );
+);
 
-    hideLoader();
+hideLoader();
 
-    loadSponsors();
+loadSponsors();
 
-  }
 
-  catch(error){
+}
 
-    hideLoader();
+catch(error){
 
-    console.log(error);
 
-  }
+hideLoader();
+
+console.log(error);
+
+
+}
 
 }
 
