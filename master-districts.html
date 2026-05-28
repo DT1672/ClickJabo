@@ -28,13 +28,13 @@ src="master-auth-check.js">
 
 body{
 
-  margin:0;
+margin:0;
 
-  background:#020817;
+background:#020817;
 
-  color:white;
+color:white;
 
-  font-family:sans-serif;
+font-family:sans-serif;
 
 }
 
@@ -44,151 +44,368 @@ body{
 
 .page-loader{
 
-  position:fixed;
+position:fixed;
 
-  top:0;
-  left:0;
+top:0;
+left:0;
 
-  width:100%;
-  height:100%;
+width:100%;
+height:100%;
 
-  background:
-  rgba(2,8,23,.72);
+background:
+rgba(2,8,23,.72);
 
-  backdrop-filter:blur(6px);
+backdrop-filter:blur(6px);
 
-  display:none;
+display:none;
 
-  justify-content:center;
-  align-items:center;
+justify-content:center;
+align-items:center;
 
-  z-index:99999;
+z-index:99999;
 
 }
 
 .loader-spinner{
 
-  width:62px;
-  height:62px;
+width:62px;
+height:62px;
 
-  border-radius:50%;
+border-radius:50%;
 
-  border:
-  4px solid rgba(255,255,255,.08);
+border:
+4px solid rgba(255,255,255,.08);
 
-  border-top:
-  4px solid #c29b47;
+border-top:
+4px solid #c29b47;
 
-  animation:
-  spin .8s linear infinite;
+animation:
+spin .8s linear infinite;
 
 }
 
 @keyframes spin{
 
-  from{
+from{
 
-    transform:
-    rotate(0deg);
-
-  }
-
-  to{
-
-    transform:
-    rotate(360deg);
-
-  }
+transform:
+rotate(0deg);
 
 }
 
-.district-grid{
+to{
 
-  display:grid;
-
-  grid-template-columns:
-  repeat(
-    auto-fit,
-    minmax(320px,1fr)
-  );
-
-  gap:18px;
+transform:
+rotate(360deg);
 
 }
 
-.district-card{
+}
 
-  background:
-  rgba(255,255,255,.04);
+/* =========================
+   TOP BAR
+========================= */
 
-  border:
-  1px solid rgba(255,255,255,.06);
+.top-bar{
 
-  border-radius:24px;
+display:flex;
 
-  padding:20px;
+align-items:center;
 
-  backdrop-filter:blur(16px);
+justify-content:space-between;
 
-  min-height:180px;
+position:fixed;
 
-  display:flex;
-  flex-direction:column;
-  justify-content:space-between;
+top:0;
+left:0;
 
-  box-sizing:border-box;
+width:100%;
+
+height:70px;
+
+padding:0 24px;
+
+box-sizing:border-box;
+
+z-index:2000;
+
+background:
+rgba(10,15,25,.78);
+
+backdrop-filter:blur(18px);
+
+border-bottom:
+1px solid rgba(255,255,255,.05);
+
+}
+
+/* =========================
+   BUTTONS
+========================= */
+
+.add-btn,
+.open-btn{
+
+height:42px;
+
+padding:0 18px;
+
+border:none;
+
+border-radius:14px;
+
+background:
+linear-gradient(
+135deg,
+#8b6b2e,
+#c29b47
+);
+
+color:white;
+
+font-size:12px;
+
+font-weight:600;
+
+cursor:pointer;
 
 }
 
 .open-btn{
 
-  height:40px;
-  padding:0 18px;
+height:36px;
 
-  border:none;
-
-  border-radius:14px;
-
-  background:
-  linear-gradient(
-    135deg,
-    #8b6b2e,
-    #c29b47
-  );
-
-  color:white;
-
-  font-size:12px;
-
-  font-weight:600;
-
-  cursor:pointer;
+font-size:11px;
 
 }
 
-.add-btn{
+/* =========================
+   MAIN
+========================= */
 
-  height:44px;
-  padding:0 22px;
+.main-container{
 
-  border:none;
+width:100%;
 
-  border-radius:14px;
+max-width:1450px;
 
-  background:
-  linear-gradient(
-    135deg,
-    #8b6b2e,
-    #c29b47
-  );
+margin:auto;
 
-  color:white;
+padding:
+100px 24px 60px 24px;
 
-  font-size:12px;
+box-sizing:border-box;
 
-  font-weight:600;
+}
 
-  cursor:pointer;
+/* =========================
+   STATS
+========================= */
+
+.stats-grid{
+
+display:grid;
+
+grid-template-columns:
+repeat(
+auto-fit,
+minmax(220px,1fr)
+);
+
+gap:16px;
+
+margin-bottom:24px;
+
+}
+
+.stats-card{
+
+background:
+rgba(255,255,255,.04);
+
+border:
+1px solid rgba(255,255,255,.06);
+
+border-radius:24px;
+
+padding:20px;
+
+backdrop-filter:blur(16px);
+
+min-height:110px;
+
+box-sizing:border-box;
+
+}
+
+.stats-label{
+
+font-size:12px;
+
+color:#94a3b8;
+
+}
+
+.stats-value{
+
+font-size:32px;
+
+font-weight:700;
+
+margin-top:12px;
+
+}
+
+/* =========================
+   DISTRICT ROWS
+========================= */
+
+.district-list{
+
+display:flex;
+
+flex-direction:column;
+
+gap:14px;
+
+}
+
+.district-row{
+
+display:flex;
+
+align-items:center;
+
+justify-content:space-between;
+
+gap:20px;
+
+padding:18px 20px;
+
+border-radius:22px;
+
+background:
+rgba(255,255,255,.04);
+
+border:
+1px solid rgba(255,255,255,.06);
+
+backdrop-filter:blur(16px);
+
+flex-wrap:wrap;
+
+}
+
+.district-left{
+
+display:flex;
+
+flex-direction:column;
+
+gap:4px;
+
+min-width:220px;
+
+}
+
+.district-name{
+
+font-size:18px;
+
+font-weight:700;
+
+}
+
+.district-meta{
+
+font-size:12px;
+
+color:#94a3b8;
+
+}
+
+.district-stats{
+
+display:flex;
+
+align-items:center;
+
+gap:14px;
+
+flex-wrap:wrap;
+
+}
+
+.stat-pill{
+
+padding:10px 14px;
+
+border-radius:16px;
+
+background:
+rgba(255,255,255,.03);
+
+border:
+1px solid rgba(255,255,255,.04);
+
+font-size:12px;
+
+color:#cbd5e1;
+
+}
+
+.status-pill{
+
+padding:8px 12px;
+
+border-radius:999px;
+
+background:
+rgba(34,197,94,.12);
+
+border:
+1px solid rgba(34,197,94,.24);
+
+font-size:11px;
+
+color:#86efac;
+
+font-weight:600;
+
+}
+
+/* =========================
+   MOBILE
+========================= */
+
+@media(max-width:768px){
+
+.top-bar{
+
+padding:0 16px;
+
+}
+
+.main-container{
+
+padding:
+90px 16px 40px 16px;
+
+}
+
+.district-row{
+
+flex-direction:column;
+
+align-items:flex-start;
+
+}
+
+.district-stats{
+
+width:100%;
+
+}
 
 }
 
@@ -204,32 +421,16 @@ body{
 class="page-loader"
 id="globalLoader">
 
-  <div
-  class="loader-spinner">
+<div
+class="loader-spinner">
 
-  </div>
+</div>
 
 </div>
 
 <!-- TOP BAR -->
 
-<div
-style="
-display:flex;
-align-items:center;
-justify-content:space-between;
-position:fixed;
-top:0;
-left:0;
-width:100%;
-height:70px;
-padding:0 24px;
-box-sizing:border-box;
-z-index:2000;
-background:rgba(10,15,25,.78);
-backdrop-filter:blur(18px);
-border-bottom:1px solid rgba(255,255,255,.05);
-">
+<div class="top-bar">
 
 <div
 style="
@@ -298,40 +499,15 @@ Add District
 
 <!-- MAIN -->
 
-<div
-style="
-width:100%;
-max-width:1450px;
-margin:auto;
-padding:100px 24px 60px 24px;
-box-sizing:border-box;
-">
+<div class="main-container">
 
 <!-- STATS -->
 
-<div
-style="
-display:grid;
-grid-template-columns:
-repeat(
-auto-fit,
-minmax(220px,1fr)
-);
-gap:16px;
-margin-bottom:24px;
-">
+<div class="stats-grid">
 
-<div
-class="district-card"
-style="
-min-height:110px;
-">
+<div class="stats-card">
 
-<div
-style="
-font-size:12px;
-color:#94a3b8;
-">
+<div class="stats-label">
 
 Total Districts
 
@@ -339,11 +515,7 @@ Total Districts
 
 <div
 id="totalDistricts"
-style="
-font-size:32px;
-font-weight:700;
-margin-top:12px;
-">
+class="stats-value">
 
 0
 
@@ -351,17 +523,9 @@ margin-top:12px;
 
 </div>
 
-<div
-class="district-card"
-style="
-min-height:110px;
-">
+<div class="stats-card">
 
-<div
-style="
-font-size:12px;
-color:#94a3b8;
-">
+<div class="stats-label">
 
 Active Districts
 
@@ -369,11 +533,7 @@ Active Districts
 
 <div
 id="activeDistricts"
-style="
-font-size:32px;
-font-weight:700;
-margin-top:12px;
-">
+class="stats-value">
 
 0
 
@@ -381,28 +541,17 @@ margin-top:12px;
 
 </div>
 
-<div
-class="district-card"
-style="
-min-height:110px;
-">
+<div class="stats-card">
 
-<div
-style="
-font-size:12px;
-color:#94a3b8;
-">
+<div class="stats-label">
 
-Temporary Surges
+Total Routes
 
 </div>
 
 <div
-style="
-font-size:32px;
-font-weight:700;
-margin-top:12px;
-">
+id="totalRoutes"
+class="stats-value">
 
 0
 
@@ -412,11 +561,11 @@ margin-top:12px;
 
 </div>
 
-<!-- DISTRICT GRID -->
+<!-- DISTRICT LIST -->
 
 <div
-id="districtGrid"
-class="district-grid">
+id="districtList"
+class="district-list">
 
 </div>
 
@@ -425,13 +574,15 @@ class="district-grid">
 <script type="module">
 
 import {
-  db
+db
 }
 from "./firebase-config.js";
 
 import {
-  collection,
-  getDocs
+collection,
+getDocs,
+query,
+where
 }
 from "https://www.gstatic.com/firebasejs/12.3.0/firebase-firestore.js";
 
@@ -441,23 +592,38 @@ from "https://www.gstatic.com/firebasejs/12.3.0/firebase-firestore.js";
 
 function showLoader(){
 
-  document.getElementById(
-    "globalLoader"
-  ).style.display =
+document.getElementById(
+"globalLoader"
+).style.display =
 
-  "flex";
+"flex";
 
 }
 
 function hideLoader(){
 
-  document.getElementById(
-    "globalLoader"
-  ).style.display =
+document.getElementById(
+"globalLoader"
+).style.display =
 
-  "none";
+"none";
 
 }
+
+/* =========================
+   OPEN DISTRICT
+========================= */
+
+function openDistrict(districtID){
+
+window.location.href =
+
+`district-details.html?id=${districtID}`;
+
+}
+
+window.openDistrict =
+openDistrict;
 
 /* =========================
    LOAD DISTRICTS
@@ -465,207 +631,215 @@ function hideLoader(){
 
 async function loadDistricts(){
 
-  try{
+try{
 
-    showLoader();
+showLoader();
 
-    const container =
+const container =
 
-    document.getElementById(
-      "districtGrid"
-    );
+document.getElementById(
+"districtList"
+);
 
-    container.innerHTML =
-    "";
+container.innerHTML = "";
 
-    const querySnapshot =
+const districtSnapshot =
 
-    await getDocs(
+await getDocs(
 
-      collection(
-        db,
-        "districts"
-      )
+collection(
+db,
+"districts"
+)
 
-    );
+);
 
-    /* COUNTS */
+const routesSnapshot =
 
-    document.getElementById(
-      "totalDistricts"
-    ).innerText =
+await getDocs(
 
-    querySnapshot.size;
+collection(
+db,
+"routes"
+)
 
-    document.getElementById(
-      "activeDistricts"
-    ).innerText =
+);
 
-    querySnapshot.size;
+document.getElementById(
+"totalDistricts"
+).innerText =
 
-    if(querySnapshot.empty){
+districtSnapshot.size;
 
-      container.innerHTML =
+document.getElementById(
+"activeDistricts"
+).innerText =
 
-      `
-      <div
-      style="
-      color:#94a3b8;
-      font-size:14px;
-      ">
-        No districts found.
-      </div>
-      `;
+districtSnapshot.size;
 
-      hideLoader();
+document.getElementById(
+"totalRoutes"
+).innerText =
 
-      return;
+routesSnapshot.size;
 
-    }
+if(districtSnapshot.empty){
 
-    querySnapshot.forEach(docSnap => {
+container.innerHTML =
 
-      const district =
-      docSnap.data();
-
-      container.innerHTML += `
-
-<div
-class="district-card">
-
-<div>
-
+`
 <div
 style="
-display:flex;
-justify-content:space-between;
-align-items:flex-start;
-margin-bottom:14px;
-">
-
-<div>
-
-<div
-style="
-font-size:20px;
-font-weight:700;
-">
-
-${district.name || "District"}
-
-</div>
-
-<div
-style="
-font-size:11px;
 color:#94a3b8;
-margin-top:4px;
+font-size:14px;
 ">
 
-District Administration
+No districts found.
+
+</div>
+`;
+
+hideLoader();
+
+return;
+
+}
+
+for(const docSnap of districtSnapshot.docs){
+
+const district =
+docSnap.data();
+
+const routeQuery =
+
+query(
+
+collection(
+db,
+"routes"
+),
+
+where(
+"districtID",
+"==",
+district.districtID
+)
+
+);
+
+const routeSnapshot =
+
+await getDocs(
+routeQuery
+);
+
+const pricingQuery =
+
+query(
+
+collection(
+db,
+"routeVehiclePricing"
+),
+
+where(
+"districtID",
+"==",
+district.districtID
+)
+
+);
+
+const pricingSnapshot =
+
+await getDocs(
+pricingQuery
+);
+
+const providerSet =
+new Set();
+
+pricingSnapshot.forEach(p => {
+
+const data =
+p.data();
+
+if(data.providerID){
+
+providerSet.add(
+data.providerID
+);
+
+}
+
+});
+
+container.innerHTML += `
+
+<div class="district-row">
+
+<div class="district-left">
+
+<div class="district-name">
+
+${district.name || "-"}
+
+</div>
+
+<div class="district-meta">
+
+${district.districtID || "-"}
+
+•
+
+${district.helplineNumber || "-"}
 
 </div>
 
 </div>
 
-<div
-style="
-padding:6px 10px;
-border-radius:999px;
-background:rgba(34,197,94,.12);
-border:1px solid rgba(34,197,94,.24);
-font-size:10px;
-color:#86efac;
-">
+<div class="district-stats">
 
-${district.status || "Active"}
-
-</div>
-
-</div>
-
-<div
-style="
-display:grid;
-grid-template-columns:
-1fr 1fr;
-gap:12px;
-margin-top:20px;
-">
-
-<div
-style="
-background:rgba(255,255,255,.03);
-padding:12px;
-border-radius:16px;
-">
-
-<div
-style="
-font-size:10px;
-color:#94a3b8;
-margin-bottom:6px;
-">
+<div class="stat-pill">
 
 Routes
+<b>
+
+${routeSnapshot.size}
+
+</b>
 
 </div>
 
-<div
-style="
-font-size:20px;
-font-weight:700;
-">
+<div class="stat-pill">
 
-0
+Providers
+<b>
 
-</div>
+${providerSet.size}
 
-</div>
-
-<div
-style="
-background:rgba(255,255,255,.03);
-padding:12px;
-border-radius:16px;
-">
-
-<div
-style="
-font-size:10px;
-color:#94a3b8;
-margin-bottom:6px;
-">
-
-Admins
+</b>
 
 </div>
 
-<div
-style="
-font-size:20px;
-font-weight:700;
-">
+<div class="status-pill">
 
-1
+${district.isActive !== false
+? "ACTIVE"
+: "DISABLED"}
 
 </div>
 
 </div>
-
-</div>
-
-</div>
-
-<div
-style="
-display:flex;
-justify-content:flex-end;
-margin-top:24px;
-">
 
 <button
-class="open-btn">
+class="open-btn"
+
+onclick="
+openDistrict(
+'${district.districtID}'
+)
+">
 
 Open District
 
@@ -673,27 +847,25 @@ Open District
 
 </div>
 
-</div>
+`;
 
-      `;
+}
 
-    });
+hideLoader();
 
-    hideLoader();
+}
 
-  }
+catch(error){
 
-  catch(error){
+hideLoader();
 
-    hideLoader();
+console.log(error);
 
-    console.log(error);
+alert(
+"Failed to load districts."
+);
 
-    alert(
-      "Failed to load districts."
-    );
-
-  }
+}
 
 }
 
@@ -704,3 +876,4 @@ loadDistricts();
 </body>
 
 </html>
+
