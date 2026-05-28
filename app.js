@@ -218,7 +218,7 @@ border-radius:22px;
 </a>
 
   `;
-  
+
 trackSponsorImpression(
   "defaultBanner"
 );
@@ -339,6 +339,10 @@ const dots =
 
 document.querySelectorAll(
   ".sponsor-dot"
+);
+
+trackSponsorImpression(
+  validSponsors[0].id
 );
 
 sponsorRotationInterval =

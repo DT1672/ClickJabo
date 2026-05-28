@@ -615,15 +615,40 @@ Loading districts...
 
   </div>
 
-  <button
-  class="save-btn"
-  onclick="saveSponsor()">
 
-    Save Sponsor
+<button
+class="save-btn"
+onclick="saveSponsor()">
 
-  </button>
+  Save Sponsor
+
+</button>
+
+<button
+class="save-btn"
+
+onclick="
+clearSponsorForm()
+"
+
+style="
+margin-top:10px;
+
+background:
+rgba(255,255,255,.06);
+
+border:
+1px solid rgba(255,255,255,.08);
+"
+>
+
+  Clear Form
+
+</button>
 
 </div>
+
+
 
 <!-- SPONSOR LIST -->
 
@@ -1313,10 +1338,89 @@ impressions:0,
 
 }
 
+/* =========================
+   CLEAR SPONSOR FORM
+========================= */
+
+function clearSponsorForm(){
+
+editingSponsorId =
+null;
+
+window.currentSponsorImage =
+"";
+
+/* =========================
+   RESET INPUTS
+========================= */
+
+document.getElementById(
+"sponsorTitle"
+).value = "";
+
+document.getElementById(
+"sponsorImage"
+).value = "";
+
+document.getElementById(
+"sponsorLink"
+).value = "";
+
+document.getElementById(
+"sponsorStartDate"
+).value = "";
+
+document.getElementById(
+"sponsorExpiry"
+).value = "";
+
+document.getElementById(
+"sponsorPriority"
+).value = "1";
+
+document.getElementById(
+"sponsorGlobal"
+).value = "false";
+
+/* =========================
+   RESET DISTRICTS
+========================= */
+
+document
+.querySelectorAll(
+".district-checkbox"
+)
+.forEach(box => {
+
+box.checked = false;
+
+box.disabled = false;
+
+});
+
+/* =========================
+   RESET BUTTON
+========================= */
+
+document.querySelector(
+".save-btn"
+).innerText =
+
+"Save Sponsor";
+
+}
+
+window.clearSponsorForm =
+clearSponsorForm;
+
+globalThis.clearSponsorForm =
+clearSponsorForm;
+
 
 
 window.saveSponsor =
 saveSponsor;
+
 
 /* =========================
 LOAD SPONSORS

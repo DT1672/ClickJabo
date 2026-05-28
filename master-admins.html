@@ -359,6 +359,149 @@ option{
 
 }
 
+.provider-box{
+
+  grid-column:1/-1;
+
+  display:grid;
+
+  grid-template-columns:
+  repeat(auto-fit,minmax(180px,1fr));
+
+  gap:10px;
+
+  padding:14px;
+
+  border-radius:16px;
+
+  background:
+  rgba(255,255,255,.03);
+
+  border:
+  1px solid rgba(255,255,255,.05);
+
+  max-height:220px;
+
+  overflow:auto;
+
+}
+
+
+/* =========================
+   DETAILS MODAL
+========================= */
+
+.details-modal{
+
+position:fixed;
+
+top:0;
+left:0;
+
+width:100%;
+height:100%;
+
+background:
+rgba(2,8,23,.72);
+
+backdrop-filter:blur(8px);
+
+display:none;
+
+justify-content:center;
+align-items:center;
+
+padding:20px;
+
+box-sizing:border-box;
+
+z-index:999999;
+
+}
+
+.details-card{
+
+width:100%;
+max-width:520px;
+
+background:
+linear-gradient(
+135deg,
+rgba(15,23,42,.96),
+rgba(15,23,42,.90)
+);
+
+border:
+1px solid rgba(255,255,255,.06);
+
+border-radius:28px;
+
+padding:24px;
+
+box-sizing:border-box;
+
+box-shadow:
+0 20px 60px rgba(0,0,0,.35);
+
+}
+
+.details-title{
+
+font-size:24px;
+
+font-weight:700;
+
+margin-bottom:20px;
+
+}
+
+.details-grid{
+
+display:grid;
+
+grid-template-columns:
+1fr 1fr;
+
+gap:14px;
+
+}
+
+.details-box{
+
+background:
+rgba(255,255,255,.03);
+
+border:
+1px solid rgba(255,255,255,.05);
+
+border-radius:18px;
+
+padding:14px;
+
+}
+
+.details-label{
+
+font-size:11px;
+
+color:#94a3b8;
+
+margin-bottom:6px;
+
+}
+
+.details-value{
+
+font-size:14px;
+
+font-weight:600;
+
+word-break:break-word;
+
+}
+
+
+
 @media(max-width:768px){
 
   .page-container{
@@ -488,52 +631,105 @@ id="globalLoader">
       id="adminPassword"
       placeholder="Password">
 
-      <input
-      type="text"
-      id="adminDistrict"
-      placeholder="District">
+      <select id="adminDistrict">
 
-      <input
-      type="text"
-      id="adminVehicle"
-      placeholder="Vehicle Category">
-
-      <input
-      type="text"
-      id="adminProvider"
-      placeholder="Service Provider">
-
-      <select id="adminPlan">
-
-        <option>
-          Free
-        </option>
-
-        <option>
-          3 Months
-        </option>
-
-        <option>
-          6 Months
-        </option>
-
-        <option>
-          Yearly
+        <option value="">
+          Select District
         </option>
 
       </select>
 
-    </div>
+<input
+type="text"
+id="providerName"
+placeholder="Provider Name">
 
-    <button
-    class="create-btn"
-    onclick="createAdmin()">
+<input
+type="text"
+id="providerID"
+placeholder="Provider ID">
 
-      Create Admin
+<select id="vehicleSelect">
 
-    </button>
+  <option value="">
+    Select Vehicle
+  </option>
 
-  </div>
+</select>
+
+<input
+type="text"
+id="helplineNumber"
+placeholder="Helpline Number">
+
+
+<select id="adminPlan">
+
+  <option>
+    Free
+  </option>
+
+  <option>
+    3 Months
+  </option>
+
+  <option>
+    6 Months
+  </option>
+
+  <option>
+    Yearly
+  </option>
+
+  <option>
+    Lifetime
+  </option>
+
+</select>
+
+
+<input
+type="date"
+id="adminExpiryDate"
+disabled>
+
+
+</div>
+
+
+<button
+class="create-btn"
+onclick="createAdmin()">
+
+  Create Admin
+
+</button>
+
+<button
+class="create-btn"
+
+onclick="
+clearAdminForm()
+"
+
+style="
+margin-top:10px;
+
+background:
+rgba(255,255,255,.06);
+
+border:
+1px solid rgba(255,255,255,.08);
+"
+>
+
+  Clear Form
+
+</button>
+
+</div>
+
+
 
   <!-- ADMIN LIST -->
 
@@ -548,15 +744,126 @@ id="globalLoader">
 
     </h3>
 
-    <div id="adminList">
+  
+<h3
+style="
+margin-bottom:16px;
+font-size:16px;
+"
+>
 
-      No admins found.
+Active Admins
 
-    </div>
+</h3>
+
+<div id="activeAdminList">
+
+No active admins.
+
+</div>
+
+<div
+style="
+height:24px;
+"
+>
+
+</div>
+
+<h3
+style="
+margin-bottom:16px;
+font-size:16px;
+color:#fca5a5;
+"
+>
+
+Disabled Admins
+
+</h3>
+
+<div id="disabledAdminList">
+
+No disabled admins.
+
+</div>
+
+
 
   </div>
 
 </div>
+
+
+<!-- DETAILS MODAL -->
+
+<div
+class="details-modal"
+id="detailsModal"
+
+onclick="
+closeDetailsModal()
+"
+>
+
+<div
+class="details-card"
+
+onclick="
+event.stopPropagation()
+"
+>
+
+<div
+style="
+display:flex;
+justify-content:space-between;
+align-items:center;
+margin-bottom:20px;
+"
+>
+
+<div class="details-title">
+
+Provider Details
+
+</div>
+
+<button
+onclick="
+closeDetailsModal()
+"
+
+style="
+width:38px;
+height:38px;
+border:none;
+border-radius:12px;
+background:rgba(255,255,255,.06);
+color:white;
+font-size:18px;
+cursor:pointer;
+"
+>
+
+✕
+
+</button>
+
+</div>
+
+<div
+class="details-grid"
+id="detailsContent"
+>
+
+</div>
+
+</div>
+
+</div>
+
+
 
 <script type="module">
 
@@ -570,7 +877,9 @@ import {
   collection,
   onSnapshot,
   doc,
-  setDoc
+  setDoc,
+  getDocs,
+  serverTimestamp
 }
 from "https://www.gstatic.com/firebasejs/12.3.0/firebase-firestore.js";
 
@@ -618,496 +927,1008 @@ function hideLoader(){
 }
 
 /* =========================
-   CREATE / UPDATE ADMIN
+   LOAD DISTRICTS
+========================= */
+
+async function loadDistrictOptions(){
+
+try{
+
+const snapshot =
+
+await getDocs(
+
+collection(
+db,
+"districts"
+)
+
+);
+
+const districtSelect =
+
+document.getElementById(
+"adminDistrict"
+);
+
+districtSelect.innerHTML =
+
+`
+<option value="">
+Select District
+</option>
+`;
+
+snapshot.forEach(docSnap => {
+
+const data =
+docSnap.data();
+
+districtSelect.innerHTML +=
+
+`
+<option
+value="${data.districtID}"
+
+data-name="${data.name}"
+>
+
+${data.name}
+(${data.districtID})
+
+</option>
+`;
+
+});
+
+}
+
+catch(error){
+
+console.log(error);
+
+}
+
+}
+
+/* =========================
+   LOAD VEHICLES
+========================= */
+
+async function loadVehicleOptions(){
+
+try{
+
+const snapshot =
+
+await getDocs(
+
+collection(
+db,
+"vehicles"
+)
+
+);
+
+const vehicleSelect =
+
+document.getElementById(
+"vehicleSelect"
+);
+
+vehicleSelect.innerHTML =
+
+`
+<option value="">
+Select Vehicle
+</option>
+`;
+
+snapshot.forEach(docSnap => {
+
+const data =
+docSnap.data();
+
+vehicleSelect.innerHTML +=
+
+`
+<option
+value="${data.vehicleID}"
+
+data-name="${data.name}"
+>
+
+${data.name}
+(${data.vehicleID})
+</option>
+`;
+
+});
+
+}
+
+catch(error){
+
+console.log(error);
+
+}
+
+}
+
+/* =========================
+   PLAN CHANGE
+========================= */
+
+document.getElementById(
+"adminPlan"
+).addEventListener(
+
+"change",
+
+function(){
+
+const plan = this.value;
+
+const expiryInput =
+
+document.getElementById(
+"adminExpiryDate"
+);
+
+const today =
+new Date();
+
+/* =========================
+   FREE
+========================= */
+
+if(plan === "Free"){
+
+expiryInput.disabled =
+false;
+
+expiryInput.value = "";
+
+}
+
+/* =========================
+   3 MONTHS
+========================= */
+
+else if(plan === "3 Months"){
+
+expiryInput.disabled =
+true;
+
+const futureDate =
+
+new Date(
+today.setDate(
+today.getDate() + 90
+)
+);
+
+expiryInput.value =
+
+futureDate
+.toISOString()
+.split("T")[0];
+
+}
+
+/* =========================
+   6 MONTHS
+========================= */
+
+else if(plan === "6 Months"){
+
+expiryInput.disabled =
+true;
+
+const futureDate =
+
+new Date(
+today.setDate(
+today.getDate() + 180
+)
+);
+
+expiryInput.value =
+
+futureDate
+.toISOString()
+.split("T")[0];
+
+}
+
+/* =========================
+   YEARLY
+========================= */
+
+else if(plan === "Yearly"){
+
+expiryInput.disabled =
+true;
+
+const futureDate =
+
+new Date(
+today.setDate(
+today.getDate() + 365
+)
+);
+
+expiryInput.value =
+
+futureDate
+.toISOString()
+.split("T")[0];
+
+}
+
+/* =========================
+   LIFETIME
+========================= */
+
+else if(plan === "Lifetime"){
+
+expiryInput.disabled =
+true;
+
+expiryInput.value = "";
+
+}
+
+}
+
+);
+
+
+
+/* =========================
+   CREATE ADMIN
 ========================= */
 
 async function createAdmin(){
 
-  try{
+try{
 
-    showLoader();
+showLoader();
 
-    const userID =
+const userID =
 
-    document.getElementById(
-      "adminUserID"
-    ).value.trim();
+document.getElementById(
+"adminUserID"
+).value.trim();
 
-    const adminName =
+const adminName =
 
-    document.getElementById(
-      "adminName"
-    ).value.trim();
+document.getElementById(
+"adminName"
+).value.trim();
 
-    const email =
+const password =
 
-    userID +
-    "@clickjabo.com";
+document.getElementById(
+"adminPassword"
+).value.trim();
 
-    const password =
+const providerName =
 
-    document.getElementById(
-      "adminPassword"
-    ).value.trim();
+document.getElementById(
+"providerName"
+).value.trim();
 
-    const district =
+const providerID =
 
-    document.getElementById(
-      "adminDistrict"
-    ).value.trim();
+document.getElementById(
+"providerID"
+).value.trim();
 
-    const vehicleCategory =
+const helplineNumber =
 
-    document.getElementById(
-      "adminVehicle"
-    ).value.trim();
+document.getElementById(
+"helplineNumber"
+).value.trim();
 
-    const serviceProvider =
+const districtSelect =
 
-    document.getElementById(
-      "adminProvider"
-    ).value.trim();
+document.getElementById(
+"adminDistrict"
+);
 
-    const planType =
+const districtOption =
 
-    document.getElementById(
-      "adminPlan"
-    ).value;
+districtSelect.options[
+districtSelect.selectedIndex
+];
 
-    let expiryDate = null;
+const districtID =
 
-    if(planType === "3 Months"){
+districtSelect.value;
 
-      expiryDate =
+const districtName =
 
-      new Date(
+districtOption.getAttribute(
+"data-name"
+);
 
-        Date.now() +
+const vehicleSelect =
 
-        90 * 24 * 60 * 60 * 1000
+document.getElementById(
+"vehicleSelect"
+);
 
-      );
+const vehicleOption =
 
-    }
+vehicleSelect.options[
+vehicleSelect.selectedIndex
+];
 
-    else if(planType === "6 Months"){
+const vehicleID =
 
-      expiryDate =
+vehicleSelect.value;
 
-      new Date(
+const vehicleName =
 
-        Date.now() +
+vehicleOption.getAttribute(
+"data-name"
+);
 
-        180 * 24 * 60 * 60 * 1000
+const email =
 
-      );
+userID +
+"@clickjabo.com";
 
-    }
+const role =
+"providerAdmin";
 
-    else if(planType === "Yearly"){
+const planType =
 
-      expiryDate =
+document.getElementById(
+"adminPlan"
+).value;
 
-      new Date(
 
-        Date.now() +
 
-        365 * 24 * 60 * 60 * 1000
+let expiryDate = null;
 
-      );
+const manualExpiryDate =
 
-    }
+document.getElementById(
+"adminExpiryDate"
+).value;
 
-    if(
+/* =========================
+   FREE
+========================= */
 
-      userID === "" ||
+if(planType === "Free"){
 
-      adminName === "" ||
+if(manualExpiryDate === ""){
 
-      district === ""
+hideLoader();
 
-    ){
+alert(
+"Please select expiry date."
+);
 
-      hideLoader();
-
-      alert(
-        "Please fill all required fields."
-      );
-
-      return;
-
-    }
-
-    /* UPDATE ADMIN */
-
-    if(window.editingAdminID){
-
-      await setDoc(
-
-        doc(
-          db,
-          "districtAdmins",
-          window.editingAdminID
-        ),
-
-        {
-
-          name:
-          adminName,
-
-          district:
-          district,
-
-          vehicleCategory:
-          vehicleCategory,
-
-          serviceProvider:
-          serviceProvider,
-
-          planType:
-          planType,
-
-          expiryDate:
-          expiryDate,
-
-          updatedAt:
-          new Date()
-
-        },
-
-        {
-
-          merge:true
-
-        }
-
-      );
-
-      alert(
-        "Admin updated successfully."
-      );
-
-      window.editingAdminID =
-      null;
-
-    }
-
-    /* CREATE ADMIN */
-
-    else{
-
-      if(password === ""){
-
-        hideLoader();
-
-        alert(
-          "Password required."
-        );
-
-        return;
-
-      }
-
-      const userCredential =
-
-      await createUserWithEmailAndPassword(
-
-        auth,
-        email,
-        password
-
-      );
-
-      const user =
-      userCredential.user;
-
-      await setDoc(
-
-        doc(
-          db,
-          "districtAdmins",
-          user.uid
-        ),
-
-        {
-
-          name:
-          adminName,
-
-          userID:
-          userID,
-
-          email:
-          email,
-
-          district:
-          district,
-
-          vehicleCategory:
-          vehicleCategory,
-
-          serviceProvider:
-          serviceProvider,
-
-          planType:
-          planType,
-
-          expiryDate:
-          expiryDate,
-
-          isActive:true,
-
-          createdAt:
-          new Date()
-
-        }
-
-      );
-
-      alert(
-        "Admin created successfully."
-      );
-
-    }
-
-    hideLoader();
-
-    document.getElementById(
-      "adminUserID"
-    ).value = "";
-
-    document.getElementById(
-      "adminUserID"
-    ).disabled = false;
-
-    document.getElementById(
-      "adminName"
-    ).value = "";
-
-    document.getElementById(
-      "adminPassword"
-    ).value = "";
-
-    document.getElementById(
-      "adminDistrict"
-    ).value = "";
-
-    document.getElementById(
-      "adminVehicle"
-    ).value = "";
-
-    document.getElementById(
-      "adminProvider"
-    ).value = "";
-
-    document.querySelector(
-      ".create-btn"
-    ).innerText =
-
-    "Create Admin";
-
-  }
-
-  catch(error){
-
-    hideLoader();
-
-    console.log(error);
-
-    alert(
-      error.message
-    );
-
-  }
+return;
 
 }
+
+expiryDate =
+new Date(manualExpiryDate);
+
+}
+
+/* =========================
+   3 MONTHS
+========================= */
+
+else if(planType === "3 Months"){
+
+expiryDate =
+
+new Date(
+
+Date.now() +
+
+90 * 24 * 60 * 60 * 1000
+
+);
+
+}
+
+/* =========================
+   6 MONTHS
+========================= */
+
+else if(planType === "6 Months"){
+
+expiryDate =
+
+new Date(
+
+Date.now() +
+
+180 * 24 * 60 * 60 * 1000
+
+);
+
+}
+
+/* =========================
+   YEARLY
+========================= */
+
+else if(planType === "Yearly"){
+
+expiryDate =
+
+new Date(
+
+Date.now() +
+
+365 * 24 * 60 * 60 * 1000
+
+);
+
+}
+
+/* =========================
+   LIFETIME
+========================= */
+
+else if(planType === "Lifetime"){
+
+expiryDate = null;
+
+}
+
+
+
+/* =========================
+   VALIDATION
+========================= */
+
+if(
+
+userID === "" ||
+adminName === "" ||
+password === "" ||
+providerName === "" ||
+providerID === "" ||
+districtID === "" ||
+vehicleID === ""
+
+){
+
+hideLoader();
+
+alert(
+"Please fill all required fields."
+);
+
+return;
+
+}
+
+/* =========================
+   CREATE AUTH ACCOUNT
+========================= */
+
+const userCredential =
+
+await createUserWithEmailAndPassword(
+
+auth,
+email,
+password
+
+);
+
+const user =
+userCredential.user;
+
+/* =========================
+   SAVE ADMIN
+========================= */
+
+await setDoc(
+
+doc(
+db,
+"districtAdmins",
+user.uid
+),
+
+{
+
+name:
+adminName,
+
+userID:
+userID,
+
+email:
+email,
+
+providerID:
+providerID,
+
+providerName:
+providerName,
+
+districtID:
+districtID,
+
+districtName:
+districtName,
+
+vehicleID:
+vehicleID,
+
+vehicleName:
+vehicleName,
+
+helplineNumber:
+helplineNumber,
+
+role:
+role,
+
+planType:
+planType,
+
+expiryDate:
+expiryDate,
+
+isActive:true,
+
+lastLoginAt:null,
+
+createdAt:
+serverTimestamp(),
+
+updatedAt:
+serverTimestamp()
+
+}
+
+);
+
+/* =========================
+   SAVE PROVIDER
+========================= */
+
+await setDoc(
+
+doc(
+db,
+"providers",
+providerID
+),
+
+{
+
+providerID:
+providerID,
+
+name:
+providerName,
+
+districtID:
+districtID,
+
+districtName:
+districtName,
+
+vehicleID:
+vehicleID,
+
+vehicleName:
+vehicleName,
+
+helplineNumber:
+helplineNumber,
+
+isActive:true,
+
+createdAt:
+serverTimestamp(),
+
+updatedAt:
+serverTimestamp()
+
+},
+
+{
+
+merge:true
+
+}
+
+);
+
+hideLoader();
+
+alert(
+"Provider Admin created successfully."
+);
+
+/* =========================
+   RESET
+========================= */
+
+document.getElementById(
+"adminUserID"
+).value = "";
+
+document.getElementById(
+"adminName"
+).value = "";
+
+document.getElementById(
+"adminPassword"
+).value = "";
+
+document.getElementById(
+"providerName"
+).value = "";
+
+document.getElementById(
+"providerID"
+).value = "";
+
+document.getElementById(
+"helplineNumber"
+).value = "";
+
+document.getElementById(
+"adminDistrict"
+).value = "";
+
+document.getElementById(
+"vehicleSelect"
+).value = "";
+
+document.getElementById(
+"adminPlan"
+).value =
+
+"Free";
+
+}
+
+catch(error){
+
+hideLoader();
+
+console.log(error);
+
+alert(
+error.message
+);
+
+}
+
+}
+
+
+/* =========================
+   CLEAR FORM
+========================= */
+
+function clearAdminForm(){
+
+window.editingAdminID =
+null;
+
+/* =========================
+   RESET VALUES
+========================= */
+
+document.getElementById(
+"adminUserID"
+).value = "";
+
+document.getElementById(
+"adminName"
+).value = "";
+
+document.getElementById(
+"adminPassword"
+).value = "";
+
+document.getElementById(
+"providerName"
+).value = "";
+
+document.getElementById(
+"providerID"
+).value = "";
+
+document.getElementById(
+"helplineNumber"
+).value = "";
+
+document.getElementById(
+"adminDistrict"
+).value = "";
+
+document.getElementById(
+"vehicleSelect"
+).value = "";
+
+document.getElementById(
+"adminPlan"
+).value =
+
+"Free";
+
+document.getElementById(
+"adminExpiryDate"
+).value = "";
+
+/* =========================
+   ENABLE LOCKED FIELDS
+========================= */
+
+document.getElementById(
+"providerID"
+).disabled = false;
+
+document.getElementById(
+"adminUserID"
+).disabled = false;
+
+/* =========================
+   RESET BUTTON
+========================= */
+
+document.querySelector(
+".create-btn"
+).innerText =
+
+"Create Admin";
+
+}
+
+window.clearAdminForm =
+clearAdminForm;
+
+
 
 window.createAdmin =
 createAdmin;
 
-/* =========================
-   LOAD ADMINS
-========================= */
-
 function loadAdmins(){
 
-  onSnapshot(
+onSnapshot(
 
-    collection(
-      db,
-      "districtAdmins"
-    ),
+collection(
+db,
+"districtAdmins"
+),
 
-    (snapshot)=>{
+(snapshot)=>{
 
-      const adminList =
+const activeAdminList =
 
-      document.getElementById(
-        "adminList"
-      );
+document.getElementById(
+"activeAdminList"
+);
 
-      adminList.innerHTML =
-      "";
+const disabledAdminList =
 
-      if(snapshot.empty){
+document.getElementById(
+"disabledAdminList"
+);
 
-        adminList.innerHTML =
+activeAdminList.innerHTML = "";
+disabledAdminList.innerHTML = "";
 
-        "No admins found.";
+let activeCount = 0;
+let disabledCount = 0;
 
-        return;
+snapshot.forEach(docSnap => {
 
-      }
+const data =
+docSnap.data();
 
-      snapshot.forEach(docSnap => {
+const cardHTML = `
 
-        const data =
-        docSnap.data();
 
-        adminList.innerHTML += `
+<div
+class="admin-item"
 
-        <div class="admin-item">
+ondblclick="
+openAdminDetails(
+'${data.providerName || ""}',
+'${data.userID || ""}',
+'${data.districtName || ""}',
+'${data.vehicleName || ""}',
+'${data.planType || ""}',
+'${data.helplineNumber || ""}',
+'${data.isActive}'
+)
+"
 
-          <div class="admin-left">
 
-            <div class="admin-email">
+style="
+border:1px solid
+${data.isActive
+? "rgba(34,197,94,.28)"
+: "rgba(220,38,38,.24)"
+};
 
-              ${data.userID || "No User ID"}
+background:
+${data.isActive
+? "rgba(34,197,94,.04)"
+: "rgba(220,38,38,.03)"
+};
+"
 
-            </div>
+>
 
-            <div class="admin-meta">
+<div class="admin-left">
 
-              ${data.district || "No District"}
+<div
+style="
+display:flex;
+align-items:center;
+gap:10px;
+flex-wrap:wrap;
+"
+>
 
-              •
+<div class="admin-email">
 
-              ${data.vehicleCategory || "No Vehicle"}
+${data.providerName || "-"}
 
-              •
+</div>
 
-              ${data.planType || "No Plan"}
+<div
+style="
+padding:5px 10px;
+border-radius:999px;
+font-size:10px;
+font-weight:700;
+letter-spacing:.5px;
 
-            </div>
+background:
+${data.isActive
+? "rgba(34,197,94,.14)"
+: "rgba(220,38,38,.14)"
+};
 
-          </div>
+color:
+${data.isActive
+? "#86efac"
+: "#fca5a5"
+};
 
-          <div class="action-wrap">
+border:1px solid
+${data.isActive
+? "rgba(34,197,94,.24)"
+: "rgba(220,38,38,.24)"
+};
+"
+>
 
-            <button
-            class="action-btn edit-btn"
-            onclick="
-            editAdmin(
-            '${docSnap.id}',
-            '${data.userID || ""}',
-            '${data.name || ""}',
-            '${data.district || ""}',
-            '${data.vehicleCategory || ""}',
-            '${data.serviceProvider || ""}',
-            '${data.planType || ""}'
-            )
-            ">
+${data.isActive
+? "ACTIVE"
+: "DISABLED"}
 
-              Edit
+</div>
 
-            </button>
+</div>
 
-            <button
-            class="action-btn
-            ${data.isActive
-            ? "disable-btn"
-            : "enable-btn"}"
+<div class="admin-meta">
 
-            onclick="
-            toggleAdminStatus(
-            '${docSnap.id}',
-            ${data.isActive}
-            )
-            ">
+${data.userID || "-"}
 
-              ${data.isActive
-              ? "Disable"
-              : "Activate"}
+•
 
-            </button>
+${data.districtName || "-"}
 
-          </div>
+•
 
-        </div>
+${data.vehicleName || "-"}
 
-        `;
+•
 
-      });
+${data.planType || "-"}
 
-    }
+</div>
 
-  );
+</div>
+
+<div class="action-wrap">
+
+<button
+class="action-btn edit-btn"
+
+onclick="
+editAdmin(
+'${docSnap.id}'
+)
+"
+>
+
+Edit
+
+</button>
+
+<button
+class="action-btn
+${data.isActive
+? "disable-btn"
+: "enable-btn"}"
+
+onclick="
+toggleAdminStatus(
+'${docSnap.id}',
+${data.isActive}
+)
+"
+>
+
+${data.isActive
+? "Disable"
+: "Activate"}
+
+</button>
+
+</div>
+
+</div>
+
+`;
+
+if(data.isActive){
+
+activeCount++;
+
+activeAdminList.innerHTML +=
+cardHTML;
 
 }
 
-/* =========================
-   EDIT ADMIN
-========================= */
+else{
 
-function editAdmin(
+disabledCount++;
 
-  id,
-  userID,
-  name,
-  district,
-  vehicle,
-  provider,
-  plan
-
-){
-
-  window.editingAdminID =
-  id;
-
-  document.getElementById(
-    "adminUserID"
-  ).value =
-  userID;
-
-  document.getElementById(
-    "adminUserID"
-  ).disabled = true;
-
-  document.getElementById(
-    "adminName"
-  ).value =
-  name;
-
-  document.getElementById(
-    "adminDistrict"
-  ).value =
-  district;
-
-  document.getElementById(
-    "adminVehicle"
-  ).value =
-  vehicle;
-
-  document.getElementById(
-    "adminProvider"
-  ).value =
-  provider;
-
-  document.getElementById(
-    "adminPlan"
-  ).value =
-  plan;
-
-  document.querySelector(
-    ".create-btn"
-  ).innerText =
-
-  "Update Admin";
+disabledAdminList.innerHTML +=
+cardHTML;
 
 }
 
-window.editAdmin =
-editAdmin;
+});
+
+if(activeCount === 0){
+
+activeAdminList.innerHTML =
+
+"No active admins.";
+
+}
+
+if(disabledCount === 0){
+
+disabledAdminList.innerHTML =
+
+"No disabled admins.";
+
+}
+
+}
+
+);
+
+}
+
 
 /* =========================
    TOGGLE STATUS
@@ -1115,63 +1936,364 @@ editAdmin;
 
 async function toggleAdminStatus(
 
-  id,
-  currentStatus
+id,
+currentStatus
 
 ){
 
-  try{
+try{
 
-    showLoader();
+showLoader();
 
-    await setDoc(
+await setDoc(
 
-      doc(
-        db,
-        "districtAdmins",
-        id
-      ),
+doc(
+db,
+"districtAdmins",
+id
+),
 
-      {
+{
 
-        isActive:
-        !currentStatus
+isActive:
+!currentStatus,
 
-      },
+updatedAt:
+serverTimestamp()
 
-      {
+},
 
-        merge:true
+{
 
-      }
-
-    );
-
-    hideLoader();
-
-  }
-
-  catch(error){
-
-    hideLoader();
-
-    console.log(error);
-
-    alert(
-      error.message
-    );
-
-  }
+merge:true
 
 }
 
+);
+
+hideLoader();
+
+}
+
+catch(error){
+
+hideLoader();
+
+console.log(error);
+
+alert(
+error.message
+);
+
+}
+
+}
+
+
+/* =========================
+   EDIT ADMIN
+========================= */
+
+async function editAdmin(id){
+
+try{
+
+showLoader();
+
+const snapshot =
+
+await getDocs(
+
+collection(
+db,
+"districtAdmins"
+)
+
+);
+
+snapshot.forEach(docSnap => {
+
+if(docSnap.id === id){
+
+const data =
+docSnap.data();
+
+/* =========================
+   STORE EDIT ID
+========================= */
+
+window.editingAdminID =
+id;
+
+/* =========================
+   FILL FORM
+========================= */
+
+document.getElementById(
+"adminUserID"
+).value =
+
+data.userID || "";
+
+document.getElementById(
+"adminName"
+).value =
+
+data.name || "";
+
+document.getElementById(
+"providerName"
+).value =
+
+data.providerName || "";
+
+document.getElementById(
+"providerID"
+).value =
+
+data.providerID || "";
+
+document.getElementById(
+"helplineNumber"
+).value =
+
+data.helplineNumber || "";
+
+document.getElementById(
+"adminDistrict"
+).value =
+
+data.districtID || "";
+
+document.getElementById(
+"vehicleSelect"
+).value =
+
+data.vehicleID || "";
+
+document.getElementById(
+"adminPlan"
+).value =
+
+data.planType || "Free";
+
+/* =========================
+   BUTTON TEXT
+========================= */
+
+document.querySelector(
+".create-btn"
+).innerText =
+
+"Update Admin";
+
+/* =========================
+   LOCK IMPORTANT FIELDS
+========================= */
+
+document.getElementById(
+"providerID"
+).disabled = true;
+
+document.getElementById(
+"adminUserID"
+).disabled = true;
+
+}
+
+});
+
+hideLoader();
+
+window.scrollTo({
+
+top:0,
+behavior:"smooth"
+
+});
+
+}
+
+catch(error){
+
+hideLoader();
+
+console.log(error);
+
+alert(
+error.message
+);
+
+}
+
+}
+
+window.editAdmin =
+editAdmin;
+
+
+
+/* =========================
+   OPEN DETAILS MODAL
+========================= */
+
+function openAdminDetails(
+
+provider,
+userID,
+district,
+vehicle,
+plan,
+helpline,
+isActive
+
+){
+
+const modal =
+
+document.getElementById(
+"detailsModal"
+);
+
+const content =
+
+document.getElementById(
+"detailsContent"
+);
+
+content.innerHTML = `
+
+<div class="details-box">
+
+<div class="details-label">
+Provider
+</div>
+
+<div class="details-value">
+${provider || "-"}
+</div>
+
+</div>
+
+<div class="details-box">
+
+<div class="details-label">
+User ID
+</div>
+
+<div class="details-value">
+${userID || "-"}
+</div>
+
+</div>
+
+<div class="details-box">
+
+<div class="details-label">
+District
+</div>
+
+<div class="details-value">
+${district || "-"}
+</div>
+
+</div>
+
+<div class="details-box">
+
+<div class="details-label">
+Vehicle
+</div>
+
+<div class="details-value">
+${vehicle || "-"}
+</div>
+
+</div>
+
+<div class="details-box">
+
+<div class="details-label">
+Plan
+</div>
+
+<div class="details-value">
+${plan || "-"}
+</div>
+
+</div>
+
+<div class="details-box">
+
+<div class="details-label">
+Helpline
+</div>
+
+<div class="details-value">
+${helpline || "-"}
+</div>
+
+</div>
+
+<div class="details-box">
+
+<div class="details-label">
+Status
+</div>
+
+<div class="details-value">
+${isActive === "true"
+? "Active"
+: "Disabled"}
+</div>
+
+</div>
+
+`;
+
+modal.style.display =
+"flex";
+
+}
+
+window.openAdminDetails =
+openAdminDetails;
+
+/* =========================
+   CLOSE MODAL
+========================= */
+
+function closeDetailsModal(){
+
+document.getElementById(
+"detailsModal"
+).style.display =
+
+"none";
+
+}
+
+window.closeDetailsModal =
+closeDetailsModal;
+
+
 window.toggleAdminStatus =
 toggleAdminStatus;
+
+/* =========================
+   INITIAL LOAD
+========================= */
+
+loadDistrictOptions();
+
+loadVehicleOptions();
 
 loadAdmins();
 
 </script>
 
+
 </body>
 
 </html>
+
