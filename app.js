@@ -12,7 +12,9 @@ import {
   doc,
   getDoc,
   query,
-  where
+  where,
+  updateDoc,
+  increment
 }
 from "https://www.gstatic.com/firebasejs/12.3.0/firebase-firestore.js";
 
@@ -79,12 +81,22 @@ pointer-events:none;
 
     sponsorSnapshot.forEach(docSnap => {
 
-      const sponsor =
-      docSnap.data();
+      const sponsorId =
+docSnap.id;
+
+
+  const sponsor =
+  docSnap.data();
 
       /* =========================
          EXPIRY CHECK
       ========================= */
+
+      const notStartedYet =
+
+  sponsor.startDate &&
+
+  sponsor.startDate.toDate() > now;
 
       const isExpired =
 
@@ -114,19 +126,25 @@ pointer-events:none;
          VALID SPONSOR
       ========================= */
 
-      if(
+     if(
 
-        sponsor.isActive === true &&
+  sponsor.isActive === true &&
 
-        !isExpired &&
+  !isExpired &&
 
-        districtMatched
+  !notStartedYet &&
 
-      ){
+  districtMatched
 
-        validSponsors.push(
-          sponsor
-        );
+){
+
+       validSponsors.push({
+
+  id:sponsorId,
+
+  ...sponsor
+
+});
 
       }
 
@@ -173,11 +191,17 @@ z-index:10;
 
 <a
 href="#"
+
+onclick="
+trackSponsorClick(
+'defaultBanner'
+)
+"
+
 style="
 display:block;
 width:100%;
 height:100%;
-pointer-events:none;
 ">
 
 <img
@@ -194,7 +218,10 @@ border-radius:22px;
 </a>
 
   `;
-
+  
+trackSponsorImpression(
+  "defaultBanner"
+);
   return;
 
 }
@@ -206,14 +233,20 @@ border-radius:22px;
 validSponsors.forEach((sponsor,index) => {
 
   sponsorCarousel.innerHTML += `
-
 <a
 href="${
   sponsor.redirectUrl || "#"
 }"
 target="_blank"
 
+onclick="
+trackSponsorClick(
+'${sponsor.id}'
+)
+"
+
 class="sponsor-slide"
+
 
 style="
 position:absolute;
@@ -339,6 +372,10 @@ setInterval(() => {
   slides[currentIndex]
   .style.pointerEvents =
   "auto";
+
+  trackSponsorImpression(
+  validSponsors[currentIndex].id
+);
 
   dots.forEach(dot => {
 
@@ -1109,6 +1146,101 @@ function swapLocations(){
 
 window.swapLocations =
 swapLocations;
+
+/* =========================
+   TRACK CLICK
+========================= */
+
+async function trackSponsorClick(
+
+  sponsorId
+
+){
+
+  try{
+
+    await updateDoc(
+
+      doc(
+        db,
+        "sponsors",
+        sponsorId
+      ),
+
+      {
+
+        clicks:
+        increment(1)
+
+      }
+
+    );
+
+  }
+
+  catch(error){
+
+    console.log(error);
+
+  }
+
+}
+
+/* =========================
+   TRACK IMPRESSION
+========================= */
+
+const viewedSponsors =
+new Set();
+
+async function trackSponsorImpression(
+
+  sponsorId
+
+){
+
+  try{
+
+    if(
+      viewedSponsors.has(
+        sponsorId
+      )
+    ){
+
+      return;
+
+    }
+
+    viewedSponsors.add(
+      sponsorId
+    );
+
+    await updateDoc(
+
+      doc(
+        db,
+        "sponsors",
+        sponsorId
+      ),
+
+      {
+
+        impressions:
+        increment(1)
+
+      }
+
+    );
+
+  }
+
+  catch(error){
+
+    console.log(error);
+
+  }
+
+}
 
 /* =========================
    APP LOAD
