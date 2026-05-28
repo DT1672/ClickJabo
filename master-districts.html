@@ -27,15 +27,10 @@ src="master-auth-check.js">
 <style>
 
 body{
-
 margin:0;
-
 background:#020817;
-
 color:white;
-
 font-family:sans-serif;
-
 }
 
 /* =========================
@@ -43,61 +38,40 @@ font-family:sans-serif;
 ========================= */
 
 .page-loader{
-
 position:fixed;
-
 top:0;
 left:0;
-
 width:100%;
 height:100%;
-
 background:
 rgba(2,8,23,.72);
-
 backdrop-filter:blur(6px);
-
 display:none;
-
 justify-content:center;
 align-items:center;
-
 z-index:99999;
-
 }
 
 .loader-spinner{
-
 width:62px;
 height:62px;
-
 border-radius:50%;
-
 border:
 4px solid rgba(255,255,255,.08);
-
 border-top:
 4px solid #c29b47;
-
 animation:
 spin .8s linear infinite;
-
 }
 
 @keyframes spin{
 
 from{
-
-transform:
-rotate(0deg);
-
+transform:rotate(0deg);
 }
 
 to{
-
-transform:
-rotate(360deg);
-
+transform:rotate(360deg);
 }
 
 }
@@ -107,76 +81,22 @@ rotate(360deg);
 ========================= */
 
 .top-bar{
-
 display:flex;
-
 align-items:center;
-
 justify-content:space-between;
-
 position:fixed;
-
 top:0;
 left:0;
-
 width:100%;
-
 height:70px;
-
 padding:0 24px;
-
 box-sizing:border-box;
-
 z-index:2000;
-
 background:
 rgba(10,15,25,.78);
-
 backdrop-filter:blur(18px);
-
 border-bottom:
 1px solid rgba(255,255,255,.05);
-
-}
-
-/* =========================
-   BUTTONS
-========================= */
-
-.add-btn,
-.open-btn{
-
-height:42px;
-
-padding:0 18px;
-
-border:none;
-
-border-radius:14px;
-
-background:
-linear-gradient(
-135deg,
-#8b6b2e,
-#c29b47
-);
-
-color:white;
-
-font-size:12px;
-
-font-weight:600;
-
-cursor:pointer;
-
-}
-
-.open-btn{
-
-height:36px;
-
-font-size:11px;
-
 }
 
 /* =========================
@@ -184,18 +104,12 @@ font-size:11px;
 ========================= */
 
 .main-container{
-
 width:100%;
-
 max-width:1450px;
-
 margin:auto;
-
 padding:
 100px 24px 60px 24px;
-
 box-sizing:border-box;
-
 }
 
 /* =========================
@@ -203,175 +117,137 @@ box-sizing:border-box;
 ========================= */
 
 .stats-grid{
-
 display:grid;
-
 grid-template-columns:
 repeat(
 auto-fit,
 minmax(220px,1fr)
 );
-
 gap:16px;
-
 margin-bottom:24px;
-
 }
 
 .stats-card{
-
 background:
 rgba(255,255,255,.04);
-
 border:
 1px solid rgba(255,255,255,.06);
-
 border-radius:24px;
-
 padding:20px;
-
 backdrop-filter:blur(16px);
-
 min-height:110px;
-
 box-sizing:border-box;
-
 }
 
 .stats-label{
-
 font-size:12px;
-
 color:#94a3b8;
-
 }
 
 .stats-value{
-
 font-size:32px;
-
 font-weight:700;
-
 margin-top:12px;
-
 }
 
 /* =========================
-   DISTRICT ROWS
+   DISTRICT LIST
 ========================= */
 
 .district-list{
-
 display:flex;
-
 flex-direction:column;
-
 gap:14px;
-
 }
 
 .district-row{
-
 display:flex;
-
 align-items:center;
-
 justify-content:space-between;
-
 gap:20px;
-
-padding:18px 20px;
-
-border-radius:22px;
-
+padding:20px;
+border-radius:24px;
 background:
 rgba(255,255,255,.04);
-
 border:
 1px solid rgba(255,255,255,.06);
-
 backdrop-filter:blur(16px);
-
 flex-wrap:wrap;
-
 }
 
 .district-left{
-
 display:flex;
-
 flex-direction:column;
-
-gap:4px;
-
+gap:6px;
 min-width:220px;
-
 }
 
 .district-name{
-
 font-size:18px;
-
 font-weight:700;
-
 }
 
 .district-meta{
-
 font-size:12px;
-
 color:#94a3b8;
-
 }
 
 .district-stats{
-
 display:flex;
-
 align-items:center;
-
 gap:14px;
-
 flex-wrap:wrap;
-
 }
 
 .stat-pill{
-
 padding:10px 14px;
-
 border-radius:16px;
-
 background:
 rgba(255,255,255,.03);
-
 border:
 1px solid rgba(255,255,255,.04);
-
 font-size:12px;
-
 color:#cbd5e1;
-
 }
 
 .status-pill{
-
 padding:8px 12px;
-
 border-radius:999px;
+font-size:11px;
+font-weight:600;
+}
 
+.status-active{
 background:
 rgba(34,197,94,.12);
-
 border:
 1px solid rgba(34,197,94,.24);
-
-font-size:11px;
-
 color:#86efac;
+}
 
+.status-disabled{
+background:
+rgba(239,68,68,.12);
+border:
+1px solid rgba(239,68,68,.24);
+color:#fca5a5;
+}
+
+.open-btn{
+height:38px;
+padding:0 16px;
+border:none;
+border-radius:14px;
+background:
+linear-gradient(
+135deg,
+#8b6b2e,
+#c29b47
+);
+color:white;
+font-size:12px;
 font-weight:600;
-
+cursor:pointer;
 }
 
 /* =========================
@@ -381,30 +257,21 @@ font-weight:600;
 @media(max-width:768px){
 
 .top-bar{
-
 padding:0 16px;
-
 }
 
 .main-container{
-
 padding:
 90px 16px 40px 16px;
-
 }
 
 .district-row{
-
 flex-direction:column;
-
 align-items:flex-start;
-
 }
 
 .district-stats{
-
 width:100%;
-
 }
 
 }
@@ -423,7 +290,6 @@ id="globalLoader">
 
 <div
 class="loader-spinner">
-
 </div>
 
 </div>
@@ -449,8 +315,10 @@ width:40px;
 height:40px;
 border:none;
 border-radius:14px;
-background:rgba(255,255,255,.06);
-border:1px solid rgba(255,255,255,.08);
+background:
+rgba(255,255,255,.06);
+border:
+1px solid rgba(255,255,255,.08);
 color:white;
 font-size:18px;
 cursor:pointer;
@@ -468,7 +336,7 @@ font-size:18px;
 font-weight:700;
 ">
 
-District Management
+District Monitoring
 
 </div>
 
@@ -480,20 +348,13 @@ margin-top:2px;
 letter-spacing:1px;
 ">
 
-MASTER CONTROL PANEL
+CLICKJABO MASTER PANEL
 
 </div>
 
 </div>
 
 </div>
-
-<button
-class="add-btn">
-
-Add District
-
-</button>
 
 </div>
 
@@ -595,7 +456,6 @@ function showLoader(){
 document.getElementById(
 "globalLoader"
 ).style.display =
-
 "flex";
 
 }
@@ -605,7 +465,6 @@ function hideLoader(){
 document.getElementById(
 "globalLoader"
 ).style.display =
-
 "none";
 
 }
@@ -614,11 +473,12 @@ document.getElementById(
    OPEN DISTRICT
 ========================= */
 
-function openDistrict(districtID){
+function openDistrict(
+districtID
+){
 
 window.location.href =
-
-`district-details.html?id=${districtID}`;
+`master-district-details.html?id=${districtID}`;
 
 }
 
@@ -636,7 +496,6 @@ try{
 showLoader();
 
 const container =
-
 document.getElementById(
 "districtList"
 );
@@ -646,42 +505,26 @@ container.innerHTML = "";
 const districtSnapshot =
 
 await getDocs(
-
-collection(
-db,
-"districts"
-)
-
+collection(db,"districts")
 );
 
 const routesSnapshot =
 
 await getDocs(
-
-collection(
-db,
-"routes"
-)
-
+collection(db,"routes")
 );
 
 document.getElementById(
 "totalDistricts"
 ).innerText =
-
-districtSnapshot.size;
-
-document.getElementById(
-"activeDistricts"
-).innerText =
-
 districtSnapshot.size;
 
 document.getElementById(
 "totalRoutes"
 ).innerText =
-
 routesSnapshot.size;
+
+let activeCount = 0;
 
 if(districtSnapshot.empty){
 
@@ -700,7 +543,6 @@ No districts found.
 `;
 
 hideLoader();
-
 return;
 
 }
@@ -710,14 +552,15 @@ for(const docSnap of districtSnapshot.docs){
 const district =
 docSnap.data();
 
+if(district.isActive !== false){
+activeCount++;
+}
+
 const routeQuery =
 
 query(
 
-collection(
-db,
-"routes"
-),
+collection(db,"routes"),
 
 where(
 "districtID",
@@ -728,10 +571,7 @@ district.districtID
 );
 
 const routeSnapshot =
-
-await getDocs(
-routeQuery
-);
+await getDocs(routeQuery);
 
 const pricingQuery =
 
@@ -751,10 +591,7 @@ district.districtID
 );
 
 const pricingSnapshot =
-
-await getDocs(
-pricingQuery
-);
+await getDocs(pricingQuery);
 
 const providerSet =
 new Set();
@@ -822,7 +659,11 @@ ${providerSet.size}
 
 </div>
 
-<div class="status-pill">
+<div class="status-pill
+${district.isActive !== false
+? "status-active"
+: "status-disabled"}
+">
 
 ${district.isActive !== false
 ? "ACTIVE"
@@ -850,6 +691,11 @@ Open District
 `;
 
 }
+
+document.getElementById(
+"activeDistricts"
+).innerText =
+activeCount;
 
 hideLoader();
 

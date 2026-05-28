@@ -23,15 +23,10 @@ src="master-auth-check.js">
 <style>
 
 body{
-
 margin:0;
-
 background:#020817;
-
 color:white;
-
 font-family:sans-serif;
-
 }
 
 /* =========================
@@ -39,63 +34,35 @@ font-family:sans-serif;
 ========================= */
 
 .page-loader{
-
 position:fixed;
-
 top:0;
 left:0;
-
 width:100%;
 height:100%;
-
-background:
-rgba(2,8,23,.72);
-
+background:rgba(2,8,23,.72);
 backdrop-filter:blur(6px);
-
 display:none;
-
 justify-content:center;
 align-items:center;
-
 z-index:99999;
-
 }
 
 .loader-spinner{
-
 width:62px;
 height:62px;
-
 border-radius:50%;
-
-border:
-4px solid rgba(255,255,255,.08);
-
-border-top:
-4px solid #c29b47;
-
-animation:
-spin .8s linear infinite;
-
+border:4px solid rgba(255,255,255,.08);
+border-top:4px solid #c29b47;
+animation:spin .8s linear infinite;
 }
 
 @keyframes spin{
-
 from{
-
-transform:
-rotate(0deg);
-
+transform:rotate(0deg);
 }
-
 to{
-
-transform:
-rotate(360deg);
-
+transform:rotate(360deg);
 }
-
 }
 
 /* =========================
@@ -103,36 +70,20 @@ rotate(360deg);
 ========================= */
 
 .top-bar{
-
 display:flex;
-
 align-items:center;
-
 justify-content:space-between;
-
 position:fixed;
-
 top:0;
 left:0;
-
 width:100%;
-
 height:70px;
-
 padding:0 24px;
-
 box-sizing:border-box;
-
 z-index:2000;
-
-background:
-rgba(10,15,25,.78);
-
+background:rgba(10,15,25,.78);
 backdrop-filter:blur(18px);
-
-border-bottom:
-1px solid rgba(255,255,255,.05);
-
+border-bottom:1px solid rgba(255,255,255,.05);
 }
 
 /* =========================
@@ -140,18 +91,11 @@ border-bottom:
 ========================= */
 
 .main-container{
-
 width:100%;
-
 max-width:1450px;
-
 margin:auto;
-
-padding:
-100px 24px 60px 24px;
-
+padding:100px 24px 60px 24px;
 box-sizing:border-box;
-
 }
 
 /* =========================
@@ -159,93 +103,110 @@ box-sizing:border-box;
 ========================= */
 
 .district-header{
-
 display:flex;
-
 justify-content:space-between;
-
 align-items:center;
-
 gap:20px;
-
 flex-wrap:wrap;
-
 padding:24px;
-
 border-radius:28px;
-
-background:
-rgba(255,255,255,.04);
-
-border:
-1px solid rgba(255,255,255,.06);
-
+background:rgba(255,255,255,.04);
+border:1px solid rgba(255,255,255,.06);
 backdrop-filter:blur(16px);
-
 margin-bottom:24px;
-
 }
 
 .district-name{
-
 font-size:28px;
-
 font-weight:700;
-
 }
 
 .district-meta{
-
 font-size:13px;
-
 color:#94a3b8;
-
 margin-top:8px;
-
 }
 
 .header-stats{
-
 display:flex;
-
 gap:14px;
-
 flex-wrap:wrap;
-
 }
 
 .stat-card{
-
 padding:14px 18px;
-
 border-radius:18px;
-
-background:
-rgba(255,255,255,.03);
-
-border:
-1px solid rgba(255,255,255,.04);
-
+background:rgba(255,255,255,.03);
+border:1px solid rgba(255,255,255,.04);
 min-width:120px;
-
 }
 
 .stat-label{
-
 font-size:11px;
-
 color:#94a3b8;
-
 margin-bottom:8px;
-
 }
 
 .stat-value{
-
 font-size:22px;
-
 font-weight:700;
+}
 
+/* =========================
+   MONITOR CARD
+========================= */
+
+.monitor-card{
+padding:24px;
+border-radius:28px;
+background:rgba(255,255,255,.04);
+border:1px solid rgba(255,255,255,.06);
+backdrop-filter:blur(16px);
+margin-bottom:24px;
+}
+
+.monitor-title{
+font-size:20px;
+font-weight:700;
+}
+
+.monitor-subtitle{
+margin-top:6px;
+font-size:12px;
+color:#94a3b8;
+}
+
+.monitor-grid{
+display:grid;
+grid-template-columns:
+repeat(
+auto-fit,
+minmax(260px,1fr)
+);
+gap:16px;
+margin-top:24px;
+}
+
+.monitor-box{
+display:flex;
+justify-content:space-between;
+align-items:center;
+gap:18px;
+padding:18px;
+border-radius:20px;
+background:rgba(255,255,255,.03);
+border:1px solid rgba(255,255,255,.04);
+}
+
+.monitor-label{
+font-size:14px;
+font-weight:600;
+}
+
+.monitor-desc{
+margin-top:6px;
+font-size:11px;
+color:#94a3b8;
 }
 
 /* =========================
@@ -253,43 +214,26 @@ font-weight:700;
 ========================= */
 
 .filter-grid{
-
 display:grid;
-
 grid-template-columns:
 repeat(
 auto-fit,
 minmax(220px,1fr)
 );
-
 gap:14px;
-
 margin-bottom:24px;
-
 }
 
 .filter-input{
-
 height:48px;
-
 border:none;
-
 border-radius:16px;
-
 padding:0 14px;
-
 box-sizing:border-box;
-
-background:
-rgba(255,255,255,.04);
-
-border:
-1px solid rgba(255,255,255,.06);
-
+background:rgba(255,255,255,.04);
+border:1px solid rgba(255,255,255,.06);
 color:white;
-
 outline:none;
-
 }
 
 /* =========================
@@ -297,125 +241,74 @@ outline:none;
 ========================= */
 
 .route-list{
-
 display:flex;
-
 flex-direction:column;
-
 gap:14px;
-
 }
 
 .route-row{
-
 padding:18px;
-
 border-radius:24px;
-
-background:
-rgba(255,255,255,.04);
-
-border:
-1px solid rgba(255,255,255,.06);
-
+background:rgba(255,255,255,.04);
+border:1px solid rgba(255,255,255,.06);
 backdrop-filter:blur(16px);
-
 }
 
 .route-top{
-
 display:flex;
-
 justify-content:space-between;
-
 align-items:center;
-
 gap:20px;
-
 flex-wrap:wrap;
-
 margin-bottom:16px;
-
 }
 
 .route-title{
-
 font-size:18px;
-
 font-weight:700;
-
 }
 
 .route-code{
-
 font-size:11px;
-
 color:#94a3b8;
-
 margin-top:6px;
-
 }
 
 .vehicle-grid{
-
 display:grid;
-
 grid-template-columns:
 repeat(
 auto-fit,
 minmax(240px,1fr)
 );
-
 gap:14px;
-
 }
 
 .vehicle-card{
-
 padding:16px;
-
 border-radius:18px;
-
-background:
-rgba(255,255,255,.03);
-
-border:
-1px solid rgba(255,255,255,.04);
-
+background:rgba(255,255,255,.03);
+border:1px solid rgba(255,255,255,.04);
 }
 
 .vehicle-name{
-
 font-size:15px;
-
 font-weight:700;
-
 margin-bottom:12px;
-
 }
 
 .fare-row{
-
 display:flex;
-
 justify-content:space-between;
-
 font-size:13px;
-
 margin-bottom:8px;
-
 color:#cbd5e1;
-
 }
 
 .provider-count{
-
 margin-top:12px;
-
 font-size:11px;
-
 color:#94a3b8;
-
 }
 
 /* =========================
@@ -425,28 +318,19 @@ color:#94a3b8;
 @media(max-width:768px){
 
 .top-bar{
-
 padding:0 16px;
-
 }
 
 .main-container{
-
-padding:
-90px 16px 40px 16px;
-
+padding:90px 16px 40px 16px;
 }
 
 .district-header{
-
 padding:20px;
-
 }
 
 .district-name{
-
 font-size:22px;
-
 }
 
 }
@@ -465,7 +349,6 @@ id="globalLoader">
 
 <div
 class="loader-spinner">
-
 </div>
 
 </div>
@@ -482,9 +365,7 @@ gap:14px;
 ">
 
 <button
-onclick="
-window.history.back()
-"
+onclick="window.history.back()"
 style="
 width:40px;
 height:40px;
@@ -521,7 +402,7 @@ margin-top:2px;
 letter-spacing:1px;
 ">
 
-OPERATION CONTROL PANEL
+CLICKJABO MASTER PANEL
 
 </div>
 
@@ -535,7 +416,7 @@ OPERATION CONTROL PANEL
 
 <div class="main-container">
 
-<!-- DISTRICT HEADER -->
+<!-- HEADER -->
 
 <div class="district-header">
 
@@ -564,17 +445,13 @@ Please wait...
 <div class="stat-card">
 
 <div class="stat-label">
-
 Routes
-
 </div>
 
 <div
 id="totalRoutes"
 class="stat-value">
-
 0
-
 </div>
 
 </div>
@@ -582,16 +459,130 @@ class="stat-value">
 <div class="stat-card">
 
 <div class="stat-label">
-
 Providers
-
 </div>
 
 <div
 id="totalProviders"
 class="stat-value">
-
 0
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+<!-- MONITOR -->
+
+<div class="monitor-card">
+
+<div class="monitor-title">
+District Monitoring
+</div>
+
+<div class="monitor-subtitle">
+Live operational overview
+</div>
+
+<div class="monitor-grid">
+
+<div class="monitor-box">
+
+<div>
+
+<div class="monitor-label">
+Monitoring Mode
+</div>
+
+<div class="monitor-desc">
+Master read-only supervision
+</div>
+
+</div>
+
+<div
+style="
+padding:8px 14px;
+border-radius:999px;
+font-size:11px;
+font-weight:700;
+background:
+rgba(59,130,246,.12);
+border:
+1px solid rgba(59,130,246,.22);
+color:#93c5fd;
+">
+
+LIVE
+
+</div>
+
+</div>
+
+<div class="monitor-box">
+
+<div>
+
+<div class="monitor-label">
+Pricing Control
+</div>
+
+<div class="monitor-desc">
+Managed through Admin App
+</div>
+
+</div>
+
+<div
+style="
+padding:8px 14px;
+border-radius:999px;
+font-size:11px;
+font-weight:700;
+background:
+rgba(168,85,247,.12);
+border:
+1px solid rgba(168,85,247,.22);
+color:#d8b4fe;
+">
+
+REMOTE
+
+</div>
+
+</div>
+
+<div class="monitor-box">
+
+<div>
+
+<div class="monitor-label">
+District Status
+</div>
+
+<div class="monitor-desc">
+Current operational condition
+</div>
+
+</div>
+
+<div
+id="districtStatus"
+style="
+padding:8px 14px;
+border-radius:999px;
+font-size:11px;
+font-weight:700;
+background:
+rgba(34,197,94,.12);
+border:
+1px solid rgba(34,197,94,.22);
+color:#86efac;
+">
+
+ACTIVE
 
 </div>
 
@@ -601,7 +592,7 @@ class="stat-value">
 
 </div>
 
-<!-- FILTER BAR -->
+<!-- FILTER -->
 
 <div class="filter-grid">
 
@@ -661,30 +652,19 @@ where
 }
 from "https://www.gstatic.com/firebasejs/12.3.0/firebase-firestore.js";
 
-/* =========================
-   URL PARAM
-========================= */
-
 const params =
-
 new URLSearchParams(
 window.location.search
 );
 
 const districtID =
-
 params.get("id");
-
-/* =========================
-   LOADER
-========================= */
 
 function showLoader(){
 
 document.getElementById(
 "globalLoader"
 ).style.display =
-
 "flex";
 
 }
@@ -694,110 +674,63 @@ function hideLoader(){
 document.getElementById(
 "globalLoader"
 ).style.display =
-
 "none";
 
 }
 
-/* =========================
-   FILTER OPTIONS
-========================= */
-
-const vehicleSet =
-new Set();
-
-const providerSetFilter =
-new Set();
-
-/* =========================
-   APPLY FILTERS
-========================= */
-
 function applyFilters(){
 
 const searchValue =
-
 document.getElementById(
 "routeSearch"
 ).value.toLowerCase();
 
 const vehicleValue =
-
 document.getElementById(
 "vehicleFilter"
 ).value;
 
 const providerValue =
-
 document.getElementById(
 "providerFilter"
 ).value;
 
 document
-.querySelectorAll(
-".route-row"
-)
+.querySelectorAll(".route-row")
 .forEach(row => {
 
 const routeText =
-
 row.getAttribute(
 "data-route"
 );
 
 const vehicles =
-
 row.getAttribute(
 "data-vehicles"
 );
 
 const providers =
-
 row.getAttribute(
 "data-providers"
 );
 
 const searchMatch =
-
-routeText.includes(
-searchValue
-);
+routeText.includes(searchValue);
 
 const vehicleMatch =
-
 vehicleValue === "" ||
-
-vehicles.includes(
-vehicleValue
-);
+vehicles.includes(vehicleValue);
 
 const providerMatch =
-
 providerValue === "" ||
+providers.includes(providerValue);
 
-providers.includes(
-providerValue
-);
-
-if(
-
+row.style.display =
 searchMatch &&
 vehicleMatch &&
 providerMatch
-
-){
-
-row.style.display =
-"block";
-
-}
-
-else{
-
-row.style.display =
-"none";
-
-}
+? "block"
+: "none";
 
 });
 
@@ -816,18 +749,11 @@ try{
 
 showLoader();
 
-/* =========================
-   LOAD DISTRICT
-========================= */
-
 const districtQuery =
 
 query(
 
-collection(
-db,
-"districts"
-),
+collection(db,"districts"),
 
 where(
 "districtID",
@@ -856,33 +782,30 @@ return;
 }
 
 const districtData =
-
 districtSnapshot.docs[0].data();
 
 document.getElementById(
 "districtName"
 ).innerText =
-
 districtData.name || "-";
 
 document.getElementById(
 "districtMeta"
 ).innerText =
+districtData.districtID || "-";
 
-`${districtData.districtID || "-"} • Helpline: ${districtData.helplineNumber || "-"}`;
-
-/* =========================
-   LOAD ROUTES
-========================= */
+document.getElementById(
+"districtStatus"
+).innerText =
+districtData.isActive !== false
+? "ACTIVE"
+: "DISABLED";
 
 const routesQuery =
 
 query(
 
-collection(
-db,
-"routes"
-),
+collection(db,"routes"),
 
 where(
 "districtID",
@@ -893,14 +816,7 @@ districtID
 );
 
 const routesSnapshot =
-
-await getDocs(
-routesQuery
-);
-
-/* =========================
-   LOAD PRICING
-========================= */
+await getDocs(routesQuery);
 
 const pricingQuery =
 
@@ -920,7 +836,6 @@ districtID
 );
 
 const pricingSnapshot =
-
 await getDocs(
 pricingQuery
 );
@@ -928,12 +843,7 @@ pricingQuery
 document.getElementById(
 "totalRoutes"
 ).innerText =
-
 routesSnapshot.size;
-
-/* =========================
-   PROVIDER COUNT
-========================= */
 
 const providerSet =
 new Set();
@@ -956,15 +866,15 @@ data.providerID
 document.getElementById(
 "totalProviders"
 ).innerText =
-
 providerSet.size;
 
-/* =========================
-   RENDER ROUTES
-========================= */
+const vehicleSet =
+new Set();
+
+const providerSetFilter =
+new Set();
 
 const routeList =
-
 document.getElementById(
 "routeList"
 );
@@ -981,10 +891,8 @@ const relatedPricing =
 pricingSnapshot.docs.filter(p => {
 
 return (
-
 p.data().routeID ===
 route.routeID
-
 );
 
 });
@@ -1021,18 +929,15 @@ vehicleHTML += `
 
 <div class="vehicle-name">
 
-${price.vehicleID || "-"}
+${price.vehicleName || price.vehicleID || "-"}
 
 </div>
 
 <div class="fare-row">
 
-<span>
-Share Day
-</span>
+<span>Share Day</span>
 
 <span>
-
 ${price.shareDayFare != null
 ? `₹${price.shareDayFare}`
 : "-"}
@@ -1043,12 +948,9 @@ ${price.shareDayFare != null
 
 <div class="fare-row">
 
-<span>
-Share Night
-</span>
+<span>Share Night</span>
 
 <span>
-
 ${price.shareNightFare != null
 ? `₹${price.shareNightFare}`
 : "-"}
@@ -1059,12 +961,9 @@ ${price.shareNightFare != null
 
 <div class="fare-row">
 
-<span>
-Hire Day
-</span>
+<span>Hire Day</span>
 
 <span>
-
 ${price.hireDayFare != null
 ? `₹${price.hireDayFare}`
 : "-"}
@@ -1075,12 +974,9 @@ ${price.hireDayFare != null
 
 <div class="fare-row">
 
-<span>
-Hire Night
-</span>
+<span>Hire Night</span>
 
 <span>
-
 ${price.hireNightFare != null
 ? `₹${price.hireNightFare}`
 : "-"}
@@ -1092,7 +988,7 @@ ${price.hireNightFare != null
 <div class="provider-count">
 
 Provider:
-${price.providerID || "-"}
+${price.providerName || price.providerID || "-"}
 
 </div>
 
@@ -1140,6 +1036,35 @@ ${route.routeCode || "-"}
 
 </div>
 
+<div
+style="
+padding:8px 12px;
+border-radius:999px;
+font-size:11px;
+font-weight:600;
+background:
+${route.isActive !== false
+? "rgba(34,197,94,.12)"
+: "rgba(239,68,68,.12)"};
+
+border:
+1px solid
+${route.isActive !== false
+? "rgba(34,197,94,.22)"
+: "rgba(239,68,68,.22)"};
+
+color:
+${route.isActive !== false
+? "#86efac"
+: "#fca5a5"};
+">
+
+${route.isActive !== false
+? "ACTIVE"
+: "DISABLED"}
+
+</div>
+
 </div>
 
 <div class="vehicle-grid">
@@ -1154,20 +1079,21 @@ ${vehicleHTML || ""}
 
 }
 
-/* =========================
-   LOAD FILTERS
-========================= */
-
 const vehicleFilter =
-
 document.getElementById(
 "vehicleFilter"
 );
 
+vehicleFilter.innerHTML =
+`
+<option value="">
+All Vehicles
+</option>
+`;
+
 vehicleSet.forEach(vehicle => {
 
 vehicleFilter.innerHTML +=
-
 `
 <option value="${vehicle}">
 ${vehicle}
@@ -1177,15 +1103,20 @@ ${vehicle}
 });
 
 const providerFilter =
-
 document.getElementById(
 "providerFilter"
 );
 
+providerFilter.innerHTML =
+`
+<option value="">
+All Providers
+</option>
+`;
+
 providerSetFilter.forEach(provider => {
 
 providerFilter.innerHTML +=
-
 `
 <option value="${provider}">
 ${provider}
@@ -1219,4 +1150,3 @@ loadDistrictDetails();
 </body>
 
 </html>
-
