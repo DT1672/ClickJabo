@@ -647,6 +647,28 @@ Loading districts...
 
 </div>
 
+<!-- EXPIRED SPONSORS -->
+
+<div class="dashboard-card">
+
+  <h3
+  style="
+  margin-top:0;
+  margin-bottom:20px;
+  ">
+
+    Expired Sponsors
+
+  </h3>
+
+  <div id="expiredSponsorList">
+
+    No expired sponsors.
+
+  </div>
+
+</div>
+
 </div>
 
 <script type="module">
@@ -655,6 +677,7 @@ import {
   db
 }
 from "./firebase-config.js";
+
 
 import {
   collection,
@@ -820,6 +843,66 @@ async function saveSponsor(){
     document.getElementById(
       "sponsorImage"
     ).files[0];
+
+    /* =========================
+FILE VALIDATION
+========================= */
+
+if(imageFile){
+
+const allowedTypes = [
+
+
+"image/png",
+"image/jpeg",
+"image/webp"
+
+
+];
+
+if(
+
+
+!allowedTypes.includes(
+  imageFile.type
+)
+
+
+){
+
+
+hideLoader();
+
+alert(
+  "Only PNG, JPG, or WEBP images are allowed."
+);
+
+return;
+
+
+}
+
+const maxSize =
+2 * 1024 * 1024;
+
+if(
+imageFile.size > maxSize
+){
+
+
+hideLoader();
+
+alert(
+  "Image must be below 2MB."
+);
+
+return;
+
+
+}
+
+}
+
 
     const redirectUrl =
 
@@ -1121,88 +1204,136 @@ window.saveSponsor =
 saveSponsor;
 
 /* =========================
-   LOAD SPONSORS
+LOAD SPONSORS
 ========================= */
 
 async function loadSponsors(){
 
-  const sponsorList =
+const sponsorList =
 
-  document.getElementById(
-    "sponsorList"
-  );
+document.getElementById(
+"sponsorList"
+);
+
+const expiredSponsorList =
+
+document.getElementById(
+"expiredSponsorList"
+);
+
+sponsorList.innerHTML =
+"";
+
+expiredSponsorList.innerHTML =
+"";
+
+try{
+
+
+showLoader();
+
+const snapshot =
+
+await getDocs(
+
+  collection(
+    db,
+    "sponsors"
+  )
+
+);
+
+if(snapshot.empty){
+
+  hideLoader();
 
   sponsorList.innerHTML =
-  "";
 
-  try{
+  "No sponsors found.";
 
-    showLoader();
+  expiredSponsorList.innerHTML =
 
-    const snapshot =
+  "No expired sponsors.";
 
-    await getDocs(
-
-      collection(
-        db,
-        "sponsors"
-      )
-
-    );
-
-    if(snapshot.empty){
-
-      hideLoader();
-
-      sponsorList.innerHTML =
-
-      "No sponsors found.";
-
-      return;
-
-    }
-
-    snapshot.forEach(docSnap => {
-
-      const data =
-      docSnap.data();
-
-            const now =
-new Date();
-
-const isExpired =
-
-  data.expiryDate &&
-
-  data.expiryDate.toDate() < now;
-
-let statusText =
-"ACTIVE";
-
-let statusColor =
-"#22c55e";
-
-if(!data.isActive){
-
-  statusText =
-  "DISABLED";
-
-  statusColor =
-  "#ef4444";
+  return;
 
 }
 
-else if(isExpired){
+snapshot.forEach(docSnap => {
 
-  statusText =
-  "EXPIRED";
+  const data =
+  docSnap.data();
 
-  statusColor =
-  "#f59e0b";
+  const now =
+  new Date();
+
+  const isExpired =
+
+    data.expiryDate &&
+
+    data.expiryDate.toDate() < now;
+
+    /* =========================
+AUTO DISABLE EXPIRED
+========================= */
+
+if(
+
+isExpired &&
+
+data.isActive === true
+
+){
+
+updateDoc(
+
+
+doc(
+  db,
+  "sponsors",
+  docSnap.id
+),
+
+{
+
+  isActive:false
 
 }
 
-      sponsorList.innerHTML += `
+
+);
+
+}
+
+
+  let statusText =
+  "ACTIVE";
+
+  let statusColor =
+  "#22c55e";
+
+  if(!data.isActive){
+
+    statusText =
+    "DISABLED";
+
+    statusColor =
+    "#ef4444";
+
+  }
+
+  else if(isExpired){
+
+    statusText =
+    "EXPIRED";
+
+    statusColor =
+    "#f59e0b";
+
+  }
+
+  const sponsorCard = `
+
 
 <div
 class="sponsor-item
@@ -1214,7 +1345,7 @@ ${data.isActive
 
 <img
 src="${
-  data.imageUrl || 'banner.png'
+data.imageUrl || 'banner.png'
 }"
 class="sponsor-image">
 
@@ -1278,8 +1409,8 @@ line-height:1.7;
 Start:
 ${data.startDate
 ? data.startDate
-    .toDate()
-    .toLocaleDateString()
+.toDate()
+.toLocaleDateString()
 : "Immediate"}
 
 </div>
@@ -1289,8 +1420,8 @@ ${data.startDate
 Expiry:
 ${data.expiryDate
 ? data.expiryDate
-    .toDate()
-    .toLocaleDateString()
+.toDate()
+.toLocaleDateString()
 : "No Expiry"}
 
 </div>
@@ -1373,21 +1504,59 @@ Delete
 
 </div>
 
-      `;
 
-    });
+  `;
 
-    hideLoader();
+  if(isExpired){
+
+    expiredSponsorList.innerHTML +=
+    sponsorCard;
+
+  }
+
+  else{
+
+    sponsorList.innerHTML +=
+    sponsorCard;
 
   }
 
-  catch(error){
+});
 
-    hideLoader();
+if(
+  expiredSponsorList.innerHTML === ""
+){
 
-    console.log(error);
+  expiredSponsorList.innerHTML =
 
-  }
+  "No expired sponsors.";
+
+}
+
+if(
+  sponsorList.innerHTML === ""
+){
+
+  sponsorList.innerHTML =
+
+  "No active sponsors.";
+
+}
+
+hideLoader();
+
+
+}
+
+catch(error){
+
+
+hideLoader();
+
+console.log(error);
+
+
+}
 
 }
 
