@@ -390,14 +390,13 @@ const adminDistrict =
 
 adminSession.district;
 
-const adminVehicleCategory =
+const adminVehicleID =
 
 adminSession.vehicleCategory;
 
-const adminServiceProvider =
+const adminProviderID =
 
 adminSession.serviceProvider;
-
 /* =========================
    UI SESSION INFO
 ========================= */
@@ -415,7 +414,7 @@ document.querySelector(
   ".top-user"
 ).innerHTML =
 
-adminServiceProvider ||
+adminProviderID ||
 
 "Admin";
 
@@ -429,32 +428,20 @@ async function loadDashboardStats(){
 
   try{
 
-    const routesQuery = query(
+  const routesQuery = query(
 
-      collection(
-        db,
-        "routes"
-      ),
+  collection(
+    db,
+    "routes"
+  ),
 
-      where(
-        "district",
-        "==",
-        adminDistrict
-      ),
+  where(
+    "districtID",
+    "==",
+    adminDistrict
+  )
 
-      where(
-        "vehicleCategory",
-        "==",
-        adminVehicleCategory
-      ),
-
-      where(
-        "serviceProvider",
-        "==",
-        adminServiceProvider
-      )
-
-    );
+);
 
     const querySnapshot =
     await getDocs(

@@ -2,19 +2,19 @@ export function getAdminSession(){
 
   return {
 
-    district:
+    districtID:
     localStorage.getItem(
-      "adminDistrict"
+      "adminDistrictID"
     ),
 
-    vehicleCategory:
+    vehicleID:
     localStorage.getItem(
-      "adminVehicleCategory"
+      "adminVehicleID"
     ),
 
-    serviceProvider:
+    providerID:
     localStorage.getItem(
-      "adminServiceProvider"
+      "adminProviderID"
     )
 
   };
@@ -23,25 +23,25 @@ export function getAdminSession(){
 
 export function saveAdminSession(
 
-  district,
-  vehicleCategory,
-  serviceProvider
+  districtID,
+  vehicleID,
+  providerID
 
 ){
 
   localStorage.setItem(
-    "adminDistrict",
-    district
+    "adminDistrictID",
+    districtID
   );
 
   localStorage.setItem(
-    "adminVehicleCategory",
-    vehicleCategory
+    "adminVehicleID",
+    vehicleID
   );
 
   localStorage.setItem(
-    "adminServiceProvider",
-    serviceProvider
+    "adminProviderID",
+    providerID
   );
 
 }
@@ -49,15 +49,15 @@ export function saveAdminSession(
 export function clearAdminSession(){
 
   localStorage.removeItem(
-    "adminDistrict"
+    "adminDistrictID"
   );
 
   localStorage.removeItem(
-    "adminVehicleCategory"
+    "adminVehicleID"
   );
 
   localStorage.removeItem(
-    "adminServiceProvider"
+    "adminProviderID"
   );
 
 }
