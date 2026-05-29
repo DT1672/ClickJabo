@@ -1,0 +1,774 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+<meta
+name="viewport"
+content="width=device-width, initial-scale=1.0">
+
+<meta
+name="theme-color"
+content="#020817">
+
+<title>
+Fare Analysis
+</title>
+
+<script
+type="module"
+src="master-auth-check.js">
+</script>
+
+<style>
+
+body{
+margin:0;
+background:#020817;
+color:white;
+font-family:sans-serif;
+}
+
+.page-loader{
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+background:rgba(2,8,23,.72);
+backdrop-filter:blur(6px);
+display:none;
+justify-content:center;
+align-items:center;
+z-index:99999;
+}
+
+.loader-spinner{
+width:62px;
+height:62px;
+border-radius:50%;
+border:4px solid rgba(255,255,255,.08);
+border-top:4px solid #c29b47;
+animation:spin .8s linear infinite;
+}
+
+@keyframes spin{
+from{
+transform:rotate(0deg);
+}
+to{
+transform:rotate(360deg);
+}
+}
+
+.top-bar{
+display:flex;
+align-items:center;
+justify-content:space-between;
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:70px;
+padding:0 24px;
+box-sizing:border-box;
+z-index:2000;
+background:rgba(10,15,25,.78);
+backdrop-filter:blur(18px);
+border-bottom:1px solid rgba(255,255,255,.05);
+}
+
+.main-container{
+width:100%;
+max-width:1450px;
+margin:auto;
+padding:100px 24px 60px 24px;
+box-sizing:border-box;
+}
+
+.page-title{
+font-size:28px;
+font-weight:700;
+margin-bottom:8px;
+}
+
+.page-subtitle{
+font-size:12px;
+color:#94a3b8;
+margin-bottom:24px;
+}
+
+.filter-bar{
+display:flex;
+gap:12px;
+flex-wrap:wrap;
+margin-bottom:24px;
+}
+
+.filter-input{
+flex:1;
+min-width:220px;
+height:48px;
+padding:0 14px;
+border:none;
+border-radius:16px;
+background:rgba(255,255,255,.04);
+border:1px solid rgba(255,255,255,.06);
+color:white;
+outline:none;
+box-sizing:border-box;
+}
+
+.load-btn{
+
+height:48px;
+padding:0 20px;
+
+border:none;
+border-radius:16px;
+
+background:
+linear-gradient(
+135deg,
+#c29b47,
+#e6c36a
+);
+
+color:#020817;
+
+font-size:13px;
+font-weight:700;
+
+cursor:pointer;
+
+box-shadow:
+0 4px 18px rgba(194,155,71,.35);
+
+}
+
+
+.stats-grid{
+display:grid;
+grid-template-columns:
+repeat(
+auto-fit,
+minmax(180px,1fr)
+);
+gap:14px;
+margin-bottom:24px;
+}
+
+.analysis-card{
+padding:20px;
+border-radius:24px;
+background:rgba(255,255,255,.04);
+border:1px solid rgba(255,255,255,.06);
+backdrop-filter:blur(16px);
+}
+
+.analysis-label{
+font-size:11px;
+color:#94a3b8;
+}
+
+.analysis-value{
+font-size:28px;
+font-weight:700;
+margin-top:10px;
+}
+
+.analysis-section{
+display:flex;
+flex-direction:column;
+gap:14px;
+}
+
+.analysis-box{
+padding:20px;
+border-radius:24px;
+background:rgba(255,255,255,.04);
+border:1px solid rgba(255,255,255,.06);
+backdrop-filter:blur(16px);
+}
+
+.analysis-title{
+font-size:14px;
+font-weight:700;
+margin-bottom:10px;
+}
+
+.analysis-content{
+font-size:15px;
+color:#cbd5e1;
+line-height:1.7;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div
+class="page-loader"
+id="globalLoader">
+
+<div
+class="loader-spinner">
+</div>
+
+</div>
+
+<div class="top-bar">
+
+<div
+style="
+display:flex;
+align-items:center;
+gap:14px;
+">
+
+<button
+onclick="
+window.location.href=
+'master-dashboard.html'
+"
+style="
+width:40px;
+height:40px;
+border:none;
+border-radius:14px;
+background:rgba(255,255,255,.06);
+border:1px solid rgba(255,255,255,.08);
+color:white;
+font-size:18px;
+cursor:pointer;
+">
+
+←
+
+</button>
+
+
+<div>
+
+<div
+style="
+font-size:18px;
+font-weight:700;
+">
+
+Fare Analysis
+
+</div>
+
+<div
+style="
+font-size:11px;
+color:#94a3b8;
+margin-top:2px;
+letter-spacing:1px;
+">
+
+CLICKJABO MASTER PANEL
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+<div class="main-container">
+
+<div
+id="districtTitle"
+class="page-title">
+
+District Fare Analysis
+
+</div>
+
+<div
+class="page-subtitle">
+
+Analyze any district instantly
+
+</div>
+
+<div class="filter-bar">
+
+<input
+type="text"
+id="districtInput"
+class="filter-input"
+placeholder="Enter District ID (e.g. DMU)">
+
+<button
+class="load-btn"
+onclick="loadAnalysis()">
+
+Load Analysis
+
+</button>
+
+</div>
+
+<div class="stats-grid">
+
+<div class="analysis-card">
+<div class="analysis-label">
+Total Routes
+</div>
+<div
+id="totalRoutes"
+class="analysis-value">
+0
+</div>
+</div>
+
+<div class="analysis-card">
+<div class="analysis-label">
+Average Fare
+</div>
+<div
+id="averageFare"
+class="analysis-value">
+₹0
+</div>
+</div>
+
+<div class="analysis-card">
+<div class="analysis-label">
+Highest Fare
+</div>
+<div
+id="highestFare"
+class="analysis-value">
+₹0
+</div>
+</div>
+
+<div class="analysis-card">
+<div class="analysis-label">
+Lowest Fare
+</div>
+<div
+id="lowestFare"
+class="analysis-value">
+₹0
+</div>
+</div>
+
+<div class="analysis-card">
+<div class="analysis-label">
+Providers
+</div>
+<div
+id="totalProviders"
+class="analysis-value">
+0
+</div>
+</div>
+
+<div class="analysis-card">
+<div class="analysis-label">
+Vehicles
+</div>
+<div
+id="totalVehicles"
+class="analysis-value">
+0
+</div>
+</div>
+
+<div class="analysis-card">
+<div class="analysis-label">
+Temp Active
+</div>
+<div
+id="tempActive"
+class="analysis-value">
+0
+</div>
+</div>
+
+</div>
+
+<div class="analysis-section">
+
+<div class="analysis-box">
+
+<div class="analysis-title">
+
+Highest Fare Route
+
+</div>
+
+<div
+id="highestRoute"
+class="analysis-content">
+
+-
+
+</div>
+
+</div>
+
+<div class="analysis-box">
+
+<div class="analysis-title">
+
+Lowest Fare Route
+
+</div>
+
+<div
+id="lowestRoute"
+class="analysis-content">
+
+-
+
+</div>
+
+</div>
+
+<div class="analysis-box">
+
+<div class="analysis-title">
+
+Temporary Adjustments
+
+</div>
+
+<div
+id="tempSummary"
+class="analysis-content">
+
+0 Routes Active
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+<script type="module">
+
+import {
+db
+}
+from "./firebase-config.js";
+
+import {
+collection,
+getDocs,
+query,
+where
+}
+from "https://www.gstatic.com/firebasejs/12.3.0/firebase-firestore.js";
+
+function showLoader(){
+
+document.getElementById(
+"globalLoader"
+).style.display =
+"flex";
+
+}
+
+function hideLoader(){
+
+document.getElementById(
+"globalLoader"
+).style.display =
+"none";
+
+}
+
+window.loadAnalysis =
+loadAnalysis;
+
+async function loadAnalysis(){
+
+const districtID =
+
+document.getElementById(
+"districtInput"
+).value.trim();
+
+if(!districtID){
+
+alert(
+"Please enter District ID."
+);
+
+return;
+
+}
+
+try{
+
+showLoader();
+
+const routesQuery =
+
+query(
+
+collection(
+db,
+"routes"
+),
+
+where(
+"districtID",
+"==",
+districtID
+)
+
+);
+
+const routesSnapshot =
+
+await getDocs(
+routesQuery
+);
+
+document.getElementById(
+"districtTitle"
+).innerText =
+
+districtID +
+" Fare Analysis";
+
+let totalRoutes = 0;
+
+let totalFare = 0;
+
+let fareCount = 0;
+
+let highestFare = 0;
+
+let highestRoute = "-";
+
+let lowestFare = Infinity;
+
+let lowestRoute = "-";
+
+let tempActive = 0;
+
+const providerSet =
+new Set();
+
+const vehicleSet =
+new Set();
+
+routesSnapshot.forEach(docSnap => {
+
+const route =
+docSnap.data();
+
+totalRoutes++;
+
+providerSet.add(
+route.providerID || ""
+);
+
+vehicleSet.add(
+route.vehicleID || ""
+);
+
+const fares = [
+
+Number(
+route.shareDayFare || 0
+),
+
+Number(
+route.shareNightFare || 0
+),
+
+Number(
+route.hireDayFare || 0
+),
+
+Number(
+route.hireNightFare || 0
+)
+
+];
+
+fares.forEach(fare => {
+
+if(fare > 0){
+
+totalFare += fare;
+
+fareCount++;
+
+if(fare > highestFare){
+
+highestFare =
+fare;
+
+highestRoute =
+
+(route.fromPlace || "-")
++
+" → "
++
+(route.toPlace || "-")
++
+"<br><br>₹"
++
+fare;
+
+}
+
+if(fare < lowestFare){
+
+lowestFare =
+fare;
+
+lowestRoute =
+
+(route.fromPlace || "-")
++
+" → "
++
+(route.toPlace || "-")
++
+"<br><br>₹"
++
+fare;
+
+}
+
+}
+
+});
+
+if(
+
+Number(
+route.tempHireDay || 0
+) !== 0 ||
+
+Number(
+route.tempHireNight || 0
+) !== 0 ||
+
+Number(
+route.tempSharedDay || 0
+) !== 0 ||
+
+Number(
+route.tempSharedNight || 0
+) !== 0
+
+){
+
+tempActive++;
+
+}
+
+});
+
+const averageFare =
+
+fareCount > 0
+
+?
+
+Math.round(
+totalFare /
+fareCount
+)
+
+:
+
+0;
+
+document.getElementById(
+"totalRoutes"
+).innerText =
+totalRoutes;
+
+document.getElementById(
+"averageFare"
+).innerText =
+"₹" + averageFare;
+
+document.getElementById(
+"highestFare"
+).innerText =
+"₹" + highestFare;
+
+document.getElementById(
+"lowestFare"
+).innerText =
+
+lowestFare === Infinity
+? "₹0"
+: "₹" + lowestFare;
+
+document.getElementById(
+"totalProviders"
+).innerText =
+providerSet.size;
+
+document.getElementById(
+"totalVehicles"
+).innerText =
+vehicleSet.size;
+
+document.getElementById(
+"tempActive"
+).innerText =
+tempActive;
+
+document.getElementById(
+"highestRoute"
+).innerHTML =
+highestRoute;
+
+document.getElementById(
+"lowestRoute"
+).innerHTML =
+lowestRoute;
+
+document.getElementById(
+"tempSummary"
+).innerHTML =
+
+tempActive +
+" Routes Active";
+
+hideLoader();
+
+}
+
+catch(error){
+
+hideLoader();
+
+console.log(
+error
+);
+
+alert(
+"Unable to load fare analysis."
+);
+
+}
+
+}
+
+</script>
+
+</body>
+
+</html>
