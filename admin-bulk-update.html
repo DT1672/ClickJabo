@@ -543,7 +543,6 @@ query,
 where
 }
 from "https://www.gstatic.com/firebasejs/12.3.0/firebase-firestore.js";
-
 /* =========================
 ADMIN SESSION
 ========================= */
@@ -562,7 +561,7 @@ const adminServiceProvider =
 adminSession.providerID;
 
 const adminUserId =
-adminSession.userId;
+adminSession.providerID;
 
 /* =========================
 UI SESSION INFO
@@ -593,13 +592,13 @@ db,
 
 action:text,
 
-district:
+districtID:
 adminDistrict,
 
-vehicleCategory:
+vehicleID:
 adminVehicleCategory,
 
-serviceProvider:
+providerID:
 adminServiceProvider,
 
 adminUserId:
@@ -676,19 +675,19 @@ db,
 ),
 
 where(
-"district",
+"districtID",
 "==",
 adminDistrict
 ),
 
 where(
-"vehicleCategory",
+"vehicleID",
 "==",
 adminVehicleCategory
 ),
 
 where(
-"serviceProvider",
+"providerID",
 "==",
 adminServiceProvider
 )
@@ -734,9 +733,9 @@ class="routeCheckbox"
 value="${docSnap.id}"
 onchange="updateSelectedCount()">
 
-${route.from}
+${route.fromPlace}
 →
-${route.to}
+${route.toPlace}
 
 </label>
 
@@ -801,9 +800,9 @@ font-weight:600;
 margin-bottom:6px;
 ">
 
-${route.from}
+${route.fromPlace}
 →
-${route.to}
+${route.toPlace}
 
 </div>
 
@@ -858,8 +857,10 @@ catch(error){
 
 console.log(error);
 
+hideLoader();
+
 alert(
-"Unable to load routes."
+"Unable to apply bulk update. Please try again."
 );
 
 }
@@ -947,7 +948,6 @@ label.style.display =
 }
 
 );
-
 /* =========================
 APPLY BULK UPDATE
 ========================= */
@@ -1027,19 +1027,19 @@ db,
 ),
 
 where(
-"district",
+"districtID",
 "==",
 adminDistrict
 ),
 
 where(
-"vehicleCategory",
+"vehicleID",
 "==",
 adminVehicleCategory
 ),
 
 where(
-"serviceProvider",
+"providerID",
 "==",
 adminServiceProvider
 )
@@ -1154,10 +1154,10 @@ else{
 
 if(applyHireDay){
 
-updateData.hireDay =
+updateData.hireDayFare =
 Math.max(
 0,
-Number(route.hireDay || 0)
+Number(route.hireDayFare || 0)
 + adjustment
 );
 
@@ -1165,10 +1165,10 @@ Number(route.hireDay || 0)
 
 if(applyHireNight){
 
-updateData.hireNight =
+updateData.hireNightFare =
 Math.max(
 0,
-Number(route.hireNight || 0)
+Number(route.hireNightFare || 0)
 + adjustment
 );
 
@@ -1176,10 +1176,10 @@ Number(route.hireNight || 0)
 
 if(applySharedDay){
 
-updateData.sharedDay =
+updateData.shareDayFare =
 Math.max(
 0,
-Number(route.sharedDay || 0)
+Number(route.shareDayFare || 0)
 + adjustment
 );
 
@@ -1187,10 +1187,10 @@ Number(route.sharedDay || 0)
 
 if(applySharedNight){
 
-updateData.sharedNight =
+updateData.shareNightFare =
 Math.max(
 0,
-Number(route.sharedNight || 0)
+Number(route.shareNightFare || 0)
 + adjustment
 );
 
@@ -1207,7 +1207,7 @@ updateData
 
 hideLoader();
 
-addActivityLog(
+await addActivityLog(
 
 selectedRoutes.length +
 " routes updated"
@@ -1221,7 +1221,6 @@ alert(
 loadBulkRoutes();
 
 }
-
 catch(error){
 
 console.log(error);
@@ -1229,7 +1228,7 @@ console.log(error);
 hideLoader();
 
 alert(
-"Unable to apply bulk update."
+error.message
 );
 
 }
@@ -1238,7 +1237,6 @@ alert(
 
 window.applyBulkUpdate =
 applyBulkUpdate;
-
 /* =========================
 REMOVE TEMPORARY
 ========================= */
@@ -1310,7 +1308,7 @@ serverTimestamp()
 
 hideLoader();
 
-addActivityLog(
+await addActivityLog(
 
 selectedRoutes.length +
 " temporary adjustments removed"
