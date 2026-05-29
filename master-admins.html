@@ -1199,7 +1199,9 @@ const userID =
 
 document.getElementById(
 "adminUserID"
-).value.trim();
+).value
+.trim()
+.toLowerCase();
 
 const adminName =
 
@@ -1275,10 +1277,13 @@ vehicleOption.getAttribute(
 "data-name"
 );
 
+
 const email =
 
+(
 userID +
-"@clickjabo.com";
+"@clickjabo.com"
+).toLowerCase();
 
 const role =
 "providerAdmin";
@@ -1499,10 +1504,10 @@ name:
 adminName,
 
 userID:
-userID,
+userID.toLowerCase(),
 
 email:
-email,
+email.toLowerCase(),
 
 providerID:
 providerID,

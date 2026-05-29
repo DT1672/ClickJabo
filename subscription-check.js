@@ -1,5 +1,6 @@
 import {
-  auth
+  auth,
+  db
 }
 from "./firebase-config.js";
 
@@ -9,13 +10,10 @@ import {
 from "https://www.gstatic.com/firebasejs/12.3.0/firebase-auth.js";
 
 import {
-  db
-}
-from "./firebase-config.js";
-
-import {
-  doc,
-  getDoc
+  collection,
+  getDocs,
+  query,
+  where
 }
 from "https://www.gstatic.com/firebasejs/12.3.0/firebase-firestore.js";
 
@@ -36,20 +34,27 @@ onAuthStateChanged(
 
     try{
 
-      const adminDoc =
-      await getDoc(
+      const adminQuery = query(
 
-        doc(
+        collection(
           db,
-          "districtAdmins",
-          user.uid
+          "districtAdmins"
+        ),
+
+        where(
+          "email",
+          "==",
+          user.email
         )
 
       );
 
-      if(
-        !adminDoc.exists()
-      ){
+      const adminSnapshot =
+      await getDocs(
+        adminQuery
+      );
+
+      if(adminSnapshot.empty){
 
         window.location.href =
         "subscription-expired.html";
@@ -59,10 +64,29 @@ onAuthStateChanged(
       }
 
       const adminData =
-      adminDoc.data();
+      adminSnapshot.docs[0].data();
 
       if(
         adminData.isActive !== true
+      ){
+
+        window.location.href =
+        "subscription-expired.html";
+
+        return;
+
+      }
+
+      if(
+        adminData.planType ===
+        "Lifetime"
+      ){
+
+        return;
+      }
+
+      if(
+        !adminData.expiryDate
       ){
 
         window.location.href =

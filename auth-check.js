@@ -7,7 +7,6 @@ from "./firebase-config.js";
 import {
 
   clearAdminSession,
-
   saveAdminSession
 
 }
@@ -22,8 +21,10 @@ from "https://www.gstatic.com/firebasejs/12.3.0/firebase-auth.js";
 
 import {
 
-  doc,
-  getDoc
+  collection,
+  getDocs,
+  query,
+  where
 
 }
 from "https://www.gstatic.com/firebasejs/12.3.0/firebase-firestore.js";
@@ -38,8 +39,6 @@ onAuthStateChanged(
 
   async function(user){
 
-    /* NOT LOGGED IN */
-
     if(!user){
 
       clearAdminSession();
@@ -53,22 +52,27 @@ onAuthStateChanged(
 
     try{
 
-      /* LOAD ADMIN PROFILE */
+      const adminQuery = query(
 
-      const adminDoc =
-      await getDoc(
-
-        doc(
+        collection(
           db,
-          "districtAdmins",
-          user.uid
+          "districtAdmins"
+        ),
+
+        where(
+          "email",
+          "==",
+          user.email
         )
 
       );
 
-      /* PROFILE NOT FOUND */
+      const adminSnapshot =
+      await getDocs(
+        adminQuery
+      );
 
-      if(!adminDoc.exists()){
+      if(adminSnapshot.empty){
 
         clearAdminSession();
 
@@ -80,17 +84,15 @@ onAuthStateChanged(
       }
 
       const adminData =
-      adminDoc.data();
-
-      /* SAVE SESSION */
+      adminSnapshot.docs[0].data();
 
       saveAdminSession(
 
-        adminData.district,
+        adminData.districtID,
 
-        adminData.vehicleCategory,
+        adminData.vehicleID,
 
-        adminData.serviceProvider
+        adminData.providerID
 
       );
 
