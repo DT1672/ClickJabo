@@ -573,13 +573,13 @@ district.districtID
 const routeSnapshot =
 await getDocs(routeQuery);
 
-const pricingQuery =
+const providerQuery =
 
 query(
 
 collection(
 db,
-"routeVehiclePricing"
+"providers"
 ),
 
 where(
@@ -590,26 +590,14 @@ district.districtID
 
 );
 
-const pricingSnapshot =
-await getDocs(pricingQuery);
-
-const providerSet =
-new Set();
-
-pricingSnapshot.forEach(p => {
-
-const data =
-p.data();
-
-if(data.providerID){
-
-providerSet.add(
-data.providerID
+const providerSnapshot =
+await getDocs(
+providerQuery
 );
 
-}
+const providerCount =
+providerSnapshot.size;
 
-});
 
 container.innerHTML += `
 
@@ -653,7 +641,7 @@ ${routeSnapshot.size}
 Providers
 <b>
 
-${providerSet.size}
+${providerCount}
 
 </b>
 

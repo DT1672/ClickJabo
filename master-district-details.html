@@ -225,16 +225,30 @@ margin-bottom:24px;
 }
 
 .filter-input{
+
 height:48px;
 border:none;
 border-radius:16px;
 padding:0 14px;
 box-sizing:border-box;
-background:rgba(255,255,255,.04);
+background:#0f172a;
 border:1px solid rgba(255,255,255,.06);
 color:white;
 outline:none;
+
+appearance:none;
+-webkit-appearance:none;
+-moz-appearance:none;
+
 }
+
+.filter-input option{
+
+background:#0f172a;
+color:white;
+
+}
+
 
 /* =========================
    ROUTE LIST
@@ -749,9 +763,7 @@ try{
 
 showLoader();
 
-const districtQuery =
-
-query(
+const districtQuery = query(
 
 collection(db,"districts"),
 
@@ -764,7 +776,6 @@ districtID
 );
 
 const districtSnapshot =
-
 await getDocs(
 districtQuery
 );
@@ -797,34 +808,18 @@ districtData.districtID || "-";
 document.getElementById(
 "districtStatus"
 ).innerText =
+
 districtData.isActive !== false
+
 ? "ACTIVE"
+
 : "DISABLED";
 
-const routesQuery =
-
-query(
-
-collection(db,"routes"),
-
-where(
-"districtID",
-"==",
-districtID
-)
-
-);
-
-const routesSnapshot =
-await getDocs(routesQuery);
-
-const pricingQuery =
-
-query(
+const routesQuery = query(
 
 collection(
 db,
-"routeVehiclePricing"
+"routes"
 ),
 
 where(
@@ -835,9 +830,9 @@ districtID
 
 );
 
-const pricingSnapshot =
+const routesSnapshot =
 await getDocs(
-pricingQuery
+routesQuery
 );
 
 document.getElementById(
@@ -848,15 +843,15 @@ routesSnapshot.size;
 const providerSet =
 new Set();
 
-pricingSnapshot.forEach(docSnap => {
+routesSnapshot.forEach(docSnap => {
 
-const data =
+const route =
 docSnap.data();
 
-if(data.providerID){
+if(route.providerID){
 
 providerSet.add(
-data.providerID
+route.providerID
 );
 
 }
@@ -879,116 +874,64 @@ document.getElementById(
 "routeList"
 );
 
-routeList.innerHTML = "";
+routeList.innerHTML =
+"";
 
 for(const routeDoc of routesSnapshot.docs){
 
 const route =
 routeDoc.data();
 
-const relatedPricing =
-
-pricingSnapshot.docs.filter(p => {
-
-return (
-p.data().routeID ===
-route.routeID
-);
-
-});
-
-let vehicleHTML = "";
-
-const routeVehicles = [];
-const routeProviders = [];
-
-relatedPricing.forEach(p => {
-
-const price =
-p.data();
-
-routeVehicles.push(
-price.vehicleID || ""
-);
-
-routeProviders.push(
-price.providerID || ""
-);
-
 vehicleSet.add(
-price.vehicleID || ""
+route.vehicleID || ""
 );
 
 providerSetFilter.add(
-price.providerID || ""
+route.providerID || ""
 );
 
-vehicleHTML += `
+const routeVehicles = [
+route.vehicleID || ""
+];
+
+const routeProviders = [
+route.providerID || ""
+];
+
+const vehicleHTML = `
 
 <div class="vehicle-card">
 
 <div class="vehicle-name">
 
-${price.vehicleName || price.vehicleID || "-"}
+${route.vehicleName || route.vehicleID || "-"}
 
 </div>
 
 <div class="fare-row">
-
 <span>Share Day</span>
-
-<span>
-${price.shareDayFare != null
-? `₹${price.shareDayFare}`
-: "-"}
-
-</span>
-
+<span>₹${route.shareDayFare || 0}</span>
 </div>
 
 <div class="fare-row">
-
 <span>Share Night</span>
-
-<span>
-${price.shareNightFare != null
-? `₹${price.shareNightFare}`
-: "-"}
-
-</span>
-
+<span>₹${route.shareNightFare || 0}</span>
 </div>
 
 <div class="fare-row">
-
 <span>Hire Day</span>
-
-<span>
-${price.hireDayFare != null
-? `₹${price.hireDayFare}`
-: "-"}
-
-</span>
-
+<span>₹${route.hireDayFare || 0}</span>
 </div>
 
 <div class="fare-row">
-
 <span>Hire Night</span>
-
-<span>
-${price.hireNightFare != null
-? `₹${price.hireNightFare}`
-: "-"}
-
-</span>
-
+<span>₹${route.hireNightFare || 0}</span>
 </div>
 
 <div class="provider-count">
 
 Provider:
-${price.providerName || price.providerID || "-"}
+${route.providerName || route.providerID || "-"}
 
 </div>
 
@@ -996,17 +939,15 @@ ${price.providerName || price.providerID || "-"}
 
 `;
 
-});
-
 routeList.innerHTML += `
 
 <div
 class="route-row"
 
 data-route="
-${route.fromPlace || ""}
-${route.toPlace || ""}
-"
+${(route.fromPlace || "")}
+${(route.toPlace || "")}
+".toLowerCase()
 
 data-vehicles="
 ${routeVehicles.join(",")}
@@ -1025,12 +966,6 @@ ${routeProviders.join(",")}
 ${route.fromPlace || "-"}
 →
 ${route.toPlace || "-"}
-
-</div>
-
-<div class="route-code">
-
-${route.routeCode || "-"}
 
 </div>
 
@@ -1069,7 +1004,7 @@ ${route.isActive !== false
 
 <div class="vehicle-grid">
 
-${vehicleHTML || ""}
+${vehicleHTML}
 
 </div>
 
@@ -1085,6 +1020,7 @@ document.getElementById(
 );
 
 vehicleFilter.innerHTML =
+
 `
 <option value="">
 All Vehicles
@@ -1094,6 +1030,7 @@ All Vehicles
 vehicleSet.forEach(vehicle => {
 
 vehicleFilter.innerHTML +=
+
 `
 <option value="${vehicle}">
 ${vehicle}
@@ -1108,6 +1045,7 @@ document.getElementById(
 );
 
 providerFilter.innerHTML =
+
 `
 <option value="">
 All Providers
@@ -1117,6 +1055,7 @@ All Providers
 providerSetFilter.forEach(provider => {
 
 providerFilter.innerHTML +=
+
 `
 <option value="${provider}">
 ${provider}
