@@ -186,36 +186,6 @@ align-items:stretch;
 gap:10px;
 ">
 
-<!-- SEARCH -->
-
-<input
-type="text"
-id="routeSearch"
-placeholder="Search route..."
-class="form-input">
-
-<div
-id="searchResults"
-class="search-results">
-
-</div>
-
-<!-- ADD NEW -->
-
-<button
-class="edit-btn"
-style="
-width:100%;
-padding:9px 12px;
-font-size:12px;
-margin-top:-22px;
-opacity:.88;
-"
-onclick="clearForm()">
-
-+ Add New Route
-
-</button>
 
 <!-- ROUTE DETAILS -->
 
@@ -480,14 +450,13 @@ import {
 
 collection,
 addDoc,
-updateDoc,
-doc,
 getDocs,
 query,
 where,
 serverTimestamp
 
 }
+
 from "https://www.gstatic.com/firebasejs/12.3.0/firebase-firestore.js";
 
 /* =========================
@@ -530,8 +499,7 @@ adminDistrictID || "";
 GLOBAL
 ========================= */
 
-let editingDocId =
-null;
+
 
 /* =========================
 SAVE
@@ -571,6 +539,12 @@ document.getElementById(
 "sharedNight"
 ).value;
 
+const fromKey =
+from.toLowerCase();
+
+const toKey =
+to.toLowerCase();
+
 if(
 
 from === "" ||
@@ -593,6 +567,28 @@ return;
 }
 
 try{
+
+ const duplicateQuery = query(
+
+collection(
+db,
+"routes"
+),
+
+where(
+"providerID",
+"==",
+adminProviderID
+),
+
+where(
+"vehicleID",
+"==",
+adminVehicleID
+)
+
+);
+
 
 await addDoc(
 
