@@ -165,8 +165,10 @@ from "https://www.gstatic.com/firebasejs/12.3.0/firebase-auth.js";
 
 import {
 
-  doc,
-  getDoc
+  collection,
+  getDocs,
+  query,
+  where
 
 }
 from "https://www.gstatic.com/firebasejs/12.3.0/firebase-firestore.js";
@@ -238,45 +240,56 @@ userID +
     const user =
     userCredential.user;
 
-    /* LOAD ADMIN PROFILE */
+    
+/* LOAD ADMIN PROFILE */
 
-    const adminDoc =
-    await getDoc(
+const adminQuery = query(
 
-      doc(
-        db,
-        "districtAdmins",
-        user.uid
-      )
+  collection(
+    db,
+    "districtAdmins"
+  ),
 
-    );
+  where(
+    "userID",
+    "==",
+    userID
+  )
 
-    if(!adminDoc.exists()){
+);
 
-      hideLoader();
+const adminSnapshot =
+await getDocs(
+  adminQuery
+);
 
-      alert(
-        "Admin profile not found."
-      );
+if(adminSnapshot.empty){
 
-      return;
+  hideLoader();
 
-    }
+  alert(
+    "Admin profile not found."
+  );
 
-    const adminData =
-    adminDoc.data();
+  return;
+
+}
+
+const adminData =
+
+adminSnapshot.docs[0].data();
 
     /* SAVE SESSION */
 
     saveAdminSession(
 
-      adminData.district,
+  adminData.districtID,
 
-      adminData.vehicleCategory,
+  adminData.vehicleID,
 
-      adminData.serviceProvider
+  adminData.providerID
 
-    );
+);
 
     /* REDIRECT */
 

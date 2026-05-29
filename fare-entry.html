@@ -498,17 +498,17 @@ const adminSession =
 
 getAdminSession();
 
-const adminDistrict =
+const adminDistrictID =
 
-adminSession.district;
+adminSession.districtID;
 
-const adminVehicleCategory =
+const adminVehicleID =
 
-adminSession.vehicleCategory;
+adminSession.vehicleID;
 
-const adminServiceProvider =
+const adminProviderID =
 
-adminSession.serviceProvider;
+adminSession.providerID;
 
 /* =========================
 UI SESSION INFO
@@ -518,13 +518,13 @@ document.querySelector(
 ".district-badge"
 ).innerHTML =
 
-`${adminDistrict || "N/A"} DISTRICT`;
+`${adminDistrictID || "N/A"} DISTRICT`;
 
 document.getElementById(
 "district"
 ).value =
 
-adminDistrict || "";
+adminDistrictID || "";
 
 /* =========================
 GLOBAL
@@ -603,28 +603,31 @@ db,
 
 {
 
-district:
-adminDistrict,
+districtID:
+adminDistrictID,
 
-vehicleCategory:
-adminVehicleCategory,
+vehicleID:
+adminVehicleID,
 
-serviceProvider:
-adminServiceProvider,
+providerID:
+adminProviderID,
 
+fromPlace:
 from,
+
+toPlace:
 to,
 
-hireDay:
+hireDayFare:
 Number(hireDay),
 
-hireNight:
+hireNightFare:
 Number(hireNight),
 
-sharedDay:
+shareDayFare:
 Number(sharedDay),
 
-sharedNight:
+shareNightFare:
 Number(sharedNight),
 
 tempHireDay:0,
