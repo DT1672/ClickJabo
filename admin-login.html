@@ -240,7 +240,7 @@ userID +
     const user =
     userCredential.user;
 
-    
+
 /* LOAD ADMIN PROFILE */
 
 const adminQuery = query(
@@ -279,6 +279,11 @@ const adminData =
 
 adminSnapshot.docs[0].data();
 
+localStorage.setItem(
+  "adminUserID",
+  adminData.userID
+);
+
     /* SAVE SESSION */
 
     saveAdminSession(
@@ -288,6 +293,14 @@ adminSnapshot.docs[0].data();
   adminData.vehicleID,
 
   adminData.providerID
+
+);
+
+localStorage.setItem(
+
+  "adminUserID",
+
+  adminData.userID
 
 );
 

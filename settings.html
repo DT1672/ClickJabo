@@ -30,7 +30,12 @@ src="auth-check.js">
 
 </head>
 
-<body>
+<body
+style="
+min-height:100dvh;
+overflow-y:auto;
+overflow-x:hidden;
+">
 
 <div
 id="loadingOverlay"
@@ -100,9 +105,9 @@ cursor:pointer;
 <div
 class="dashboard-container"
 style="
+min-height:calc(100dvh - 64px);
 padding:88px 12px 100px 12px;
-overflow-y:auto;
-overflow-x:hidden;
+overflow:visible;
 box-sizing:border-box;
 ">
 
@@ -480,19 +485,21 @@ getAdminSession();
 
 const adminDistrict =
 
-adminSession.district;
+adminSession.districtID;
 
 const adminVehicleCategory =
 
-adminSession.vehicleCategory;
+adminSession.vehicleID;
 
 const adminServiceProvider =
 
-adminSession.serviceProvider;
+adminSession.providerID;
 
 const adminUserId =
 
-adminSession.userId;
+localStorage.getItem(
+  "adminUserID"
+);
 
 /* =========================
 UI SESSION INFO
@@ -537,14 +544,13 @@ async function loadSettings(){
 showLoader();
 
 try{
-
 const settingsDoc =
 await getDoc(
 
 doc(
 db,
 "settings",
-adminDistrict
+adminDistrict + "_" + adminVehicleCategory + "_" + adminServiceProvider
 )
 
 );
@@ -657,13 +663,12 @@ saveBtn.disabled =
 true;
 
 try{
-
 await setDoc(
 
 doc(
 db,
 "settings",
-adminDistrict
+adminDistrict + "_" + adminVehicleCategory + "_" + adminServiceProvider
 ),
 
 {

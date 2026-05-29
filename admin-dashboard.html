@@ -411,9 +411,9 @@ document.querySelector(
   ".top-user"
 ).innerHTML =
 
-adminProviderID ||
-
-"Admin";
+localStorage.getItem(
+  "adminUserID"
+) || "Admin";
 
 /* =========================
    DASHBOARD STATS
@@ -425,7 +425,7 @@ async function loadDashboardStats(){
 
   try{
 
-  const routesQuery = query(
+const routesQuery = query(
 
   collection(
     db,
@@ -436,6 +436,18 @@ async function loadDashboardStats(){
     "districtID",
     "==",
     adminDistrict
+  ),
+
+  where(
+    "vehicleID",
+    "==",
+    adminVehicleCategory
+  ),
+
+  where(
+    "providerID",
+    "==",
+    adminServiceProvider
   )
 
 );

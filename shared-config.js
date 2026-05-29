@@ -15,11 +15,17 @@ export function getAdminSession(){
     providerID:
     localStorage.getItem(
       "adminProviderID"
+    ),
+
+    userID:
+    localStorage.getItem(
+      "adminUserID"
     )
 
   };
 
 }
+
 
 export function saveAdminSession(
 
