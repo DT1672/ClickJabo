@@ -619,48 +619,35 @@ async function(){
   );
 
   selectedVehicleCategory =
-category.vehicleID;
+  category.vehicleID;
 
-localStorage.setItem(
+  localStorage.setItem(
 
-  "selectedVehicleCategory",
+    "selectedVehicleCategory",
 
-  category.vehicleID
+    category.vehicleID
 
-);
+  );
 
-/* CLEAR OLD DATA */
+  /* CLEAR OLD DATA */
 
-if(fromChoices){
-  fromChoices.destroy();
-}
+  providerSelect.innerHTML =
+  '<option value="">Select Service Provider</option>';
 
-if(toChoices){
-  toChoices.destroy();
-}
+  document.getElementById(
+    "result"
+  ).innerText =
+  "Select Route";
 
-fromSelect.innerHTML =
-'<option value="">Loading...</option>';
+  selectedProviderID =
+  "";
 
-toSelect.innerHTML =
-'<option value="">Loading...</option>';
+  /* LOAD NEW ROUTES */
 
-providerSelect.innerHTML =
-'<option value="">Select Service Provider</option>';
-
-document.getElementById(
-  "result"
-).innerText =
-"Select Route";
-
-selectedProviderID =
-"";
-
-/* LOAD NEW ROUTES */
-
-await loadRoutesFromFirestore();
+  await loadRoutesFromFirestore();
 
 };
+
 
 vehicleCategoryContainer.appendChild(
   button
@@ -723,26 +710,27 @@ async function loadRoutesFromFirestore(){
 
   try{
 
-   const routesQuery = query(
+    const routesQuery = query(
 
-  collection(
-    db,
-    "routes"
-  ),
+      collection(
+        db,
+        "routes"
+      ),
 
-  where(
-    "districtID",
-    "==",
-    districtSelect.value
-  ),
+      where(
+        "districtID",
+        "==",
+        districtSelect.value
+      ),
 
-  where(
-    "vehicleID",
-    "==",
-    selectedVehicleCategory
-  )
+      where(
+        "vehicleID",
+        "==",
+        selectedVehicleCategory
+      )
 
-);
+    );
+
     const querySnapshot =
     await getDocs(
       routesQuery
@@ -854,42 +842,40 @@ async function loadHelpline(){
 function loadLocations(){
 
   fromSelect.innerHTML =
-
   '<option value="">Select Pickup Location</option>';
 
   toSelect.innerHTML =
-
   '<option value="">Select Destination</option>';
 
- let locations = [];
+  let locations = [];
 
-routes.forEach(route => {
+  routes.forEach(route => {
 
-  if(
-    !locations.includes(
-      route.fromPlace
-    )
-  ){
+    if(
+      !locations.includes(
+        route.fromPlace
+      )
+    ){
 
-    locations.push(
-      route.fromPlace
-    );
+      locations.push(
+        route.fromPlace
+      );
 
-  }
+    }
 
-  if(
-    !locations.includes(
-      route.toPlace
-    )
-  ){
+    if(
+      !locations.includes(
+        route.toPlace
+      )
+    ){
 
-    locations.push(
-      route.toPlace
-    );
+      locations.push(
+        route.toPlace
+      );
 
-  }
+    }
 
-});
+  });
 
   locations.forEach(location => {
 
@@ -965,7 +951,9 @@ routes.forEach(route => {
 
   });
 
-  fromSelect.addEventListener(
+}
+
+fromSelect.addEventListener(
   "change",
   loadProviders
 );
@@ -975,7 +963,10 @@ toSelect.addEventListener(
   loadProviders
 );
 
-}
+/* =========================
+   LOAD PROVIDERS
+========================= */
+
 function loadProviders(){
 
   providerSelect.innerHTML =
@@ -986,20 +977,20 @@ function loadProviders(){
   </option>
   `;
 
-  providerSection.style.display =
-  "block";
-
   const from =
-  fromChoices
-  ? fromChoices.getValue(true)
-  : "";
+  fromChoices.getValue(
+    true
+  );
 
   const to =
-  toChoices
-  ? toChoices.getValue(true)
-  : "";
+  toChoices.getValue(
+    true
+  );
 
-  if(!from || !to){
+  if(
+    !from ||
+    !to
+  ){
 
     return;
 
@@ -1019,9 +1010,11 @@ function loadProviders(){
     ){
 
       if(
+
         !addedProviders.has(
           route.providerID
         )
+
       ){
 
         addedProviders.add(
@@ -1041,16 +1034,12 @@ function loadProviders(){
 
   });
 
-  if(
-    addedProviders.size > 0
-  ){
-
-    providerSection.style.display =
-    "block";
-
-  }
-
 }
+
+/* =========================
+   PROVIDER CHANGE
+========================= */
+
 providerSelect.addEventListener(
 
   "change",
@@ -1060,8 +1049,8 @@ providerSelect.addEventListener(
     selectedProviderID =
     providerSelect.value;
 
-
-    const providerQuery = query(
+    const providerQuery =
+    query(
 
       collection(
         db,
@@ -1086,9 +1075,10 @@ providerSelect.addEventListener(
     ){
 
       const provider =
-      providerSnapshot.docs[0].data();
+      providerSnapshot
+      .docs[0]
+      .data();
 
-      
       const providerCallBtn =
       document.getElementById(
         "providerCallBtn"
@@ -1102,6 +1092,7 @@ providerSelect.addEventListener(
   }
 
 );
+
 /* =========================
    CHECK FARE
 ========================= */
