@@ -431,7 +431,21 @@ document.getElementById(
   "vehicleCategoryContainer"
 );
 
+const providerSection =
+document.getElementById(
+  "providerSection"
+);
+
+const providerSelect =
+document.getElementById(
+  "providerSelect"
+);
+
+
 let selectedVehicleCategory =
+"";
+
+let selectedProviderID =
 "";
 
 /* =========================
@@ -468,7 +482,7 @@ districtSelect.addEventListener(
 
     await loadRoutesFromFirestore();
 
-    await loadHelpline();
+    
 
     await loadSponsorBanner();
 
@@ -506,10 +520,9 @@ async function loadDistricts(){
 
         districtSelect.innerHTML += `
 
-<option value="${district.name}">
+<option value="${district.districtID}">
 ${district.name}
 </option>
-
         `;
 
       }
@@ -546,7 +559,7 @@ async function loadVehicleCategories(){
 
       collection(
         db,
-        "vehicleCategories"
+        "vehicles"
       )
 
     );
@@ -583,84 +596,113 @@ ${category.name}
 
 `;
 
-        button.dataset.category =
-        category.name;
+    button.dataset.category =
+category.vehicleID;
 
-        button.onclick =
-        async function(){
+button.onclick =
+async function(){
 
-          document
-          .querySelectorAll(
-            ".vehicle-category-btn"
-          )
-          .forEach(btn => {
+  document
+  .querySelectorAll(
+    ".vehicle-category-btn"
+  )
+  .forEach(btn => {
 
-            btn.classList.remove(
-              "active"
-            );
-
-          });
-
-          button.classList.add(
-            "active"
-          );
-
-          selectedVehicleCategory =
-          category.name;
-
-          localStorage.setItem(
-
-            "selectedVehicleCategory",
-
-            category.name
-
-          );
-
-          await loadRoutesFromFirestore();
-
-        };
-
-        vehicleCategoryContainer.appendChild(
-          button
-        );
-
-      }
-
-    });
-
-    const savedCategory =
-    localStorage.getItem(
-      "selectedVehicleCategory"
+    btn.classList.remove(
+      "active"
     );
 
-    if(savedCategory){
+  });
 
-      selectedVehicleCategory =
-      savedCategory;
+  button.classList.add(
+    "active"
+  );
 
-      const buttons =
-      document.querySelectorAll(
-        ".vehicle-category-btn"
+  selectedVehicleCategory =
+category.vehicleID;
+
+localStorage.setItem(
+
+  "selectedVehicleCategory",
+
+  category.vehicleID
+
+);
+
+/* CLEAR OLD DATA */
+
+if(fromChoices){
+  fromChoices.destroy();
+}
+
+if(toChoices){
+  toChoices.destroy();
+}
+
+fromSelect.innerHTML =
+'<option value="">Loading...</option>';
+
+toSelect.innerHTML =
+'<option value="">Loading...</option>';
+
+providerSelect.innerHTML =
+'<option value="">Select Service Provider</option>';
+
+document.getElementById(
+  "result"
+).innerText =
+"Select Route";
+
+selectedProviderID =
+"";
+
+/* LOAD NEW ROUTES */
+
+await loadRoutesFromFirestore();
+
+};
+
+vehicleCategoryContainer.appendChild(
+  button
+);
+
+}
+
+});
+
+const savedCategory =
+localStorage.getItem(
+  "selectedVehicleCategory"
+);
+
+if(savedCategory){
+
+  selectedVehicleCategory =
+  savedCategory;
+
+  const buttons =
+  document.querySelectorAll(
+    ".vehicle-category-btn"
+  );
+
+  buttons.forEach(btn => {
+
+    if(
+
+      btn.dataset.category ===
+      savedCategory
+
+    ){
+
+      btn.classList.add(
+        "active"
       );
 
-      buttons.forEach(btn => {
-
-        if(
-
-          btn.dataset.category ===
-          savedCategory
-
-        ){
-
-          btn.classList.add(
-            "active"
-          );
-
-        }
-
-      });
-
     }
+
+  });
+
+} 
 
   }
 
@@ -671,36 +713,36 @@ ${category.name}
   }
 
 }
-
 /* =========================
    LOAD ROUTES
 ========================= */
 
 async function loadRoutesFromFirestore(){
 
+  routes = [];
+
   try{
 
-    const routesQuery = query(
+   const routesQuery = query(
 
-      collection(
-        db,
-        "routes"
-      ),
+  collection(
+    db,
+    "routes"
+  ),
 
-      where(
-        "district",
-        "==",
-        districtSelect.value
-      ),
+  where(
+    "districtID",
+    "==",
+    districtSelect.value
+  ),
 
-      where(
-        "vehicleCategory",
-        "==",
-        selectedVehicleCategory
-      )
+  where(
+    "vehicleID",
+    "==",
+    selectedVehicleCategory
+  )
 
-    );
-
+);
     const querySnapshot =
     await getDocs(
       routesQuery
@@ -819,35 +861,35 @@ function loadLocations(){
 
   '<option value="">Select Destination</option>';
 
-  let locations = [];
+ let locations = [];
 
-  routes.forEach(route => {
+routes.forEach(route => {
 
-    if(
-      !locations.includes(
-        route.from
-      )
-    ){
+  if(
+    !locations.includes(
+      route.fromPlace
+    )
+  ){
 
-      locations.push(
-        route.from
-      );
+    locations.push(
+      route.fromPlace
+    );
 
-    }
+  }
 
-    if(
-      !locations.includes(
-        route.to
-      )
-    ){
+  if(
+    !locations.includes(
+      route.toPlace
+    )
+  ){
 
-      locations.push(
-        route.to
-      );
+    locations.push(
+      route.toPlace
+    );
 
-    }
+  }
 
-  });
+});
 
   locations.forEach(location => {
 
@@ -923,12 +965,146 @@ function loadLocations(){
 
   });
 
-}
+  fromSelect.addEventListener(
+  "change",
+  loadProviders
+);
 
+toSelect.addEventListener(
+  "change",
+  loadProviders
+);
+
+}
+function loadProviders(){
+
+  providerSelect.innerHTML =
+
+  `
+  <option value="">
+  Select Service Provider
+  </option>
+  `;
+
+  providerSection.style.display =
+  "block";
+
+  const from =
+  fromChoices
+  ? fromChoices.getValue(true)
+  : "";
+
+  const to =
+  toChoices
+  ? toChoices.getValue(true)
+  : "";
+
+  if(!from || !to){
+
+    return;
+
+  }
+
+  const addedProviders =
+  new Set();
+
+  routes.forEach(route => {
+
+    if(
+
+      route.fromPlace === from &&
+
+      route.toPlace === to
+
+    ){
+
+      if(
+        !addedProviders.has(
+          route.providerID
+        )
+      ){
+
+        addedProviders.add(
+          route.providerID
+        );
+
+        providerSelect.innerHTML +=
+        `
+        <option value="${route.providerID}">
+        ${route.providerName || route.providerID}
+        </option>
+        `;
+
+      }
+
+    }
+
+  });
+
+  if(
+    addedProviders.size > 0
+  ){
+
+    providerSection.style.display =
+    "block";
+
+  }
+
+}
+providerSelect.addEventListener(
+
+  "change",
+
+  async () => {
+
+    selectedProviderID =
+    providerSelect.value;
+
+
+    const providerQuery = query(
+
+      collection(
+        db,
+        "providers"
+      ),
+
+      where(
+        "providerID",
+        "==",
+        selectedProviderID
+      )
+
+    );
+
+    const providerSnapshot =
+    await getDocs(
+      providerQuery
+    );
+
+    if(
+      !providerSnapshot.empty
+    ){
+
+      const provider =
+      providerSnapshot.docs[0].data();
+
+      
+      const providerCallBtn =
+      document.getElementById(
+        "providerCallBtn"
+      );
+
+      providerCallBtn.href =
+      `tel:${provider.helplineNumber}`;
+
+    }
+
+  }
+
+);
 /* =========================
    CHECK FARE
 ========================= */
-
 function checkFare(){
 
   let from =
@@ -992,8 +1168,8 @@ function checkFare(){
 
     if(
 
-      route.from === from &&
-      route.to === to
+      route.fromPlace === from &&
+      route.toPlace === to
 
     ){
 
@@ -1014,7 +1190,7 @@ function checkFare(){
           (
 
             Number(
-              route.sharedDay || 0
+              route.shareDayFare || 0
             )
 
             +
@@ -1036,7 +1212,7 @@ function checkFare(){
           (
 
             Number(
-              route.sharedNight || 0
+              route.shareNightFare || 0
             )
 
             +
@@ -1071,7 +1247,7 @@ function checkFare(){
           (
 
             Number(
-              route.hireDay || 0
+              route.hireDayFare || 0
             )
 
             +
@@ -1093,7 +1269,7 @@ function checkFare(){
           (
 
             Number(
-              route.hireNight || 0
+              route.hireNightFare || 0
             )
 
             +
@@ -1262,7 +1438,7 @@ window.addEventListener(
 
     await loadRoutesFromFirestore();
 
-    await loadHelpline();
+    
 
     await loadSponsorBanner();
 

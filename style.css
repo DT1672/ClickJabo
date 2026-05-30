@@ -1418,3 +1418,17 @@ button:not(.swap-btn){
   0 0 8px rgba(255,255,255,.45);
 
 }
+
+.provider-header{
+display:flex;
+justify-content:space-between;
+align-items:center;
+margin-bottom:8px;
+}
+
+.provider-call-btn{
+text-decoration:none;
+font-size:13px;
+font-weight:600;
+color:#c29b47;
+}

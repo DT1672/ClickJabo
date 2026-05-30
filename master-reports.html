@@ -1,0 +1,811 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+<meta
+name="viewport"
+content="width=device-width, initial-scale=1.0">
+
+<meta
+name="theme-color"
+content="#020817">
+
+<title>
+Master Reports
+</title>
+
+<script
+type="module"
+src="master-auth-check.js">
+</script>
+
+<style>
+
+body{
+margin:0;
+background:#020817;
+color:white;
+font-family:sans-serif;
+}
+
+/* =========================
+LOADER
+========================= */
+
+.page-loader{
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+background:rgba(2,8,23,.72);
+backdrop-filter:blur(6px);
+display:none;
+justify-content:center;
+align-items:center;
+z-index:99999;
+}
+
+.loader-spinner{
+width:62px;
+height:62px;
+border-radius:50%;
+border:4px solid rgba(255,255,255,.08);
+border-top:4px solid #c29b47;
+animation:spin .8s linear infinite;
+}
+
+@keyframes spin{
+
+from{
+transform:rotate(0deg);
+}
+
+to{
+transform:rotate(360deg);
+}
+
+}
+
+/* =========================
+TOP BAR
+========================= */
+
+.top-bar{
+display:flex;
+align-items:center;
+justify-content:space-between;
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:70px;
+padding:0 24px;
+box-sizing:border-box;
+z-index:2000;
+background:rgba(10,15,25,.78);
+backdrop-filter:blur(18px);
+border-bottom:1px solid rgba(255,255,255,.05);
+}
+
+/* =========================
+MAIN
+========================= */
+
+.main-container{
+width:100%;
+max-width:1450px;
+margin:auto;
+padding:100px 24px 60px 24px;
+box-sizing:border-box;
+}
+
+.page-title{
+font-size:28px;
+font-weight:700;
+margin-bottom:8px;
+}
+
+.page-subtitle{
+font-size:12px;
+color:#94a3b8;
+margin-bottom:24px;
+}
+
+/* =========================
+REPORT BUTTONS
+========================= */
+
+.report-grid{
+display:grid;
+grid-template-columns:
+repeat(
+auto-fit,
+minmax(220px,1fr)
+);
+gap:14px;
+margin-bottom:24px;
+}
+
+.report-btn{
+height:56px;
+border:none;
+border-radius:18px;
+background:
+rgba(255,255,255,.04);
+border:
+1px solid rgba(255,255,255,.06);
+color:white;
+font-size:13px;
+font-weight:600;
+cursor:pointer;
+}
+
+.report-btn:hover{
+
+border:
+1px solid rgba(194,155,71,.45);
+
+}
+
+/* =========================
+RESULT CARD
+========================= */
+
+.result-card{
+padding:24px;
+border-radius:28px;
+background:
+rgba(255,255,255,.04);
+border:
+1px solid rgba(255,255,255,.06);
+backdrop-filter:blur(16px);
+}
+
+.result-title{
+font-size:18px;
+font-weight:700;
+margin-bottom:16px;
+}
+
+.result-list{
+display:flex;
+flex-direction:column;
+gap:12px;
+}
+
+.result-row{
+padding:14px;
+border-radius:16px;
+background:
+rgba(255,255,255,.03);
+border:
+1px solid rgba(255,255,255,.04);
+}
+
+.result-name{
+font-size:14px;
+font-weight:600;
+}
+
+.result-meta{
+font-size:12px;
+color:#94a3b8;
+margin-top:6px;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div
+class="page-loader"
+id="globalLoader">
+
+<div
+class="loader-spinner">
+</div>
+
+</div>
+
+<div class="top-bar">
+
+<div
+style="
+display:flex;
+align-items:center;
+gap:14px;
+">
+
+<button
+onclick="
+window.location.href=
+'master-dashboard.html'
+"
+style="
+width:40px;
+height:40px;
+border:none;
+border-radius:14px;
+background:
+rgba(255,255,255,.06);
+border:
+1px solid rgba(255,255,255,.08);
+color:white;
+font-size:18px;
+cursor:pointer;
+">
+
+←
+
+</button>
+
+<div>
+
+<div
+style="
+font-size:18px;
+font-weight:700;
+">
+
+Master Reports
+
+</div>
+
+<div
+style="
+font-size:11px;
+color:#94a3b8;
+margin-top:2px;
+letter-spacing:1px;
+">
+
+CLICKJABO MASTER PANEL
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+<div class="main-container">
+
+<div
+class="page-title">
+
+Reports Center
+
+</div>
+
+<div
+class="page-subtitle">
+
+District monitoring and audit reports
+
+</div>
+
+<div class="report-grid">
+
+<button
+class="report-btn"
+onclick="loadDistrictSummary()">
+
+🏛️ District Summary
+
+</button>
+
+<button
+class="report-btn"
+onclick="loadProviderSummary()">
+
+🚖 Provider Summary
+
+</button>
+
+<button
+class="report-btn"
+onclick="loadTemporaryReport()">
+
+⚠️ Temporary Adjustments
+
+</button>
+
+<button
+class="report-btn"
+onclick="loadRecentUpdates()">
+
+🕒 Recent Updates
+
+</button>
+
+</div>
+
+<div class="result-card">
+
+<div
+id="reportTitle"
+class="result-title">
+
+Select a Report
+
+</div>
+
+<div
+id="reportResults"
+class="result-list">
+
+<div
+class="result-row">
+
+<div class="result-name">
+
+No report loaded.
+
+</div>
+
+<div class="result-meta">
+
+Choose a report above.
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+<script type="module">
+
+import {
+db
+}
+from "./firebase-config.js";
+
+import {
+collection,
+getDocs
+}
+from "https://www.gstatic.com/firebasejs/12.3.0/firebase-firestore.js";
+
+function showLoader(){
+
+document.getElementById(
+"globalLoader"
+).style.display =
+"flex";
+
+}
+
+function hideLoader(){
+
+document.getElementById(
+"globalLoader"
+).style.display =
+"none";
+
+}
+
+const reportTitle =
+
+document.getElementById(
+"reportTitle"
+);
+
+const reportResults =
+
+document.getElementById(
+"reportResults"
+);
+
+window.loadDistrictSummary =
+loadDistrictSummary;
+
+window.loadProviderSummary =
+loadProviderSummary;
+
+window.loadTemporaryReport =
+loadTemporaryReport;
+
+window.loadRecentUpdates =
+loadRecentUpdates;
+
+async function loadDistrictSummary(){
+
+try{
+
+showLoader();
+
+reportTitle.innerText =
+"District Summary";
+
+reportResults.innerHTML =
+"";
+
+const districtsSnapshot =
+
+await getDocs(
+collection(
+db,
+"districts"
+)
+);
+
+const routesSnapshot =
+
+await getDocs(
+collection(
+db,
+"routes"
+)
+);
+
+districtsSnapshot.forEach(d => {
+
+const district =
+d.data();
+
+let routeCount = 0;
+
+const providerSet =
+new Set();
+
+routesSnapshot.forEach(r => {
+
+const route =
+r.data();
+
+if(
+route.districtID ===
+district.districtID
+){
+
+routeCount++;
+
+if(route.providerID){
+
+providerSet.add(
+route.providerID
+);
+
+}
+
+}
+
+});
+
+reportResults.innerHTML += `
+
+<div class="result-row">
+
+<div class="result-name">
+
+${district.name || district.districtID}
+
+</div>
+
+<div class="result-meta">
+
+Routes:
+${routeCount}
+
+&nbsp;&nbsp;|&nbsp;&nbsp;
+
+Providers:
+${providerSet.size}
+
+</div>
+
+</div>
+
+`;
+
+});
+
+hideLoader();
+
+}
+
+catch(error){
+
+hideLoader();
+
+console.log(error);
+
+}
+
+}
+
+async function loadProviderSummary(){
+
+try{
+
+showLoader();
+
+reportTitle.innerText =
+"Provider Summary";
+
+reportResults.innerHTML =
+"";
+
+const routesSnapshot =
+
+await getDocs(
+collection(
+db,
+"routes"
+)
+);
+
+const providerMap = {};
+
+routesSnapshot.forEach(r => {
+
+const route =
+r.data();
+
+const provider =
+
+route.providerName ||
+
+route.providerID ||
+
+"Unknown";
+
+providerMap[provider] =
+
+(providerMap[provider] || 0)
++ 1;
+
+});
+
+Object.entries(
+providerMap
+).forEach(([name,count]) => {
+
+reportResults.innerHTML += `
+
+<div class="result-row">
+
+<div class="result-name">
+
+${name}
+
+</div>
+
+<div class="result-meta">
+
+Routes:
+${count}
+
+</div>
+
+</div>
+
+`;
+
+});
+
+hideLoader();
+
+}
+
+catch(error){
+
+hideLoader();
+
+console.log(error);
+
+}
+
+}
+
+async function loadTemporaryReport(){
+
+try{
+
+showLoader();
+
+reportTitle.innerText =
+"Temporary Adjustments";
+
+reportResults.innerHTML =
+"";
+
+const routesSnapshot =
+
+await getDocs(
+collection(
+db,
+"routes"
+)
+);
+
+let found = false;
+
+routesSnapshot.forEach(r => {
+
+const route =
+r.data();
+
+if(
+
+Number(route.tempHireDay || 0) !== 0 ||
+
+Number(route.tempHireNight || 0) !== 0 ||
+
+Number(route.tempSharedDay || 0) !== 0 ||
+
+Number(route.tempSharedNight || 0) !== 0
+
+){
+
+found = true;
+
+reportResults.innerHTML += `
+
+<div class="result-row">
+
+<div class="result-name">
+
+${route.fromPlace || "-"}
+ →
+${route.toPlace || "-"}
+
+</div>
+
+<div class="result-meta">
+
+HD:
+${route.tempHireDay || 0}
+
+ |
+HN:
+${route.tempHireNight || 0}
+
+ |
+SD:
+${route.tempSharedDay || 0}
+
+ |
+SN:
+${route.tempSharedNight || 0}
+
+</div>
+
+</div>
+
+`;
+
+}
+
+});
+
+if(!found){
+
+reportResults.innerHTML =
+
+`
+
+<div class="result-row">
+
+<div class="result-name">
+
+No active temporary adjustments.
+
+</div>
+
+</div>
+
+`;
+
+}
+
+hideLoader();
+
+}
+
+catch(error){
+
+hideLoader();
+
+console.log(error);
+
+}
+
+}
+
+async function loadRecentUpdates(){
+
+try{
+
+showLoader();
+
+reportTitle.innerText =
+"Recent Updates";
+
+reportResults.innerHTML =
+"";
+
+const logsSnapshot =
+
+await getDocs(
+collection(
+db,
+"activityLogs"
+)
+);
+
+const logs = [];
+
+logsSnapshot.forEach(doc => {
+
+logs.push(
+doc.data()
+);
+
+});
+
+logs.sort((a,b) => {
+
+const aTime =
+a.createdAt?.seconds || 0;
+
+const bTime =
+b.createdAt?.seconds || 0;
+
+return bTime - aTime;
+
+});
+
+logs.slice(0,50)
+.forEach(log => {
+
+reportResults.innerHTML += `
+
+<div class="result-row">
+
+<div class="result-name">
+
+${log.action || "-"}
+
+</div>
+
+<div class="result-meta">
+
+${log.adminUserId || "-"}
+
+</div>
+
+</div>
+
+`;
+
+});
+
+hideLoader();
+
+}
+
+catch(error){
+
+hideLoader();
+
+console.log(error);
+
+}
+
+}
+
+</script>
+
+</body>
+
+</html>
