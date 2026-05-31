@@ -31,13 +31,9 @@ body{
 
   margin:auto;
 
-  padding:8px 8px 8px 8px;
+  padding:8px;
 
   box-sizing:border-box;
-
-  position:relative;
-
-  top:-4px;
 
 }
 
@@ -94,7 +90,7 @@ body{
 
   border-radius:22px;
 
-  padding:10px;
+  padding:8px;
 
   margin-top:6px;
 
@@ -111,9 +107,9 @@ label{
 
   display:block;
 
-  margin-top:4px;
+  margin-top:2px;
 
-  margin-bottom:4px;
+  margin-bottom:0%;
 
   color:#cbd5e1;
 
@@ -199,23 +195,7 @@ button:active{
 
 }
 
-/* aggressive swap button pull-up */
 
-.swap-btn{
-
-  position:relative;
-
-  top:-28px;
-
-  margin-bottom:-22px!important;
-
-  background:
-  rgba(255,255,255,.06)!important;
-
-  box-shadow:
-  0 8px 20px rgba(0,0,0,.22)!important;
-
-}
 
 /* =========================
    LAYOUT
@@ -317,19 +297,22 @@ button:active{
   color:white!important;
 
 }
-
 .choices__list--dropdown{
 
-  background:#0b1220!important;
+  background:#111827!important;
 
   border-radius:16px;
 
   border:
-  1px solid rgba(255,255,255,.06)!important;
+  1px solid rgba(255,255,255,.12)!important;
 
   overflow:hidden!important;
 
   margin-top:4px;
+
+  z-index:9999!important;
+
+  opacity:1!important;
 
 }
 
@@ -342,16 +325,20 @@ button:active{
   overflow-x:hidden!important;
 
 }
-
 .choices__item--choice{
 
-  color:white!important;
+  color:#ffffff!important;
 
-  background:#0b1220!important;
+  background:#111827!important;
 
-  padding:10px!important;
+  padding:12px!important;
 
   font-size:16px;
+
+}
+.choices__list{
+
+  background:#111827!important;
 
 }
 
@@ -721,67 +708,7 @@ button:active{
 
 }
 
-/* push destination section upward */
 
-label.top-space{
-
-  margin-top:-10px!important;
-
-  margin-bottom:0!important;
-
-}
-
-#to{
-
-  margin-top:-10px!important;
-
-}
-
-#to + .choices{
-
-  position:relative;
-
-  top:-10px;
-
-  margin-bottom:-10px!important;
-
-}
-label[for="from"],
-label:first-of-type{
-
-  margin-top:8px!important;
-
-}
-
-#from + .choices{
-
-  position:relative;
-
-  top:8px;
-
-}
-/* pull passenger + fare mode section upward */
-
-.row.top-space{
-
-  position:relative;
-
-  top:-26px;
-
-  margin-bottom:-22px;
-
-}
-/* pull check fare button upward */
-
-button:not(.swap-btn){
-
-  position:relative;
-
-  top:-14px;
-
-  margin-bottom:-10px;
-
-}
 /* =========================
    BOTTOM ACTION BAR
 ========================= */
@@ -928,7 +855,7 @@ button:not(.swap-btn){
 
 .provider-section{
 
-  margin-top:6px;
+  margin-top:-4px;
 
 }
 
@@ -1007,136 +934,7 @@ button:not(.swap-btn){
   0 4px 14px rgba(194,155,71,.18);
 
 }
-/* =========================
-   VEHICLE CATEGORY
-========================= */
 
-.vehicle-category-row{
-
-  display:flex;
-
-  gap:8px;
-
-  margin-top:6px;
-
-}
-
-.vehicle-category-btn{
-
-  flex:1;
-
-  height:46px;
-
-  border-radius:16px;
-
-  border:
-  1px solid rgba(255,255,255,.08);
-
-  background:
-  rgba(255,255,255,.04);
-
-  color:white;
-
-  font-size:16px;
-
-  font-weight:600;
-
-  margin:0!important;
-
-  top:0!important;
-
-  box-shadow:none!important;
-
-  display:flex;
-
-  align-items:center;
-
-  justify-content:center;
-
-  padding:0;
-
-}
-
-.vehicle-category-btn.active{
-
-  background:
-  linear-gradient(
-    135deg,
-    #8b6b2e,
-    #c29b47
-  );
-
-  box-shadow:
-  0 4px 14px rgba(194,155,71,.18)!important;
-
-}
-/* =========================
-   VEHICLE CATEGORY
-========================= */
-
-.vehicle-category-row{
-
-  display:flex;
-
-  gap:8px;
-
-  margin-top:6px;
-
-  margin-bottom:8px;
-
-}
-
-.vehicle-category-btn{
-
-  flex:1;
-
-  height:54px;
-
-  border:none;
-
-  border-radius:18px;
-
-  background:
-  rgba(255,255,255,.05);
-
-  border:
-  1px solid rgba(255,255,255,.08);
-
-  color:white;
-
-  font-size:24px;
-
-  display:flex;
-
-  align-items:center;
-
-  justify-content:center;
-
-  padding:0;
-
-  margin:0;
-
-  top:0!important;
-
-  margin-bottom:0!important;
-
-  box-shadow:none!important;
-
-}
-
-.vehicle-category-btn.active{
-
-  background:
-  linear-gradient(
-    135deg,
-    #8b6b2e,
-    #c29b47
-  );
-
-  box-shadow:
-  0 6px 18px rgba(194,155,71,.18);
-
-}
 
 /* =========================
    SERVICE PROVIDER
@@ -1227,7 +1025,7 @@ button:not(.swap-btn){
 
 .destination-label{
 
-  margin-top:8px!important;
+  margin-top:-18px!important;
 
 }
 
@@ -1261,13 +1059,7 @@ button:not(.swap-btn){
 
 }
 
-button:not(.swap-btn){
 
-  top:0!important;
-
-  margin-bottom:0!important;
-
-}
 .pickup-label::before{
 
   content:""!important;
@@ -1319,9 +1111,9 @@ button:not(.swap-btn){
 
   gap:10px;
 
-  margin-top:8px;
+  margin-top:0px;
 
-  margin-bottom:10px;
+  margin-bottom:2px;
 
 }
 
@@ -1329,7 +1121,7 @@ button:not(.swap-btn){
 
   flex:1;
 
-  height:64px;
+  height:52px;
 
   border:none;
 
@@ -1423,7 +1215,7 @@ button:not(.swap-btn){
 display:flex;
 justify-content:space-between;
 align-items:center;
-margin-bottom:8px;
+margin-bottom:4px;
 }
 
 .provider-call-btn{
@@ -1431,4 +1223,64 @@ text-decoration:none;
 font-size:13px;
 font-weight:600;
 color:#c29b47;
+}
+
+.swap-wrapper{
+
+display:flex;
+
+justify-content:center;
+
+align-items:center;
+
+margin:-22px 0 -10px 0;
+
+height:42px;
+
+}
+
+.swap-mini-btn{
+
+width:42px!important;
+
+height:42px!important;
+
+min-width:42px!important;
+
+padding:0!important;
+
+margin:0!important;
+
+display:flex!important;
+
+justify-content:center!important;
+
+align-items:center!important;
+
+background:rgba(2,8,23,.35)!important;
+
+border:none!important;
+
+border-radius:50%!important;
+
+color:#94a3b8!important;
+
+font-size:20px!important;
+
+box-shadow:none!important;
+
+flex:none!important;
+
+margin-top:0!important;
+
+}
+label.top-space{
+
+margin-bottom:-6px!important;
+
+}
+#providerSection{
+
+margin-top:-16px;
+
 }
