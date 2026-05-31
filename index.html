@@ -238,8 +238,9 @@ Check Fare
 
 </div>
 <!-- RESULT CARD -->
-
-<div class="glass-card result-glass">
+<div
+class="glass-card result-glass"
+style="display:none;">
 
 <h2 id="result">
 
@@ -313,7 +314,7 @@ target="_blank"
 class="mini-about"
 id="aboutBtn">
 
-About
+About ClickKounter
 
 </a>
 
@@ -325,7 +326,106 @@ About
 class="footer-brand"
 id="footerBrand">
 
-Loading...
+
+
+</div>
+
+</div>
+
+<!-- FARE MODAL -->
+
+<div
+id="fareModal"
+
+style="
+display:none;
+position:fixed;
+inset:0;
+background:rgba(0,0,0,.65);
+backdrop-filter:blur(6px);
+z-index:99999;
+justify-content:center;
+align-items:center;
+">
+
+<div
+
+style="
+width:88%;
+max-width:320px;
+background:rgba(255,255,255,.06);
+backdrop-filter:blur(18px);
+border:1px solid rgba(255,255,255,.08);
+border-radius:24px;
+padding:22px;
+text-align:center;
+">
+
+<div
+
+style="
+font-size:13px;
+color:#94a3b8;
+letter-spacing:2px;
+margin-bottom:10px;
+">
+
+RECOMMENDED FARE
+
+</div>
+
+<div
+id="modalFare"
+
+style="
+font-size:48px;
+font-weight:700;
+color:#a3e635;
+margin-bottom:10px;
+">
+
+₹0
+
+</div>
+
+<div
+
+style="
+font-size:12px;
+color:#22c55e;
+margin-bottom:12px;
+">
+
+✓ Fare Guide Rate
+
+</div>
+
+<div
+id="modalUpdated"
+
+style="
+font-size:10px;
+color:#64748b;
+margin-bottom:18px;
+">
+
+Last Updated
+
+</div>
+
+<button
+
+onclick="
+closeFareModal()
+"
+
+style="
+margin-top:0;
+">
+
+Close
+
+</button>
 
 </div>
 

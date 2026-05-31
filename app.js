@@ -35,6 +35,31 @@ async function loadSponsorBanner(){
       "sponsorCarousel"
     );
 
+    sponsorCarousel.innerHTML = `
+
+<a
+href="#"
+style="
+display:block;
+width:100%;
+height:100%;
+">
+
+<img
+src="banner.png"
+class="install-banner"
+
+style="
+width:100%;
+height:100%;
+object-fit:cover;
+border-radius:22px;
+">
+
+</a>
+
+`;
+
     const sponsorSnapshot =
 
     await getDocs(
@@ -484,7 +509,7 @@ districtSelect.addEventListener(
 
     
 
-    await loadSponsorBanner();
+    loadSponsorBanner();
 
   }
 
@@ -1243,6 +1268,9 @@ function checkFare(){
   let result =
   "No fare data available";
 
+  let lastUpdated =
+"Unknown";
+
   if(
     from === "" ||
     to === ""
@@ -1270,13 +1298,32 @@ function checkFare(){
 
   routes.forEach(route => {
 
-    if(
+  if(
 
-      route.fromPlace === from &&
-      route.toPlace === to
+    route.fromPlace === from &&
+    route.toPlace === to &&
+    route.providerID === selectedProviderID
 
-    ){
+  ){
 
+    if(route.updatedAt){
+
+      const date =
+
+      route.updatedAt.toDate();
+
+      lastUpdated =
+
+      date.toLocaleDateString(
+        "en-IN",
+        {
+          day:"2-digit",
+          month:"short",
+          year:"numeric"
+        }
+      );
+
+    }
       if(
         rideType ===
         "shared"
@@ -1396,6 +1443,11 @@ function checkFare(){
     "result"
   ).innerText =
   result;
+
+showFareModal(
+  result,
+  lastUpdated
+);
 
 }
 
@@ -1526,10 +1578,50 @@ async function trackSponsorImpression(
 
 }
 
+
+/* =========================
+   FARE MODAL
+========================= */
+function showFareModal(
+  fare,
+  updatedDate
+){
+
+  document.getElementById(
+    "modalFare"
+  ).innerText =
+  fare;
+
+  document.getElementById(
+    "modalUpdated"
+  ).innerText =
+
+  "Last Updated: " +
+  updatedDate;
+
+  document.getElementById(
+    "fareModal"
+  ).style.display =
+
+  "flex";
+
+}
+
+function closeFareModal(){
+
+  document.getElementById(
+    "fareModal"
+  ).style.display =
+
+  "none";
+
+}
+
+window.closeFareModal =
+closeFareModal;
 /* =========================
    APP LOAD
 ========================= */
-
 window.addEventListener(
 
   "load",
@@ -1542,9 +1634,9 @@ window.addEventListener(
 
     await loadRoutesFromFirestore();
 
-    await loadSponsorBanner();
+    loadSponsorBanner();
 
-    await loadFooterSettings();
+    loadFooterSettings();
 
   }
 
