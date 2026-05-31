@@ -1,0 +1,193 @@
+/* =========================
+   PAGE
+========================= */
+
+body{
+
+margin:0;
+
+padding:20px;
+
+font-family:Arial,sans-serif;
+
+background:#020817;
+
+color:white;
+
+}
+
+/* =========================
+   CARD
+========================= */
+
+.page-card{
+
+max-width:700px;
+
+margin:auto;
+
+padding:24px;
+
+background:
+rgba(255,255,255,.04);
+
+border:
+1px solid rgba(255,255,255,.08);
+
+border-radius:20px;
+
+backdrop-filter:blur(14px);
+
+box-shadow:
+0 0 24px rgba(0,0,0,.25);
+
+}
+
+/* =========================
+   TITLE
+========================= */
+
+.page-card h2{
+
+margin-top:0;
+
+margin-bottom:20px;
+
+color:#facc15;
+
+letter-spacing:.4px;
+
+}
+
+/* =========================
+   LABELS
+========================= */
+
+.page-card label{
+
+display:block;
+
+margin-bottom:6px;
+
+margin-top:14px;
+
+font-size:13px;
+
+font-weight:600;
+
+color:#cbd5e1;
+
+}
+
+/* =========================
+   INPUTS
+========================= */
+
+.page-card input[type="text"]{
+
+width:100%;
+
+padding:12px;
+
+background:#111827;
+
+color:white;
+
+border-radius:12px;
+
+border:
+1px solid rgba(250,204,21,.15);
+
+box-sizing:border-box;
+
+}
+
+.page-card input[type="text"]:focus{
+
+outline:none;
+
+border:
+1px solid rgba(250,204,21,.45);
+
+box-shadow:
+0 0 10px rgba(250,204,21,.15);
+
+}
+
+/* =========================
+   CHECKBOXES
+========================= */
+
+.page-card input[type="checkbox"]{
+
+accent-color:#c29b47;
+
+margin-right:8px;
+
+}
+
+/* =========================
+   SAVE BUTTON
+========================= */
+
+#btnSaveFooter{
+
+width:100%;
+
+margin-top:20px;
+
+padding:12px;
+
+border:none;
+
+border-radius:14px;
+
+background:
+linear-gradient(
+135deg,
+#8b6b2e,
+#c29b47
+);
+
+color:white;
+
+font-size:14px;
+
+font-weight:700;
+
+cursor:pointer;
+
+box-shadow:
+0 8px 20px rgba(194,155,71,.18);
+
+}
+.back-btn{
+
+padding:10px 14px;
+
+border:none;
+
+border-radius:12px;
+
+background:
+rgba(255,255,255,.06);
+
+border:
+1px solid rgba(255,255,255,.08);
+
+color:white;
+
+cursor:pointer;
+
+margin-bottom:18px;
+
+font-weight:600;
+
+}
+
+.back-btn:hover{
+
+background:
+rgba(255,255,255,.10);
+
+}

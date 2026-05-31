@@ -836,6 +836,119 @@ async function loadHelpline(){
 }
 
 /* =========================
+   LOAD FOOTER SETTINGS
+========================= */
+
+async function loadFooterSettings(){
+
+  try{
+
+    const footerDoc =
+    await getDoc(
+
+      doc(
+        db,
+        "settings",
+        "footer"
+      )
+
+    );
+
+    if(!footerDoc.exists()){
+
+      return;
+
+    }
+
+    const data =
+    footerDoc.data();
+
+    const aboutBtn =
+    document.getElementById(
+      "aboutBtn"
+    );
+
+    const footerBrand =
+    document.getElementById(
+      "footerBrand"
+    );
+
+    /* ABOUT BUTTON */
+
+    if(data.showAbout){
+
+      aboutBtn.style.display =
+      "inline-block";
+
+      aboutBtn.innerText =
+      data.aboutText || "About";
+
+      aboutBtn.href =
+      data.aboutLink || "#";
+
+    }
+
+    else{
+
+      aboutBtn.style.display =
+      "none";
+
+    }
+
+    /* FOOTER TEXT */
+
+    if(data.showFooter){
+
+      let footerText = "";
+
+      if(data.footerLine1){
+
+        footerText +=
+        data.footerLine1;
+
+      }
+
+      if(data.footerLine2){
+
+        footerText +=
+        (footerText ? " • " : "") +
+        data.footerLine2;
+
+      }
+
+      if(data.footerLine3){
+
+        footerText +=
+        (footerText ? " • " : "") +
+        data.footerLine3;
+
+      }
+
+      footerBrand.innerText =
+      footerText;
+
+      footerBrand.style.display =
+      "block";
+
+    }
+
+    else{
+
+      footerBrand.style.display =
+      "none";
+
+    }
+
+  }
+
+  catch(error){
+
+    console.log(error);
+
+  }
+
+}
+/* =========================
    LOAD LOCATIONS
 ========================= */
 
@@ -1429,9 +1542,9 @@ window.addEventListener(
 
     await loadRoutesFromFirestore();
 
-    
-
     await loadSponsorBanner();
+
+    await loadFooterSettings();
 
   }
 
