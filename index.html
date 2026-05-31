@@ -113,86 +113,44 @@ onclick="openRouteModal()">
 
 </button>
 
-<!-- PICKUP -->
+<div
+id="selectedRouteCard"
 
-<label class="pickup-label">
-
-Pickup Location
-
-</label>
-
-<select id="from">
-
-<option value="">
-Select Pickup Location
-</option>
-
-</select>
-
-<div class="swap-wrapper">
-
-<button
-type="button"
-onclick="swapLocations()"
-class="swap-mini-btn">
-
-⇅
-
-</button>
-
-</div>
-
-
-<!-- DESTINATION -->
-
-<label class="destination-label">
-
-Destination
-
-</label>
-
-<select id="to">
-
-<option value="">
-Select Destination
-</option>
-
-</select>
-
-<!-- PROVIDERS -->
+style="
+display:none;
+margin-top:14px;
+padding:14px;
+border-radius:16px;
+background:
+rgba(255,255,255,.05);
+border:
+1px solid rgba(255,255,255,.08);
+">
 
 <div
-id="providerSection">
+id="selectedRouteName"
 
-<div class="provider-header">
+style="
+font-size:15px;
+font-weight:600;
+margin-bottom:4px;
+">
 
-<label>
-
-Service Provider
-
-</label>
-
-<a
-id="providerCallBtn"
-href="tel:"
-class="provider-call-btn">
-
-📞 Call
-
-</a>
+No Route Selected
 
 </div>
 
-<select
-id="providerSelect">
+<div
+id="selectedProviderName"
 
-<option value="">
+style="
+font-size:12px;
+color:#94a3b8;
+">
 
-Select Service Provider
+Select a route
 
-</option>
-
-</select>
+</div>
 
 </div>
 
