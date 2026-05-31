@@ -1060,34 +1060,37 @@ function loadLocations(){
     toChoices.destroy();
 
   }
+fromChoices =
+new Choices("#from", {
 
-  fromChoices =
-  new Choices("#from", {
+  searchEnabled:true,
 
-    searchEnabled:true,
+  searchPlaceholderValue:
+  "Search pickup location...",
 
-    searchPlaceholderValue:
-    "Type here to search...",
+  itemSelectText:"",
 
-    itemSelectText:"",
+  shouldSort:false,
 
-    shouldSort:false
+  searchResultLimit:4
 
-  });
+});
 
-  toChoices =
-  new Choices("#to", {
+toChoices =
+new Choices("#to", {
 
-    searchEnabled:true,
+  searchEnabled:true,
 
-    searchPlaceholderValue:
-    "Type here to search...",
+  searchPlaceholderValue:
+  "Search destination...",
 
-    itemSelectText:"",
+  itemSelectText:"",
 
-    shouldSort:false
+  shouldSort:false,
 
-  });
+  searchResultLimit:4
+
+});
 
 }
 
@@ -1619,6 +1622,101 @@ function closeFareModal(){
 
 window.closeFareModal =
 closeFareModal;
+
+/* =========================
+   ROUTE MODAL
+========================= */
+function openRouteModal(){
+
+  loadRouteList();
+
+  document.getElementById(
+    "routeModal"
+  ).style.display =
+
+  "block";
+
+}
+
+
+function closeRouteModal(){
+
+  document.getElementById(
+    "routeModal"
+  ).style.display =
+
+  "none";
+
+}
+
+window.openRouteModal =
+openRouteModal;
+
+window.closeRouteModal =
+closeRouteModal;
+
+/* =========================
+   ROUTE LIST
+========================= */
+
+function loadRouteList(){
+
+  const routeList =
+
+  document.getElementById(
+    "routeList"
+  );
+
+  routeList.innerHTML = "";
+
+  routes.forEach(route => {
+
+    routeList.innerHTML += `
+
+<div
+
+style="
+padding:14px;
+margin-bottom:10px;
+border-radius:14px;
+background:
+rgba(255,255,255,.05);
+border:
+1px solid rgba(255,255,255,.08);
+cursor:pointer;
+">
+
+<div
+style="
+font-size:15px;
+font-weight:600;
+">
+
+${route.fromPlace}
+→
+${route.toPlace}
+
+</div>
+
+<div
+style="
+font-size:12px;
+color:#94a3b8;
+margin-top:4px;
+">
+
+${route.providerName}
+
+</div>
+
+</div>
+
+`;
+
+  });
+
+}
+
 /* =========================
    APP LOAD
 ========================= */
@@ -1641,6 +1739,8 @@ window.addEventListener(
   }
 
 );
+
+
 
 /* =========================
    SPLASH

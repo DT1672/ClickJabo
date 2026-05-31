@@ -105,6 +105,14 @@ class="vehicle-category-row">
 
 </div>
 
+<button
+type="button"
+onclick="openRouteModal()">
+
+📍 Browse Routes
+
+</button>
+
 <!-- PICKUP -->
 
 <label class="pickup-label">
@@ -241,30 +249,10 @@ Check Fare
 <div
 class="glass-card result-glass"
 style="display:none;">
-
-<h2 id="result">
-
-Select Route
-
-</h2>
-
-<p class="cheapest-tag">
-
-✓ Recommended Fare
-
-</p>
-
-<p class="updated-date">
-
-Fare Last Updated:
-<span id="lastUpdated">
-
---
-
-</span>
-
-</p>
-
+<div
+id="result"
+style="display:none;">
+</div>
 </div>
 
 <!-- INSTALL BANNER -->
@@ -430,6 +418,73 @@ Close
 </div>
 
 </div>
+
+
+<!-- ROUTE PICKER MODAL -->
+
+<div
+id="routeModal"
+
+style="
+display:none;
+position:fixed;
+inset:0;
+background:rgba(0,0,0,.75);
+backdrop-filter:blur(6px);
+z-index:99999;
+">
+
+<div
+
+style="
+height:100%;
+overflow-y:auto;
+padding:20px;
+">
+
+<div
+style="
+display:flex;
+justify-content:space-between;
+align-items:center;
+margin-bottom:15px;
+">
+
+<h2>
+
+Browse Routes
+
+</h2>
+
+<button
+onclick="closeRouteModal()">
+
+✕ Close
+
+</button>
+
+</div>
+
+<input
+type="text"
+id="routeSearch"
+
+placeholder="Search Route"
+
+style="
+width:100%;
+margin-bottom:15px;
+">
+
+<div
+id="routeList">
+
+</div>
+
+</div>
+
+</div>
+
 
 <script src="https://cdn.jsdelivr.net/npm/choices.js/public/assets/scripts/choices.min.js"></script>
 
