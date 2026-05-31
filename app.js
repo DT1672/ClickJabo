@@ -428,20 +428,44 @@ setInterval(() => {
 
   }
 
-
 }
 
 let routes = [];
 
+let fromChoices;
+
+let toChoices;
+
 const districtSelect =
 document.getElementById(
-"district"
+  "district"
+);
+
+const fromSelect =
+document.getElementById(
+  "from"
+);
+
+const toSelect =
+document.getElementById(
+  "to"
 );
 
 const vehicleCategoryContainer =
 document.getElementById(
-"vehicleCategoryContainer"
+  "vehicleCategoryContainer"
 );
+
+const providerSection =
+document.getElementById(
+  "providerSection"
+);
+
+const providerSelect =
+document.getElementById(
+  "providerSelect"
+);
+
 
 let selectedVehicleCategory =
 "";
@@ -449,51 +473,47 @@ let selectedVehicleCategory =
 let selectedProviderID =
 "";
 
-let selectedRoute =
-null;
-
 /* =========================
-DISTRICT SAVE
+   DISTRICT SAVE
 ========================= */
 
 const savedDistrict =
 localStorage.getItem(
-"selectedDistrict"
+  "selectedDistrict"
 );
 
 if(savedDistrict){
 
-districtSelect.value =
-savedDistrict;
+  districtSelect.value =
+  savedDistrict;
 
 }
 
 districtSelect.addEventListener(
 
-"change",
+  "change",
 
-async () => {
+  async () => {
 
+    localStorage.setItem(
 
-localStorage.setItem(
+      "selectedDistrict",
 
-  "selectedDistrict",
+      districtSelect.value
 
-  districtSelect.value
+    );
+
+    await loadVehicleCategories();
+
+    await loadRoutesFromFirestore();
+
+    
+
+    loadSponsorBanner();
+
+  }
 
 );
-
-await loadVehicleCategories();
-
-await loadRoutesFromFirestore();
-
-loadSponsorBanner();
-
-
-}
-
-);
-
 
 /* =========================
    LOAD DISTRICTS
@@ -634,19 +654,18 @@ async function(){
 
   );
 
-/* CLEAR OLD DATA */
+  /* CLEAR OLD DATA */
 
-selectedProviderID =
-"";
+  providerSelect.innerHTML =
+  '<option value="">Select Service Provider</option>';
 
-selectedRoute =
-null;
+  document.getElementById(
+    "result"
+  ).innerText =
+  "Select Route";
 
-document.getElementById(
-"selectedRouteCard"
-).style.display =
-"none";
-
+  selectedProviderID =
+  "";
 
   /* LOAD NEW ROUTES */
 
@@ -706,96 +725,88 @@ if(savedCategory){
   }
 
 }
-
-
 /* =========================
-LOAD ROUTES
+   LOAD ROUTES
 ========================= */
 
 async function loadRoutesFromFirestore(){
 
-routes = [];
+  routes = [];
 
-try{
+  try{
 
+    const routesQuery = query(
 
-const routesQuery = query(
+      collection(
+        db,
+        "routes"
+      ),
 
-  collection(
-    db,
-    "routes"
-  ),
+      where(
+        "districtID",
+        "==",
+        districtSelect.value
+      ),
 
-  where(
-    "districtID",
-    "==",
-    districtSelect.value
-  ),
+      where(
+        "vehicleID",
+        "==",
+        selectedVehicleCategory
+      )
 
-  where(
-    "vehicleID",
-    "==",
-    selectedVehicleCategory
-  )
+    );
 
-);
+    const querySnapshot =
+    await getDocs(
+      routesQuery
+    );
 
-const querySnapshot =
-await getDocs(
-  routesQuery
-);
+    routes = [];
 
-routes = [];
+    querySnapshot.forEach(docSnap => {
 
-querySnapshot.forEach(docSnap => {
+      routes.push(
+        docSnap.data()
+      );
 
-routes.push({
-  id:docSnap.id,
-  ...docSnap.data()
-});
+    });
 
-});
+    localStorage.setItem(
 
-localStorage.setItem(
+      "offlineRoutes",
 
-  "offlineRoutes",
+      JSON.stringify(routes)
 
-  JSON.stringify(routes)
+    );
 
-);
+    loadLocations();
 
-loadRouteList();
+  }
 
+  catch(error){
 
-}
+    console.log(error);
 
-catch(error){
+    const offlineRoutes =
+    localStorage.getItem(
+      "offlineRoutes"
+    );
 
+    if(offlineRoutes){
 
-console.log(error);
+      routes =
 
-const offlineRoutes =
-localStorage.getItem(
-  "offlineRoutes"
-);
+      JSON.parse(
+        offlineRoutes
+      );
 
-if(offlineRoutes){
+      loadLocations();
 
-  routes =
+    }
 
-  JSON.parse(
-    offlineRoutes
-  );
-
-  loadRouteList();
-
-}
-
+  }
 
 }
-
-}
-
 
 /* =========================
    LOAD HELPLINE
@@ -962,16 +973,136 @@ async function loadFooterSettings(){
   }
 
 }
-
 /* =========================
    LOAD LOCATIONS
 ========================= */
 
 function loadLocations(){
 
-  loadRouteList();
+  fromSelect.innerHTML =
+  '<option value="">Select Pickup Location</option>';
+
+  toSelect.innerHTML =
+  '<option value="">Select Destination</option>';
+
+  let locations = [];
+
+  routes.forEach(route => {
+
+    if(
+      !locations.includes(
+        route.fromPlace
+      )
+    ){
+
+      locations.push(
+        route.fromPlace
+      );
+
+    }
+
+    if(
+      !locations.includes(
+        route.toPlace
+      )
+    ){
+
+      locations.push(
+        route.toPlace
+      );
+
+    }
+
+  });
+
+  locations.forEach(location => {
+
+    let option1 =
+    document.createElement(
+      "option"
+    );
+
+    option1.value =
+    location;
+
+    option1.text =
+    location;
+
+    fromSelect.appendChild(
+      option1
+    );
+
+    let option2 =
+    document.createElement(
+      "option"
+    );
+
+    option2.value =
+    location;
+
+    option2.text =
+    location;
+
+    toSelect.appendChild(
+      option2
+    );
+
+  });
+
+  if(fromChoices){
+
+    fromChoices.destroy();
+
+  }
+
+  if(toChoices){
+
+    toChoices.destroy();
+
+  }
+fromChoices =
+new Choices("#from", {
+
+  searchEnabled:true,
+
+  searchPlaceholderValue:
+  "Search pickup location...",
+
+  itemSelectText:"",
+
+  shouldSort:false,
+
+  searchResultLimit:4
+
+});
+
+toChoices =
+new Choices("#to", {
+
+  searchEnabled:true,
+
+  searchPlaceholderValue:
+  "Search destination...",
+
+  itemSelectText:"",
+
+  shouldSort:false,
+
+  searchResultLimit:4
+
+});
 
 }
+
+fromSelect.addEventListener(
+  "change",
+  loadProviders
+);
+
+toSelect.addEventListener(
+  "change",
+  loadProviders
+);
 
 /* =========================
    LOAD PROVIDERS
@@ -979,26 +1110,144 @@ function loadLocations(){
 
 function loadProviders(){
 
-  return;
+  providerSelect.innerHTML =
 
-}
+  `
+  <option value="">
+  Select Service Provider
+  </option>
+  `;
 
+  const from =
+  fromChoices.getValue(
+    true
+  );
 
-/* =========================
-   CHECK FARE
-========================= */
+  const to =
+  toChoices.getValue(
+    true
+  );
 
-function checkFare(){
-
-  if(!selectedRoute){
-
-    alert(
-      "Please select a route."
-    );
+  if(
+    !from ||
+    !to
+  ){
 
     return;
 
   }
+
+  const addedProviders =
+  new Set();
+
+  routes.forEach(route => {
+
+    if(
+
+      route.fromPlace === from &&
+
+      route.toPlace === to
+
+    ){
+
+      if(
+
+        !addedProviders.has(
+          route.providerID
+        )
+
+      ){
+
+        addedProviders.add(
+          route.providerID
+        );
+
+        providerSelect.innerHTML +=
+        `
+        <option value="${route.providerID}">
+        ${route.providerName || route.providerID}
+        </option>
+        `;
+
+      }
+
+    }
+
+  });
+
+}
+
+/* =========================
+   PROVIDER CHANGE
+========================= */
+
+providerSelect.addEventListener(
+
+  "change",
+
+  async () => {
+
+    selectedProviderID =
+    providerSelect.value;
+
+    const providerQuery =
+    query(
+
+      collection(
+        db,
+        "providers"
+      ),
+
+      where(
+        "providerID",
+        "==",
+        selectedProviderID
+      )
+
+    );
+
+    const providerSnapshot =
+    await getDocs(
+      providerQuery
+    );
+
+    if(
+      !providerSnapshot.empty
+    ){
+
+      const provider =
+      providerSnapshot
+      .docs[0]
+      .data();
+
+      const providerCallBtn =
+      document.getElementById(
+        "providerCallBtn"
+      );
+
+      providerCallBtn.href =
+      `tel:${provider.helplineNumber}`;
+
+    }
+
+  }
+
+);
+
+/* =========================
+   CHECK FARE
+========================= */
+function checkFare(){
+
+  let from =
+  fromChoices.getValue(
+    true
+  );
+
+  let to =
+  toChoices.getValue(
+    true
+  );
 
   let rideType =
   document.getElementById(
@@ -1023,153 +1272,219 @@ function checkFare(){
   "No fare data available";
 
   let lastUpdated =
-  "Unknown";
-
-  const route =
-  selectedRoute;
-
-if(route.updatedAt){
-
-  const date =
-
-  route.updatedAt.toDate
-  ? route.updatedAt.toDate()
-  : new Date(route.updatedAt);
-
-  lastUpdated =
-
-  date.toLocaleDateString(
-    "en-IN",
-    {
-      day:"2-digit",
-      month:"short",
-      year:"numeric"
-    }
-  );
-
-}
+"Unknown";
 
   if(
-    rideType ===
-    "shared"
+    from === "" ||
+    to === ""
   ){
 
-    let totalSharedFare;
+    document.getElementById(
+      "result"
+    ).innerText =
+    "Select Route";
 
-    if(
-      fareMode ===
-      "day"
-    ){
-
-      totalSharedFare =
-
-      (
-
-        Number(
-          route.shareDayFare || 0
-        )
-
-        +
-
-        Number(
-          route.tempSharedDay || 0
-        )
-
-      )
-
-      * passengers;
-
-    }
-
-    else{
-
-      totalSharedFare =
-
-      (
-
-        Number(
-          route.shareNightFare || 0
-        )
-
-        +
-
-        Number(
-          route.tempSharedNight || 0
-        )
-
-      )
-
-      * passengers;
-
-    }
-
-    result =
-    "₹" +
-    totalSharedFare;
+    return;
 
   }
 
-  else{
+  if(from === to){
 
-    if(
-      fareMode ===
-      "day"
-    ){
+    document.getElementById(
+      "result"
+    ).innerText =
+    "Same Location";
 
-      result =
-
-      "₹" +
-
-      (
-
-        Number(
-          route.hireDayFare || 0
-        )
-
-        +
-
-        Number(
-          route.tempHireDay || 0
-        )
-
-      );
-
-    }
-
-    else{
-
-      result =
-
-      "₹" +
-
-      (
-
-        Number(
-          route.hireNightFare || 0
-        )
-
-        +
-
-        Number(
-          route.tempHireNight || 0
-        )
-
-      );
-
-    }
+    return;
 
   }
 
-  showFareModal(
-    result,
-    lastUpdated
-  );
+  routes.forEach(route => {
+
+  if(
+
+    route.fromPlace === from &&
+    route.toPlace === to &&
+    route.providerID === selectedProviderID
+
+  ){
+
+    if(route.updatedAt){
+
+      const date =
+
+      route.updatedAt.toDate();
+
+      lastUpdated =
+
+      date.toLocaleDateString(
+        "en-IN",
+        {
+          day:"2-digit",
+          month:"short",
+          year:"numeric"
+        }
+      );
+
+    }
+      if(
+        rideType ===
+        "shared"
+      ){
+
+        let totalSharedFare;
+
+        if(
+          fareMode ===
+          "day"
+        ){
+
+          totalSharedFare =
+
+          (
+
+            Number(
+              route.shareDayFare || 0
+            )
+
+            +
+
+            Number(
+              route.tempSharedDay || 0
+            )
+
+          )
+
+          * passengers;
+
+        }
+
+        else{
+
+          totalSharedFare =
+
+          (
+
+            Number(
+              route.shareNightFare || 0
+            )
+
+            +
+
+            Number(
+              route.tempSharedNight || 0
+            )
+
+          )
+
+          * passengers;
+
+        }
+
+        result =
+        "₹" +
+        totalSharedFare;
+
+      }
+
+      else{
+
+        if(
+          fareMode ===
+          "day"
+        ){
+
+          result =
+
+          "₹" +
+
+          (
+
+            Number(
+              route.hireDayFare || 0
+            )
+
+            +
+
+            Number(
+              route.tempHireDay || 0
+            )
+
+          );
+
+        }
+
+        else{
+
+          result =
+
+          "₹" +
+
+          (
+
+            Number(
+              route.hireNightFare || 0
+            )
+
+            +
+
+            Number(
+              route.tempHireNight || 0
+            )
+
+          );
+
+        }
+
+      }
+
+    }
+
+  });
+
+  document.getElementById(
+    "result"
+  ).innerText =
+  result;
+
+showFareModal(
+  result,
+  lastUpdated
+);
 
 }
 
 window.checkFare =
 checkFare;
 
+/* =========================
+   SWAP
+========================= */
+
+function swapLocations(){
+
+  let fromValue =
+  fromChoices.getValue(
+    true
+  );
+
+  let toValue =
+  toChoices.getValue(
+    true
+  );
+
+  fromChoices.setChoiceByValue(
+    toValue
+  );
+
+  toChoices.setChoiceByValue(
+    fromValue
+  );
+
+}
+
+window.swapLocations =
+swapLocations;
 
 /* =========================
    TRACK CLICK
@@ -1360,15 +1675,6 @@ function loadRouteList(){
 
 <div
 
-onclick="
-selectRoute(
-'${route.fromPlace}',
-'${route.toPlace}',
-'${route.providerID}',
-'${route.providerName || ""}'
-)
-"
-
 style="
 padding:14px;
 margin-bottom:10px;
@@ -1410,94 +1716,6 @@ ${route.providerName}
   });
 
 }
-
-/* =========================
-   SELECT ROUTE
-========================= */
-
-function selectRoute(
-
-  fromPlace,
-  toPlace,
-  providerID,
-  providerName
-
-){
-
- selectedRoute =
-
-routes.find(route =>
-
-  route.fromPlace === fromPlace &&
-
-  route.toPlace === toPlace &&
-
-  route.providerID === providerID
-
-);
-
-selectedProviderID =
-providerID;
-
-if(!selectedRoute){
-
-  alert(
-    "Route not found."
-  );
-
-  return;
-
-}
-
-const matchedRoute =
-selectedRoute;
-
-
-  document.getElementById(
-    "selectedRouteCard"
-  ).style.display =
-  "block";
-
-  document.getElementById(
-    "selectedRouteName"
-  ).innerText =
-
-  fromPlace +
-  " → " +
-  toPlace;
-
-  document.getElementById(
-    "selectedProviderName"
-  ).innerText =
-
-  providerName;
-
-
-
-  if(
-
-    matchedRoute &&
-
-    matchedRoute.providerPhone
-
-  ){
-
-    document.getElementById(
-      "providerCallBtn"
-    ).href =
-
-    "tel:" +
-
-    matchedRoute.providerPhone;
-
-  }
-
-  closeRouteModal();
-
-}
-
-window.selectRoute =
-selectRoute;
 
 /* =========================
    APP LOAD
