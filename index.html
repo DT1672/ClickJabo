@@ -124,7 +124,6 @@ Pickup Location
 <select id="from">
 
 <option value="">
-Select Pickup Location
 </option>
 
 </select>
@@ -154,7 +153,6 @@ Destination
 <select id="to">
 
 <option value="">
-Select Destination
 </option>
 
 </select>
@@ -175,7 +173,23 @@ Service Provider
 <a
 id="providerCallBtn"
 href="tel:"
-class="provider-call-btn">
+class="provider-call-btn"
+
+onclick="
+
+if(
+  !selectedProviderID
+){
+
+  alert(
+    'Please select a route first.'
+  );
+
+  return false;
+
+}
+
+">
 
 📞 Call
 
@@ -187,8 +201,6 @@ class="provider-call-btn">
 id="providerSelect">
 
 <option value="">
-
-Select Service Provider
 
 </option>
 

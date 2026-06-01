@@ -1013,10 +1013,10 @@ async function loadFooterSettings(){
 function loadLocations(){
 
   fromSelect.innerHTML =
-  '<option value="">Select Pickup Location</option>';
+'<option value="">Not Selected</option>';
 
-  toSelect.innerHTML =
-  '<option value="">Select Destination</option>';
+toSelect.innerHTML =
+'<option value="">Not Selected</option>';
 
   let locations = [];
 
@@ -1124,6 +1124,12 @@ new Choices("#to", {
   searchResultLimit:4
 
 });
+
+fromChoices.disable();
+
+toChoices.disable();
+
+providerSelect.disabled = true;
 
 }
 
@@ -1776,11 +1782,14 @@ function selectRoute(index){
   providerSelect.value =
   route.providerID;
 
-  selectedProviderID =
-  route.providerID;
+ selectedProviderID =
+route.providerID;
 
-  closeRouteModal();
+providerSelect.dispatchEvent(
+  new Event("change")
+);
 
+closeRouteModal();
 }
 
 window.selectRoute =
