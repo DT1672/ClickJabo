@@ -300,20 +300,34 @@ trackSponsorImpression(
 validSponsors.forEach((sponsor,index) => {
 
   sponsorCarousel.innerHTML += `
+
 <a
 href="${
-  sponsor.redirectUrl || "#"
+  sponsor.redirectUrl || "javascript:void(0)"
 }"
-target="_blank"
+${
+  sponsor.redirectUrl
+  ? 'target="_blank"'
+  : ''
+}
 
 onclick="
+
+if(
+  !'${sponsor.redirectUrl || ""}'
+){
+
+  return false;
+
+}
+
 trackSponsorClick(
 '${sponsor.id}'
 )
+
 "
 
 class="sponsor-slide"
-
 
 style="
 position:absolute;
@@ -326,9 +340,14 @@ pointer-events:${
   ? "auto"
   : "none"
 };
+cursor:${
+  sponsor.redirectUrl
+  ? "pointer"
+  : "default"
+};
 "
-
 >
+
 
 <img
 src="${sponsor.imageUrl}"
