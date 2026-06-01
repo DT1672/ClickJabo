@@ -1708,6 +1708,12 @@ function loadRouteList(){
 
 <div
 
+onclick="
+selectRoute(
+${routes.indexOf(route)}
+)
+"
+
 style="
 padding:14px;
 margin-bottom:10px;
@@ -1749,6 +1755,36 @@ ${providerMap[route.providerID] || route.providerID}
   });
 
 }
+
+
+
+function selectRoute(index){
+
+  const route =
+  routes[index];
+
+  fromChoices.setChoiceByValue(
+    route.fromPlace
+  );
+
+  toChoices.setChoiceByValue(
+    route.toPlace
+  );
+
+  loadProviders();
+
+  providerSelect.value =
+  route.providerID;
+
+  selectedProviderID =
+  route.providerID;
+
+  closeRouteModal();
+
+}
+
+window.selectRoute =
+selectRoute;
 
 /* =========================
    APP LOAD
