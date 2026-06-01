@@ -31,7 +31,7 @@ body{
 
   margin:auto;
 
-  padding:8px;
+  padding:2px 8px 8px 8px;
 
   box-sizing:border-box;
 
@@ -90,9 +90,9 @@ body{
 
   border-radius:22px;
 
-  padding:8px;
+  padding:6px;
 
-  margin-top:6px;
+  margin-top:2px;
 
   box-shadow:
   0 0 24px rgba(0,0,0,.28);
@@ -217,7 +217,7 @@ button:active{
 
 .top-space{
 
-  margin-top:6px;
+  margin-top:2px;
 
 }
 /* =========================
@@ -845,7 +845,7 @@ color:#94a3b8;
 
 .provider-section{
 
-  margin-top:-4px;
+  margin-top:-12px;
 
 }
 
@@ -1273,5 +1273,147 @@ margin-bottom:-6px!important;
 #providerSection{
 
 margin-top:-14px;
+
+}
+
+.browse-route-btn{
+
+  padding:6px 12px!important;
+
+  border-radius:16px!important;
+
+  background:
+  rgba(194,155,71,.08)!important;
+
+  border:
+  1px solid rgba(194,155,71,.18)!important;
+
+  color:#d4b06a!important;
+
+  box-shadow:none!important;
+
+   margin-top:0px!important;
+
+}
+
+.route-card{
+
+  padding:12px;
+
+  margin-bottom:8px;
+
+  border-radius:16px;
+
+  background:
+  rgba(255,255,255,.04);
+
+  border:
+  1px solid rgba(255,255,255,.06);
+
+}
+.route-provider{
+
+  color:#c29b47;
+
+  font-size:11px;
+
+  font-weight:600;
+
+}
+.route-path{
+
+  color:white;
+
+  font-size:14px;
+
+  font-weight:600;
+
+}
+
+.route-modal-header{
+
+display:flex;
+
+justify-content:space-between;
+
+align-items:center;
+
+margin-bottom:12px;
+
+}
+
+.route-modal-title{
+
+font-size:22px;
+
+font-weight:700;
+
+color:white;
+
+}
+.route-modal-close{
+
+width:38px!important;
+
+height:38px!important;
+
+min-width:38px!important;
+
+max-width:38px!important;
+
+flex:none!important;
+
+padding:0!important;
+
+margin:0!important;
+
+border:none!important;
+
+border-radius:50%!important;
+
+background:
+rgba(255,255,255,.05)!important;
+
+color:#94a3b8!important;
+
+font-size:20px!important;
+
+box-shadow:none!important;
+
+display:flex!important;
+
+justify-content:center!important;
+
+align-items:center!important;
+
+}
+
+.route-modal-close:hover{
+
+background:
+rgba(255,255,255,.08)!important;
+
+color:white!important;
+
+}
+
+.route-search{
+
+width:100%;
+
+margin-bottom:15px;
+
+background:#111827;
+
+border:
+1px solid rgba(255,255,255,.08);
+
+border-radius:16px;
+
+color:white;
+
+padding:12px;
+
+box-sizing:border-box;
 
 }

@@ -1798,6 +1798,8 @@ selectRoute;
 /* =========================
    APP LOAD
 ========================= */
+
+
 window.addEventListener(
 
   "load",
@@ -1815,6 +1817,113 @@ window.addEventListener(
     loadSponsorBanner();
 
     loadFooterSettings();
+
+  }
+
+);
+
+document.getElementById(
+  "routeSearch"
+).addEventListener(
+
+  "input",
+
+  function(){
+
+    const search =
+
+    this.value
+    .toLowerCase()
+    .trim();
+
+    const routeList =
+
+    document.getElementById(
+      "routeList"
+    );
+
+    routeList.innerHTML = "";
+
+    routes
+
+    .filter(route =>
+
+      route.fromPlace
+      .toLowerCase()
+      .includes(search)
+
+      ||
+
+      route.toPlace
+      .toLowerCase()
+      .includes(search)
+
+      ||
+
+      (
+        providerMap[
+          route.providerID
+        ] || ""
+      )
+
+      .toLowerCase()
+      .includes(search)
+
+    )
+
+    .forEach(route => {
+
+      routeList.innerHTML += `
+
+<div
+
+onclick="
+selectRoute(
+${routes.indexOf(route)}
+)
+"
+
+style="
+padding:14px;
+margin-bottom:10px;
+border-radius:14px;
+background:
+rgba(255,255,255,.05);
+border:
+1px solid rgba(255,255,255,.08);
+cursor:pointer;
+">
+
+<div
+style="
+font-size:15px;
+font-weight:600;
+">
+
+${route.fromPlace}
+→
+${route.toPlace}
+
+</div>
+
+<div
+style="
+font-size:12px;
+color:#94a3b8;
+margin-top:4px;
+">
+
+${providerMap[
+route.providerID
+] || route.providerID}
+
+</div>
+
+</div>
+
+`;
+
+    });
 
   }
 
