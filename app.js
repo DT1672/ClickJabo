@@ -1806,6 +1806,10 @@ window.addEventListener(
 
   async () => {
 
+     loadSponsorBanner();
+
+    loadFooterSettings();
+
     await loadProvidersMaster();
 
     await loadDistricts();
@@ -1814,11 +1818,7 @@ window.addEventListener(
 
     await loadRoutesFromFirestore();
 
-    loadSponsorBanner();
-
-    loadFooterSettings();
-
-  }
+   }
 
 );
 
