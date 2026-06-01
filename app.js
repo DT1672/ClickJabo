@@ -35,6 +35,52 @@ async function loadSponsorBanner(){
       "sponsorCarousel"
     );
 
+    const cachedSponsors =
+
+JSON.parse(
+
+  localStorage.getItem(
+    "cachedSponsors"
+  ) || "[]"
+
+);
+
+if(
+
+  cachedSponsors.length > 0 &&
+
+  sponsorCarousel.innerHTML.trim() === ""
+
+){
+
+  sponsorCarousel.innerHTML = `
+
+<a
+href="${
+cachedSponsors[0].redirectUrl || "#"
+}"
+target="_blank">
+
+<img
+loading="eager"
+decoding="async"
+src="${sponsor.imageUrl}"
+
+class="install-banner"
+
+style="
+width:100%;
+height:100%;
+object-fit:cover;
+border-radius:22px;
+">
+
+</a>
+
+`;
+
+}
+
 if(
   sponsorCarousel.innerHTML.trim() === ""
 ){
@@ -177,6 +223,15 @@ validSponsors.sort(
 
 );
 
+localStorage.setItem(
+
+  "cachedSponsors",
+
+  JSON.stringify(
+    validSponsors
+  )
+
+);
  /* =========================
    FALLBACK BANNER
 ========================= */
