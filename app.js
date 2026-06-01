@@ -432,6 +432,8 @@ setInterval(() => {
 
 let routes = [];
 
+let providerMap = {};
+
 let fromChoices;
 
 let toChoices;
@@ -472,6 +474,37 @@ let selectedVehicleCategory =
 
 let selectedProviderID =
 "";
+
+async function loadProvidersMaster(){
+
+  providerMap = {};
+
+  try{
+
+    const snapshot = await getDocs(
+      collection(db, "providers")
+    );
+
+    snapshot.forEach(docSnap => {
+
+      const provider =
+      docSnap.data();
+
+      providerMap[
+        provider.providerID
+      ] = provider.name;
+
+    });
+
+  }
+
+  catch(error){
+
+    console.log(error);
+
+  }
+
+}
 
 /* =========================
    DISTRICT SAVE
@@ -1164,9 +1197,9 @@ function loadProviders(){
 
         providerSelect.innerHTML +=
         `
-        <option value="${route.providerID}">
-        ${route.providerName || route.providerID}
-        </option>
+       <option value="${route.providerID}">
+${providerMap[route.providerID] || route.providerID}
+</option>
         `;
 
       }
@@ -1705,7 +1738,7 @@ color:#94a3b8;
 margin-top:4px;
 ">
 
-${route.providerName}
+${providerMap[route.providerID] || route.providerID}
 
 </div>
 
@@ -1725,6 +1758,8 @@ window.addEventListener(
   "load",
 
   async () => {
+
+    await loadProvidersMaster();
 
     await loadDistricts();
 
