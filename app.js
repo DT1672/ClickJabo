@@ -1961,7 +1961,7 @@ window.addEventListener(
 
       }, 600);
 
-    }, 2800);
+    }, 4000);
 
   }
 

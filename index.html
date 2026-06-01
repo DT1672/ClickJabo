@@ -490,6 +490,39 @@ id="routeList">
 
 <script src="https://cdn.jsdelivr.net/npm/choices.js/public/assets/scripts/choices.min.js"></script>
 
+<!-- LOADING OVERLAY -->
+
+<div
+id="loadingOverlay"
+
+style="
+display:none;
+position:fixed;
+inset:0;
+background:rgba(2,8,23,.65);
+backdrop-filter:blur(4px);
+z-index:999999;
+justify-content:center;
+align-items:center;
+">
+
+<div
+
+style="
+padding:18px 24px;
+border-radius:18px;
+background:rgba(255,255,255,.06);
+border:1px solid rgba(255,255,255,.08);
+font-weight:600;
+color:white;
+">
+
+Updating Routes...
+
+</div>
+
+</div>
+
 <script
 type="module"
 src="app.js"
