@@ -594,6 +594,15 @@ ${district.name}
 
     }
 
+    else{
+
+  localStorage.setItem(
+    "selectedDistrict",
+    districtSelect.value
+  );
+
+}
+
   }
 
   catch(error){
@@ -1799,16 +1808,11 @@ selectRoute;
    APP LOAD
 ========================= */
 
-
 window.addEventListener(
 
   "load",
 
   async () => {
-
-     loadSponsorBanner();
-
-    loadFooterSettings();
 
     await loadProvidersMaster();
 
@@ -1818,9 +1822,14 @@ window.addEventListener(
 
     await loadRoutesFromFirestore();
 
-   }
+    await loadSponsorBanner();
+
+    loadFooterSettings();
+
+  }
 
 );
+
 
 document.getElementById(
   "routeSearch"
