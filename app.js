@@ -35,7 +35,11 @@ async function loadSponsorBanner(){
       "sponsorCarousel"
     );
 
-    sponsorCarousel.innerHTML = `
+if(
+  sponsorCarousel.innerHTML.trim() === ""
+){
+
+  sponsorCarousel.innerHTML = `
 
 <a
 href="#"
@@ -60,6 +64,8 @@ border-radius:22px;
 
 `;
 
+}
+
     const sponsorSnapshot =
 
     await getDocs(
@@ -71,26 +77,7 @@ border-radius:22px;
 
     );
 
-    sponsorCarousel.innerHTML = `
 
-<div
-id="sponsorDots"
-
-style="
-position:absolute;
-bottom:14px;
-left:50%;
-transform:translateX(-50%);
-display:flex;
-gap:6px;
-z-index:999;
-pointer-events:none;
-"
-
->
-</div>
-
-    `;
 
     const sponsorDots =
 
